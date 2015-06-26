@@ -11,10 +11,23 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
+      <h1 class="page-header">Clips:</h1>
+      <ul class="clips" ng-repeat="clip in awesomeClips">
+        <li><table class="clip-table">
+          <tr>
+            <td><img ng-src="{{clip.content}}"></td>
+            <td>{{clip.name}}</td>
+          </tr>
+        </table> </li>
       </ul>
+
+      <h6>Comments</h6>
+      <!--form class="comment-form" ng-submit="addComment()" name="commentForm">
+        <textarea class="form-control" ng-model="newCOmment" rows="3" placeholder="Enter a new comment." required></textarea>
+        <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
+
+      </form-->
+
     </div>
   </div>
 </div>

@@ -2,7 +2,9 @@
 
 angular.module('kahootsAppApp')
   .controller('MainCtrl', function ($scope, $http) {
+    $scope.newComment='';
     $scope.awesomeThings = [];
+    $scope.awesomeClips=[];
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
@@ -19,4 +21,25 @@ angular.module('kahootsAppApp')
     $scope.deleteThing = function(thing) {
       $http.delete('/api/things/' + thing._id);
     };
+
+
+
+    $http.get('/api/clips').success(function(awesomeClips) {
+      $scope.awesomeClips = awesomeClips;
+    });
+
+    $scope.addClip = function() {
+      if($scope.newClip === '') {
+        return;
+      }
+      $http.post('/api/clips', { name: $scope.newClip });
+      $scope.newClip = '';
+    };
+
+    $scope.deleteClip = function(clip) {
+      $http.delete('/api/clips/' + clip._id);
+    };
+
+
   });
+
