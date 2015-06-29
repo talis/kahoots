@@ -2,11 +2,16 @@
  * Created by lauren on 28/06/15.
  */
 
-console.log("Entered rectangle");
-var canvas = window.document.getElementById('canvas');
+
+
+var c = document.createElement('canvas');
+c.id = 'canvas';
+document.body.appendChild(c);
+
+var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var canvasPos = canvas.getBoundingClientRect();
-var top;
+var top = {x:0, y:0};
 var dragging = false;
 canvas.style.position = 'absolute';
 canvas.style.left = '0px';
@@ -14,25 +19,19 @@ canvas.style.top = '0px';
 canvas.style.zIndex = '100';
 canvas.style.width = '100%';
 canvas.style.height = '100%';
+canvas.style.border = '1px solid red';
+canvas.top = top;
 
 canvas.height = canvas.offsetHeight;
 canvas.width = canvas.offsetWidth;
-document.onfocus = function() {
-  with(m) {
-    value = C;
-    focus();
-    select()
-  }
-};
-document.onfocus();
 
-window.document.body.appendChild(canvas);
 
-console.log("finished rectangle");
 
-canvas.onmovedown = function(e) {
-  top = getCursorPosition(e);
+
+canvas.onmousedown = function(e) {
+  canvas.top = getCursorPosition(e);
   dragging = true;
+
 };
 
 canvas.onmouseup = function(e) {
@@ -45,8 +44,9 @@ canvas.onmousemove = function(e) {
     return;
   }
   var bottom = getCursorPosition(e);
+  console.log(canvas.top.x + "+++" + bottom.x);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeRect(top.x, top.y, (bottom.x - top.x), (bottom.y - top.y));
+  ctx.fillRect(canvas.top.x, canvas.top.y, (bottom.x - canvas.top.x), (bottom.y - canvas.top.y));
 };
 
 function getCursorPosition(e) {
