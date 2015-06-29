@@ -5,6 +5,7 @@ angular.module('kahootsAppApp')
     $scope.newComment='';
     $scope.awesomeThings = [];
     $scope.awesomeClips=[];
+    $scope.activeClip;
 
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -27,6 +28,7 @@ angular.module('kahootsAppApp')
 
     $http.get('/api/clips').success(function(awesomeClips) {
       $scope.awesomeClips = awesomeClips;
+      $scope.activeClip = awesomeClips[0];
     });
 
     $scope.addClip = function() {
@@ -50,7 +52,9 @@ angular.module('kahootsAppApp')
       $scope.newComment = '';
     }
 
-
+   $scope.updateActiveClip = function(clip){
+      $scope.activeClip = clip;
+    }
 
 
   });
