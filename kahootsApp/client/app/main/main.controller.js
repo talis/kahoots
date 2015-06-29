@@ -46,9 +46,9 @@ angular.module('kahootsAppApp')
     $scope.updateClip = function() {
       console.log("updating clip");
       if($scope.newComment ==''){ return;}
-      var id = $scope.awesomeClips[0]._id;
-      $scope.awesomeClips[0].comments.push($scope.newComment);
-      $http.put('/api/clips/' + id, $scope.awesomeClips[0]);
+      var id = $scope.activeClip._id;
+      $scope.activeClip.comments.push($scope.newComment);
+      $http.put('/api/clips/' + id, $scope.activeClip);
       $scope.newComment = '';
     }
 

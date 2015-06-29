@@ -40,5 +40,16 @@ Clip.find({}).remove(function() {
       content : 'http://wvs.topleftpixel.com/photos/2008/04/Dundas_Square_Pano_Fisheye_tunnel_crop.jpg',
       name : 'city',
     comments: ["wow"]
-    });
+    },
+    {
+      content : 'http://d24w6bsrhbeh9d.cloudfront.net/photo/68913_700b.jpg',
+      name : 'pufferfish',
+      comments: ["cute"]
+    },
+    {
+      content : 'http://favim.com/orig/201105/15/animals-cute-skateboard-tiny-turtle-Favim.com-45106.jpg',
+      name : 'turtle',
+      comments: ["woop"]
+    }
+  );
 });
