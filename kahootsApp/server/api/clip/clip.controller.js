@@ -1,3 +1,13 @@
+/**
+ * Using Rails-like standard naming convention for endpoints.
+ * GET     /things              ->  index
+ * POST    /things              ->  create
+ * GET     /things/:id          ->  show
+ * PUT     /things/:id          ->  update
+ * DELETE  /things/:id          ->  destroy
+ */
+
+
 'use strict';
 
 var _ = require('lodash');
@@ -35,6 +45,14 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!clip) { return res.send(404); }
     var updated = _.merge(clip, req.body);
+
+    // This is necessary to make Mongo save, because we are using
+    // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
+    // to detect modifications
+    updated.markModified('comments');
+
+
+
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, clip);

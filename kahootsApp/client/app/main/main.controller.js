@@ -6,6 +6,7 @@ angular.module('kahootsAppApp')
     $scope.awesomeThings = [];
     $scope.awesomeClips=[];
 
+
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
     });
@@ -39,6 +40,17 @@ angular.module('kahootsAppApp')
     $scope.deleteClip = function(clip) {
       $http.delete('/api/clips/' + clip._id);
     };
+
+    $scope.updateClip = function() {
+      console.log("updating clip");
+      if($scope.newComment ==''){ return;}
+      var id = $scope.awesomeClips[0]._id;
+      $scope.awesomeClips[0].comments.push($scope.newComment);
+      $http.put('/api/clips/' + id, $scope.awesomeClips[0]);
+      $scope.newComment = '';
+    }
+
+
 
 
   });

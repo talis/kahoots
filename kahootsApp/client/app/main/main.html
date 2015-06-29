@@ -22,11 +22,17 @@
       </ul>
 
       <h6>Comments</h6>
-      <!--form class="comment-form" ng-submit="addComment()" name="commentForm">
-        <textarea class="form-control" ng-model="newCOmment" rows="3" placeholder="Enter a new comment." required></textarea>
+      <form class="comment-form" ng-submit="updateClip()" name="commentForm">
+        <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment." required></textarea>
         <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
 
-      </form-->
+      </form>
+      <ul class="comments" ng-repeat="comment in awesomeClips[0].comments">
+        <li>{{comment}}</li>
+      </ul>
+      <ul class="comments" ng-repeat="comment in awesomeClips[1].comments">
+        <li>{{comment}}</li>
+      </ul>
 
     </div>
   </div>

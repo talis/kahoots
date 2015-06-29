@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 var ClipSchema = new Schema({
   content: String,
   name: String,
-  comments: [{name:{ type:'string',default:'Lauren'} , info: 'string'}]
+  comments: [String]
 });
 
 module.exports = mongoose.model('Clip', ClipSchema);

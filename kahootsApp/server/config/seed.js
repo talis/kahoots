@@ -35,9 +35,10 @@ Clip.find({}).remove(function() {
   Clip.create({
     content : 'http://pogogi.com/sites/default/files/field/image/square-watermelon.jpg',
     name : 'Watermelon',
-    comments: [{name: "lori", info:'Yummy!'}]
+    comments: ["yummy","square melons!"]
   }, {
       content : 'http://wvs.topleftpixel.com/photos/2008/04/Dundas_Square_Pano_Fisheye_tunnel_crop.jpg',
-      name : 'city'
+      name : 'city',
+    comments: ["wow"]
     });
 });
