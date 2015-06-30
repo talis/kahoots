@@ -11,16 +11,16 @@ document.body.appendChild(c);
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var canvasPos = canvas.getBoundingClientRect();
-var top = {x:0, y:0};
+
 var dragging = false;
 canvas.style.position = 'absolute';
 canvas.style.left = '0px';
 canvas.style.top = '0px';
-canvas.style.zIndex = '100';
+canvas.style.zIndex = '1000';
 canvas.style.width = '100%';
 canvas.style.height = '100%';
-canvas.style.border = '1px solid red';
-canvas.top = top;
+canvas.style.border = '1px solid yellow';
+canvas.top = canvasPos;
 
 canvas.height = canvas.offsetHeight;
 canvas.width = canvas.offsetWidth;
@@ -31,11 +31,15 @@ canvas.width = canvas.offsetWidth;
 canvas.onmousedown = function(e) {
   canvas.top = getCursorPosition(e);
   dragging = true;
-
+  //ctx.fillRect(canvas.top.x,canvas.top.y,20,10);
 };
 
 canvas.onmouseup = function(e) {
   dragging = false;
+  chrome.extension.sendMessage({directive: "capture"}, function(response) {
+
+    console.log(response.msg);
+  });
 };
 
 canvas.onmousemove = function(e) {
@@ -44,8 +48,9 @@ canvas.onmousemove = function(e) {
     return;
   }
   var bottom = getCursorPosition(e);
-  console.log(canvas.top.x + "+++" + bottom.x);
+  console.log("("+canvas.top.x + "," + canvas.top.y + ") - (" + bottom.x + "," + bottom.y + ")");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //ctx.fillStyle = "black";
   ctx.fillRect(canvas.top.x, canvas.top.y, (bottom.x - canvas.top.x), (bottom.y - canvas.top.y));
 };
 

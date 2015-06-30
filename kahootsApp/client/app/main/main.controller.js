@@ -50,11 +50,11 @@ angular.module('kahootsAppApp')
       $scope.activeClip.comments.push($scope.newComment);
       $http.put('/api/clips/' + id, $scope.activeClip);
       $scope.newComment = '';
-    }
+    };
 
    $scope.updateActiveClip = function(clip){
       $scope.activeClip = clip;
-    }
+    };
 
 
   });

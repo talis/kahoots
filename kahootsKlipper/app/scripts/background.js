@@ -9,6 +9,17 @@ chrome.extension.onMessage.addListener(
         });
         sendResponse({}); // sending back empty response to sender
         break;
+      case "capture":
+            //Take a screen shot and send to kahoots server
+            chrome.tabs.captureVisibleTab(null, function(img){
+              var xhr = new XMLHttpRequest();
+              var formData = new FormData();
+              formData.append("content", img);
+              xhr.open("POST", "http://localhost:9000/api/clips/file-upload/", true);
+              xhr.send(formData);
+            });
+            sendResponse({msg:"Roger!"});
+            break;
       default:
         // helps debug when request directive doesn't match
         alert("Unmatched request of '" + request + "' from script to background.js from " + sender);
