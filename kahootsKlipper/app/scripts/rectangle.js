@@ -12,11 +12,11 @@ document.body.appendChild(c);
   var canvas = document.getElementById('canvas');
 
   var canvasPos = canvas.getBoundingClientRect();
-
+  console.log(canvasPos.top);
   var dragging = false;
   canvas.style.position = 'absolute';
-  canvas.style.left = '0px';
-  canvas.style.top = '0px';
+  canvas.style.left ="0px";
+  canvas.style.top = "0px";
   canvas.style.zIndex = '1000';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
@@ -48,6 +48,7 @@ document.body.appendChild(c);
 
 
 // Finished drawing bounding box, telling background to screenshot.
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       chrome.extension.sendMessage({
         directive: "capture",
         rect: {"x": left, "y": y, "width": width, "height": height}
