@@ -169,14 +169,14 @@ exports.update = function(req, res) {
     var fileguid = guid();
     //var filename = "./client/assets/uploads/"+fileguid+".png";
     var filename = fileguid+".png";
-    fs.writeFile(filename,buf , function(err) {
+    fs.writeFile("temp.png",buf , function(err) {
       if(err) {
         return console.log(err);
       }
       console.log("The file was saved!");
-      req.body.content = filename;
+      req.body.content = "assets/uploads/"+filename;
       exports.create(req,res, function(){});
-      var args = [filename, "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+"new"+filename];
+      var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
       console.log(args[2]);
       im.convert(args, function(err){
         if(err){console.log("error cropping")}
