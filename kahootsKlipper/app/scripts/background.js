@@ -12,13 +12,17 @@ chrome.extension.onMessage.addListener(
       case "capture":
             //Take a screen shot and send to kahoots server
             chrome.tabs.captureVisibleTab(null, function(img){
+              //crop image
+
+
               var xhr = new XMLHttpRequest();
               var formData = new FormData();
               formData.append("content", img);
+              formData.append("rect", JSON.stringify(request.rect));
               xhr.open("POST", "http://localhost:9000/api/clips/file-upload/", true);
               xhr.send(formData);
             });
-            sendResponse({msg:"Roger!"});
+            sendResponse({msg:request.rect.x});
             break;
       default:
         // helps debug when request directive doesn't match

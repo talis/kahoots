@@ -20,7 +20,10 @@ canvas.style.zIndex = '1000';
 canvas.style.width = '100%';
 canvas.style.height = '100%';
 canvas.style.border = '1px solid yellow';
-canvas.top = canvasPos;
+var y = 0;
+var left = 0;
+var width= 0;
+var height= 0;
 
 canvas.height = canvas.offsetHeight;
 canvas.width = canvas.offsetWidth;
@@ -29,16 +32,21 @@ canvas.width = canvas.offsetWidth;
 
 
 canvas.onmousedown = function(e) {
-  canvas.top = getCursorPosition(e);
+  var startPos = getCursorPosition(e);
+  left = startPos.x;
+  y = startPos.y;
   dragging = true;
-  //ctx.fillRect(canvas.top.x,canvas.top.y,20,10);
+  ctx.fillRect(0,0,0,0);
 };
 
 canvas.onmouseup = function(e) {
   dragging = false;
-  chrome.extension.sendMessage({directive: "capture"}, function(response) {
 
-    console.log(response.msg);
+
+// Finished drawing bounding box, telling backgorund to screenshot.
+  chrome.extension.sendMessage({directive: "capture", rect:{"x":left, "y":y, "width":width, "height":height}}, function(response) {
+
+    console.log(""+ response.msg);
   });
 };
 
@@ -48,10 +56,14 @@ canvas.onmousemove = function(e) {
     return;
   }
   var bottom = getCursorPosition(e);
-  console.log("("+canvas.top.x + "," + canvas.top.y + ") - (" + bottom.x + "," + bottom.y + ")");
+  width = (bottom.x - left);
+  height = (bottom.y - y);
+  console.log("("+ left + "," + y + ") - (" + bottom.x + "," + bottom.y + ")");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //ctx.fillStyle = "black";
-  ctx.fillRect(canvas.top.x, canvas.top.y, (bottom.x - canvas.top.x), (bottom.y - canvas.top.y));
+  //turn transparency on
+  ctx.globalAlpha=0.2;
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(left,y ,width, height);
 };
 
 function getCursorPosition(e) {

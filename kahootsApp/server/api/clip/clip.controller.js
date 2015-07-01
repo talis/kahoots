@@ -12,6 +12,7 @@
 
 var _ = require('lodash');
 var Clip = require('./clip.model');
+var im = require('imagemagick');
 
 
 // Get list of clips
@@ -154,14 +155,20 @@ exports.update = function(req, res) {
   };
 
   exports.upload = function (req, res) {
-    console.log(JSON.stringify(req.body.cotent) + "body"); // form fields
-    console.log(JSON.stringify(req.files) + "files"); // form files
+    //console.log(req.body.rect);
+    //console.log(JSON.stringify(req.files) + "files"); // form files
     var img = req.body.content;
+    var rect = JSON.parse(req.body.rect);
+    //crop img
+    var args = [img, "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+Math.abs(rect.y), ""]
+
+
     var data = img.replace(/^data:image\/\w+;base64,/, "");
     var buf = new Buffer(data, 'base64');
     var fs = require('fs');
     var fileguid = guid();
-    var filename = "./"+fileguid+".png";
+    //var filename = "./client/assets/uploads/"+fileguid+".png";
+    var filename = fileguid+".png";
     fs.writeFile(filename,buf , function(err) {
       if(err) {
         return console.log(err);
@@ -169,6 +176,12 @@ exports.update = function(req, res) {
       console.log("The file was saved!");
       req.body.content = filename;
       exports.create(req,res, function(){});
+      var args = [filename, "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+"new"+filename];
+      console.log(args[2]);
+      im.convert(args, function(err){
+        if(err){console.log("error cropping")}
+        console.log("cropped!");
+      });
     });
 
   }
