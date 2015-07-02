@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('MainCtrl', function ($scope, $http, $location) {
     $scope.newComment='';
     $scope.awesomeThings = [];
     $scope.awesomeClips=[];
     $scope.activeClip;
+
 
 
     $http.get('/api/things').success(function(awesomeThings) {

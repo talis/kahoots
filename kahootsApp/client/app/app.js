@@ -13,4 +13,6 @@ angular.module('kahootsAppApp', [
       });
 
     $locationProvider.html5Mode(true);
+
+    // Need to add some login stuff here.
   });
