@@ -160,7 +160,7 @@ exports.update = function(req, res) {
     var img = req.body.content;
     var rect = JSON.parse(req.body.rect);
     //crop img
-    var args = [img, "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+Math.abs(rect.y), ""]
+    var args = [img, "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+Math.abs(rect.y), ""];
 
 
     var data = img.replace(/^data:image\/\w+;base64,/, "");
