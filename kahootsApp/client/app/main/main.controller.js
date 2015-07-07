@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('MainCtrl', function ($scope, $http, $location) {
+  .controller('MainCtrl', function ($scope, $http, $rootScope) {
     $scope.newComment='';
     $scope.awesomeThings = [];
     $scope.awesomeClips=[];
     $scope.activeClip;
+    $scope.username = $rootScope.user.profile.first_name;
 
 
 
