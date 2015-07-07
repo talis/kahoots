@@ -23,22 +23,21 @@ if(config.seedDB) { require('./config/seed'); }
 // Setup server
 var app = express();
 
-//configure the persona client (https://github.com/talis/persona-node-client/)
+// Configure the Persona client
 var persona = require('persona_client');
 try {
+  // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
   var personaClient = persona.createClient({
-    persona_host: "localhost",
-    persona_port: 443,
-    persona_scheme: "https",
-    persona_oauth_route: "/oauth/tokens",
-    redis_host: "localhost",
-    redis_port: 6379,
-    redis_db: 0,
-    enable_debug: true,
-    //logger: AppLogger
+    persona_host: config.oauth.host,
+    persona_port: config.oauth.port,
+    persona_scheme: config.oauth.scheme,
+    persona_oauth_route: config.oauth.route,
+    enable_debug: true
   });
-} catch (err){
-  console.log(err, "Error creating persona in server/app.js ");
+  // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
+} catch (err) {
+  console.log(err);
+
 }
 
 // Add PersonaClient to the req before passing it to controllers
