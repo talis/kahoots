@@ -6,7 +6,7 @@ angular.module('kahootsAppApp')
     $scope.awesomeThings = [];
     $scope.awesomeClips=[];
     $scope.activeClip;
-    $scope.username = $rootScope.user.profile.first_name;
+    //$scope.username = $rootScope.user.profile.first_name;
 
 
 

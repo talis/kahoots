@@ -27,14 +27,16 @@
             //crop image
 
 
+
             var xhr = new XMLHttpRequest();
             var formData = new FormData();
             formData.append("content", img);
             formData.append("rect", JSON.stringify(request.rect));
+            formData.append("source", request.source);
             xhr.open("POST", "http://localhost:9000/api/clips/file-upload/", true);
             xhr.send(formData);
           });
-          sendResponse({msg: request.rect.x});
+          sendResponse({msg: "Clip sent"});
           break;
         default:
           // helps debug when request directive doesn't match

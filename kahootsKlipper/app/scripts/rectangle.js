@@ -1,7 +1,7 @@
 /**
  * Created by lauren on 28/06/15.
  */
-
+var url = window.location.href;
 createCanvas();
 var canvas = document.getElementById('canvas');
 var canvasPos = canvas.getBoundingClientRect();
@@ -58,7 +58,8 @@ function addMouseListeners() {
     // Message to background.
     chrome.extension.sendMessage({
       directive: "capture",
-      rect: {"x":x, "y": y, "width": width, "height": height}
+      rect: {"x":x, "y": y, "width": width, "height": height},
+      source: url
     }, function (response) {
       console.log("" + response.msg);
     });

@@ -159,8 +159,10 @@ exports.update = function(req, res) {
     //console.log(JSON.stringify(req.files) + "files"); // form files
     var img = req.body.content;
     var rect = JSON.parse(req.body.rect);
-    //crop img
-    var args = [img, "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+Math.abs(rect.y), ""];
+    var source = req.body.source;
+
+
+
 
 
     var data = img.replace(/^data:image\/\w+;base64,/, "");
@@ -176,6 +178,7 @@ exports.update = function(req, res) {
       console.log("The file was saved!");
       req.body.content = "assets/uploads/"+filename;
       exports.create(req,res, function(){});
+      //crop img
       var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
       console.log(args[2]);
       im.convert(args, function(err){
