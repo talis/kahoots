@@ -3,7 +3,7 @@
 angular.module('kahootsAppApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/home', {
+      .when('/', {
         templateUrl: 'app/home/home.html',
         controller: 'HomeCtrl',
         loginRequired: false

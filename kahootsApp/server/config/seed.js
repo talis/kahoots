@@ -35,20 +35,24 @@ Clip.find({}).remove(function() {
   Clip.create({
     content : 'http://pogogi.com/sites/default/files/field/image/square-watermelon.jpg',
     name : 'Watermelon',
+      source: "http://news.bbc.co.uk/1/hi/world/asia-pacific/1390088.stm",
     comments: ["yummy","square melons!"]
   }, {
-      content : 'http://wvs.topleftpixel.com/photos/2008/04/Dundas_Square_Pano_Fisheye_tunnel_crop.jpg',
-      name : 'city',
+      content : 'http://www.animalslook.com/img/cute/meet-cute-pygmy-hippos/meet-cute-pygmy-hippos01.jpg',
+      name : 'hippo',
+      source: "http://www.animalslook.com/meet-cute-pygmy-hippos/?f=1",
     comments: ["wow"]
     },
     {
-      content : 'http://d24w6bsrhbeh9d.cloudfront.net/photo/68913_700b.jpg',
-      name : 'pufferfish',
+      content : 'http://www.cutestatus.com/wp-content/uploads/2015/06/cute-status-whatsapp-status-cool-status-nice-status.jpg',
+      name : 'bunny',
+      source:"http://justcuteanimals.com/wp-content/uploads/2014/03/cute-animal-pictures-tiny-bay-rabbit.jpg",
       comments: ["cute"]
     },
     {
-      content : 'http://favim.com/orig/201105/15/animals-cute-skateboard-tiny-turtle-Favim.com-45106.jpg',
-      name : 'turtle',
+      content : 'http://cretique.com/wp-content/uploads/2015/06/wonderful-food-art-ideas-for-cute-meals3.jpg',
+      name : 'cat soup',
+      source: "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
       comments: ["woop"]
     }
   );

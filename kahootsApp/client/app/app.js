@@ -9,21 +9,32 @@ angular.module('kahootsAppApp', [
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/main'
       })
 
     $locationProvider.html5Mode(true);
-  })/*.run(function($rootScope, $location){
+  }).run(function($rootScope, $location){
+
+    $rootScope.$on('$stateChangeSuccess', function(event, data) {
+      // todo: move to stateChangeStart
+      if (data.$$route && data.$$route.controller) {
+        $rootScope.controller = data.$$route.controller;
+      }
+    });
 
       // check if login is needed on page
       $rootScope.$on("$routeChangeStart", function(event, next, current) {
         var currentRoute = $location.path();
+        console.log("here");
 
         var checkLoginRequired = function(){
           if(next.loginRequired) {
-            if($rootScope.user === null ){
+            console.log("here2")
+            console.log($rootScope.user);
+            if(!$rootScope.user){
+              console.log("here 3")
               $rootScope.nextPath = $location.path();
-              $location.path('/home').replace();
+              $location.path('/main').replace();
             }
           }
 
@@ -32,4 +43,4 @@ angular.module('kahootsAppApp', [
         checkLoginRequired();
 
     });
-  });*/
+  });
