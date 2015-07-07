@@ -5,10 +5,92 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4246deb1-a934-4612-b88c-1c7ad7705dfe" name="Default" comment="">
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/temp.png" afterPath="$PROJECT_DIR$/kahootsApp/temp.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/client/app/main/main.html" afterPath="$PROJECT_DIR$/kahootsApp/client/app/main/main.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/client/app/main/main.less" afterPath="$PROJECT_DIR$/kahootsApp/client/app/main/main.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsKlipper/app/scripts/rectangle.js" afterPath="$PROJECT_DIR$/kahootsKlipper/app/scripts/rectangle.js" />
+=======
+<<<<<<< HEAD
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.spec.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/login/login.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/login/login.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/login/login.less" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/userservice/userservice.service.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/app/userservice/userservice.service.spec.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/server/api/env/env.controller.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/server/api/env/index.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/temp.png" afterPath="$PROJECT_DIR$/kahootsApp/temp.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/server/app.js" afterPath="$PROJECT_DIR$/kahootsApp/server/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/server/config/environment/development.js" afterPath="$PROJECT_DIR$/kahootsApp/server/config/environment/development.js" />
+=======
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/0161252e-718f-630f-b091-26203d9adb01.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/039a6c11-3a5f-015c-7800-8bb288466cc6.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/08bf4e48-74e6-fdea-1796-f122aa6e962d.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/0faf6255-89f8-9776-1357-b6de9b6f367e.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/1221768f-2f13-8cf6-2041-73c74cc1bc23.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/154e017c-e38f-dcc6-e81f-ee0ccc31df75.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/1593173b-27c9-1b89-d82d-684c6f2496b4.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/1a372f03-3cd5-6b4a-2704-bbdff57abafc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/1c41707b-eb26-a72a-ab46-6fad91167c41.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/249bdf95-09c7-8870-ef9c-740f10d5571e.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/27699732-3f89-78ab-1ce6-036dceddfbc7.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/2a09fe54-7b57-d984-e8af-069bd5b26047.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/2dfb4c03-2f1a-1a97-1bac-02d03d4e3650.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/3649fd45-0998-2f5a-d9bb-9ac95f87a727.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/3873e232-627d-6962-0c1a-d8cbe75056b5.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/3c6a7344-84ef-dc4c-b867-5c319517dc5e.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/3e9578ea-1aa2-b384-16d5-2559c122c6c5.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/4317c5a8-f52b-d7ff-e4ff-7716c1fab1de.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/453ebe15-b3b4-f8ba-1682-0f83c75d990a.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/4a984957-a9e4-1b14-b030-8493418e1f91.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/50abc370-052a-4f49-b168-033011d87b6a.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/54ea4aa9-31a7-0454-38f4-30924e4c0e53.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/5b836dda-3939-04be-971d-0fe65cf1e803.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/65637651-e261-5c21-ca05-9c472e033d17.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/69eecd42-3775-61e0-93de-98a9a894e487.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/70f34fd6-5866-9b75-e824-c0060a497a27.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/7be370da-0673-3c1d-791e-378e382acb27.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/7c775697-36eb-9665-1ebf-b045aeaf7123.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/90ab6734-846e-ef8c-d804-3aa31a7043fc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/918d6e61-6506-18c1-19db-f56da52607ab.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/942df1f0-b30f-a9fa-2aff-e004358c8186.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/95bcf348-1016-861a-5c16-29e602d2dafc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/975270d9-4fa7-8f50-a978-077894ade110.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/9d92f709-602f-c6f0-a6be-23cafacfbe13.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/9fecb9fb-525a-e32b-56b1-c58c07074691.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/a23f6bde-28b8-8e2e-a2f5-6db7bd2f4043.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/a2c9e011-74a5-837e-22e8-4d13b26e96f8.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/b2d3f0e9-48e8-075f-29c4-fddd439873cd.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/b373a0d6-0ee9-7683-7752-a675f83a58d7.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/b4cb368d-0798-3ddc-3b01-3e02a47fb1b7.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/b684dcc6-c8b5-1e5a-7278-8f74df6e27b3.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/b7cbaffe-fc79-520f-6c17-7b6e9c1cae68.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/b969f41c-714f-472d-0ba1-0b292e99cbf8.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/bbb4e107-5162-a15d-3878-fe15c42961a3.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/bda03895-47fa-2ded-d099-46208d0add08.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/c1e17aca-0df5-3cac-72e4-e7d0c8483689.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/c2474b2f-8498-7d5b-9bc3-c4bc3edbb7d2.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/c5fd1959-357b-d2b0-97cf-787cfd58a1b5.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/c7eb1e2e-01de-a0d2-7edc-272815e1ea20.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/ce67979f-ffd2-1096-661e-830e4ab2aa19.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/ceadab71-6061-e96d-a561-6e6aaba06d27.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/d4a01d36-f6b9-df38-0661-1e72968c1aad.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/d8afda88-e3cd-52b1-6817-f5df113b771c.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/dc4f4046-67e8-0254-f455-58b6442dc3f6.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/dfdcd64f-f0fe-b4b1-00a8-257d1ada1633.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/e0d35222-deec-defe-2a1b-8482af63f71c.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/e41adb56-e84b-bfc0-1104-217acf49c735.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/e4454866-b23c-3079-6c61-1a7829737690.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/e53e495f-433d-ac37-a508-bbf2d2c79767.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/f540653b-de26-4098-fac7-37737457929b.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/kahootsApp/client/assets/uploads/fb50f0f5-a127-c340-26d9-9d2c1428a530.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/temp.png" afterPath="$PROJECT_DIR$/kahootsApp/temp.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kahootsApp/server/api/clip/clip.controller.js" afterPath="$PROJECT_DIR$/kahootsApp/server/api/clip/clip.controller.js" />
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
     </list>
     <ignored path="kahoots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,6 +111,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+<<<<<<< HEAD
       <file leaf-file-name="main.less" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/main/main.less">
           <provider selected="true" editor-type-id="text-editor">
@@ -44,6 +127,81 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.75468487">
               <caret line="49" column="23" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+=======
+<<<<<<< HEAD
+      <file leaf-file-name="main.controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/main/main.controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/main/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/server/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="37" column="6" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.controller.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="development.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/server/config/environment/development.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+=======
+      <file leaf-file-name="clip.controller.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/kahootsApp/server/api/clip/clip.controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.432247">
+              <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
               <folding />
             </state>
           </provider>
@@ -70,7 +228,6 @@
         <option value="$PROJECT_DIR$/kahootsApp/client/app/main/Layout.html" />
         <option value="$PROJECT_DIR$/kahootsApp/server/config/seed.js" />
         <option value="$PROJECT_DIR$/kahootsApp/client/app/main/main.js" />
-        <option value="$PROJECT_DIR$/kahootsApp/server/app.js" />
         <option value="$PROJECT_DIR$/kahootsApp/5592a5123600b211457bc823.txt" />
         <option value="$PROJECT_DIR$/kahootsApp/server/routes.js" />
         <option value="$PROJECT_DIR$/kahootsApp/server/api/clip/index.js" />
@@ -84,10 +241,18 @@
         <option value="$PROJECT_DIR$/kahootsApp/server/api/env/index.js" />
         <option value="$PROJECT_DIR$/kahootsApp/server/api/env/env.controller.js" />
         <option value="$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.js" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/kahootsApp/server/config/environment/development.js" />
+        <option value="$PROJECT_DIR$/kahootsApp/server/app.js" />
+=======
         <option value="$PROJECT_DIR$/kahootsApp/server/api/clip/clip.controller.js" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/kahootsKlipper/app/scripts/rectangle.js" />
         <option value="$PROJECT_DIR$/kahootsApp/client/app/main/main.less" />
         <option value="$PROJECT_DIR$/kahootsApp/client/app/main/main.html" />
+=======
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
       </list>
     </option>
   </component>
@@ -156,7 +321,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+<<<<<<< HEAD
               <option name="myItemId" value="kahootsKlipper" />
+=======
+              <option name="myItemId" value="kahootsApp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -171,6 +339,84 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="kahootsApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahootsApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahootsApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+<<<<<<< HEAD
+=======
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="environment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahootsApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+<<<<<<< HEAD
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -191,6 +437,60 @@
               <option name="myItemId" value="client" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahootsApp" />
+=======
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="api" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+<<<<<<< HEAD
+              <option name="myItemId" value="assets" />
+=======
+              <option name="myItemId" value="clip" />
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahoots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kahootsApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+<<<<<<< HEAD
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+=======
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -340,7 +640,15 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2897771" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+<<<<<<< HEAD
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2510288" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2897771" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -349,9 +657,21 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289941" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+=======
+<<<<<<< HEAD
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32964602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289941" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289941" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -520,13 +840,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/server/config/environment/development.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/kahootsApp/server/config/seed.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9547124">
@@ -559,13 +872,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-16.304348">
           <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/server/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -611,6 +917,18 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/main/main.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3892145">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+=======
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
     <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -618,10 +936,20 @@
         </state>
       </provider>
     </entry>
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
     <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/main/main.controller.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="29" />
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+          <folding />
+=======
+          <folding>
+            <marker date="1435908843282" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
         </state>
       </provider>
     </entry>
@@ -629,6 +957,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+<<<<<<< HEAD
+=======
+          <folding>
+            <marker date="1435908843282" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
         </state>
       </provider>
     </entry>
@@ -639,43 +974,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/userservice/userservice.service.spec.js">
+    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.369863">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/main/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+<<<<<<< HEAD
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.spec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/server/api/env/env.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/server/api/env/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+=======
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/userservice/userservice.service.js">
+    <entry file="file://$PROJECT_DIR$/kahootsApp/server/config/environment/development.js">
+=======
+    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.spec.js">
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
+<<<<<<< HEAD
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
+          <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+          <folding />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kahootsApp/server/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+<<<<<<< HEAD
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+=======
+          <caret line="37" column="6" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
+          <folding />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+<<<<<<< HEAD
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+=======
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+<<<<<<< HEAD
           <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
+=======
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+>>>>>>> 5b5037549f8788b16d137aaa27bcf3444448ac0b
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kahootsApp/client/app/login/login.controller.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
         <state vertical-scroll-proportion="1.1758958">
           <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
         </state>
@@ -712,6 +1088,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.26384366">
           <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+>>>>>>> 6f64f9202fb2d9c04bd82c2f5a3e2b13b702db1c
           <folding />
         </state>
       </provider>
