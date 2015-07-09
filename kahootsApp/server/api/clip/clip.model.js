@@ -8,7 +8,8 @@ var ClipSchema = new Schema({
   content: String,
   name: String,
   comments: [String],
-  source: String
+  source: String,
+  author: String
 });
 
 module.exports = mongoose.model('Clip', ClipSchema);

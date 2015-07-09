@@ -1,99 +1,79 @@
 /**
  * Created by lauren on 28/06/15.
  */
+
 var url = window.location.href;
-createCanvas();
-var canvas = document.getElementById('canvas');
-var canvasPos = canvas.getBoundingClientRect();
-var dragging = false;
-setCanvasStyle();
-// Rectangle dimensions.
-var y = 0;
-var x = 0;
-var width = 0;
-var height = 0;
-var ctx = canvas.getContext('2d');
-ctx.globalAlpha = 0.2;
-ctx.fillStyle = "#666699";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-addMouseListeners();
 
-
-function setCanvasStyle() {
-  canvas.style.position = 'absolute';
-  canvas.style.left = "0px";
-  canvas.style.top = "0px";
-  canvas.style.zIndex = '1000';
-  canvas.style.width = '100%';
-  canvas.style.height = '100%';
-  canvas.style.border = '1px solid yellow';
-  canvas.height = canvas.offsetHeight;
-  canvas.width = canvas.offsetWidth;
-  canvas.style.cursor = "crosshair";
-}
-
-// Create canvas and attach to current web page.
-function createCanvas() {
-  var c = document.createElement('canvas');
-  c.id = 'canvas';
-  document.body.appendChild(c);
-
-}
-
-function addMouseListeners() {
-  // Initialise the top left co-ords of the rectangle.
-  canvas.onmousedown = function (e) {
-    var startPos = getCursorPosition(e);
-    x = startPos.x;
-    y = startPos.y;
-    dragging = true;
+function getCursorPosition(e, canvas) {
+  return {
+    x: e.pageX - canvas.canvasPos.left,
+    y: e.pageY - canvas.canvasPos.top
   };
-  /* Finished drawing bounding box, telling background to screenshot.
-   Clear the rectangle before the screen shot */
-  canvas.onmouseup = function (e) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    dragging = false;
-    // Remove the canvas from body.
-    document.body.removeChild(canvas);
-    // Message to background.
-    chrome.extension.sendMessage({
-      directive: "capture",
-      rect: {"x":x, "y": y, "width": width, "height": height},
-      source: url
-    }, function (response) {
-      console.log("" + response.msg);
-    });
+}
+var myCanvas = {
+  dragging:false,
+  rect :{
+    y:0,
+    x:0,
+    width:0,
+    height:0
+ },
+  canvas:null
+};
+
+myCanvas.initCanvas = function() {
+
+  var canvas = document.getElementById('canvas');
+  canvas.canvasPos = canvas.getBoundingClientRect();
+  canvas.ctx = canvas.getContext('2d');
+  canvas.ctx.globalAlpha = 0.2;
+  canvas.ctx.fillStyle = "#666699";
+  canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
+  this.canvas = canvas;
+  this.setMouseListeners();
+};
+
+myCanvas.setMouseListeners = function(){
+    // Initialise the top left co-ords of the rectangle.
+  var self = this;
+  this.canvas.onmousedown = function (e) {
+      var startPos = getCursorPosition(e, this);
+      self.rect.x = startPos.x;
+      self.rect.y = startPos.y;
+      self.dragging = true;
+  };
+
+    /* Finished drawing bounding box, telling background to screenshot.
+     Clear the rectangle before the screen shot */
+  this.canvas.onmouseup = function (e) {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      self.dragging = false;
+      // Remove the canvas from body.
+      document.body.removeChild(this);
+      // Message to background.
+      chrome.extension.sendMessage({
+        directive: "capture",
+        rect: self.rect,
+        source: url
+      }, function (response) {
+        console.log("" + response.msg);
+      });
 
   };
 
-  // Drags out a image of a rectangle.
-  canvas.onmousemove = function (e) {
-    if (!dragging) {
-      return;
-
-    }
-    ctx.globalAlpha = 0.2;
-    ctx.fillStyle = "#666699";
-    var bottom = getCursorPosition(e);
-    width = (bottom.x - x);
-    height = (bottom.y - y);
-    //console.log("(" + left + "," + y + ") - (" + bottom.x + "," + bottom.y + ")");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    //turn transparency on
-    //ctx.globalAlpha = 0.2;
-    //.fillStyle = "#000000";
-    ctx.clearRect(x, y, width, height);
+    // Drags out a image of a rectangle.
+  this.canvas.onmousemove = function (e) {
+      if (!self.dragging) {return;}
+      var bottom = getCursorPosition(e, this);
+      self.rect.width = (bottom.x - self.rect.x);
+      self.rect.height = (bottom.y - self.rect.y);
+      // re-fill canvas
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.ctx.fillRect(0, 0, this.width, this.height);
+      // draw new rectangle
+      this.ctx.clearRect(self.rect.x, self.rect.y, self.rect.width, self.rect.height);
   };
+};
 
-  function getCursorPosition(e) {
-    return {
-      x: e.pageX - canvasPos.left,
-      y: e.pageY - canvasPos.top
-    };
-  }
-}
-
-
+myCanvas.initCanvas();
 

@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
@@ -14,15 +15,20 @@
     <!-- endbuild -->
   </head>
   <body>
-    <h1>Klipper</h1>
 
+    <h1>Klipper</h1>
+    <img src="images/scissors.png">
+    <button id="signin" type="button" class="btn btn-primary">Sign in</button>
+    <div id="error-msg"></div>
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
     <!-- endbuild -->
-    <button id='click-me'>Click Me!</button>
+    <button type ="button" class="btn btn-primary" id='clip'>Start Klipping!</button>
+    <div class="footer">Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
     <!-- build:js scripts/popup.js -->
     <script src="scripts/popup.js"></script>
+
     <!-- endbuild -->
   </body>
 </html>

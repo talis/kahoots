@@ -10,7 +10,7 @@ angular.module('kahootsAppApp', [
     $routeProvider
       .otherwise({
         redirectTo: '/main'
-      })
+      });
 
     $locationProvider.html5Mode(true);
   }).run(function($rootScope, $location){
@@ -25,19 +25,14 @@ angular.module('kahootsAppApp', [
       // check if login is needed on page
       $rootScope.$on("$routeChangeStart", function(event, next, current) {
         var currentRoute = $location.path();
-        console.log("here");
 
         var checkLoginRequired = function(){
           if(next.loginRequired) {
-            console.log("here2")
-            console.log($rootScope.user);
             if(!$rootScope.user){
-              console.log("here 3")
               $rootScope.nextPath = $location.path();
-              $location.path('/main').replace();
+              $location.path('/login').replace();
             }
           }
-
         };
 
         checkLoginRequired();

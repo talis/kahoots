@@ -20,14 +20,12 @@ angular.module('kahootsAppApp')
       }
       if(user!== null){
 
-
         $rootScope.user = user;
         $rootScope.oauth = user.oauth;
-        //store as a cookie
-
 
         var next = '/main';
         $location.path(next).replace();
+
       }else {
         //User is null;
         $rootScope.oauth = null;
