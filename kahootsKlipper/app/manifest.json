@@ -19,7 +19,7 @@
       "scripts/chromereload.js",
       "scripts/background.js"
     ],
-  "persistant": false
+  "persistant": true
   },
 
   "permissions": [
