@@ -14,10 +14,22 @@ var _ = require('lodash');
 var Clip = require('./clip.model');
 var im = require('imagemagick');
 
+//Get a list of my clips
+exports.mine = function(req, res){
+  console.log("userguid:" + req.params.id);
+  Clip.find()
+    .where('author')
+    .in([req.params.id])
+    .exec(function (err, clip) {
+    if(err) { return handleError(res, err); }
+    if(!clip) { return res.send(404); }
+    return res.json(clip);
+  });
+};
 
 // Get list of clips
 exports.index = function(req, res) {
-  Clip.find(function (err, clips) {
+  Clip.find(function ( err, clips) {
     if(err) { return handleError(res, err); }
     return res.json(200, clips);
   });
@@ -31,6 +43,7 @@ exports.show = function(req, res) {
     return res.json(clip);
   });
 };
+
 
 // Creates a new clip in the DB.
 exports.create = function(req, res) {

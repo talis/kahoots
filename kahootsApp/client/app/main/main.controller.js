@@ -28,7 +28,13 @@ angular.module('kahootsAppApp')
 
 
 
-    $http.get('/api/clips').success(function(awesomeClips) {
+    /*$http.get('/api/clips').success(function(awesomeClips) {
+      $scope.awesomeClips = awesomeClips;
+      $scope.activeClip = awesomeClips[0];
+    });*/
+    // Get all my clips
+
+    $http.get('/api/clips/mine/' + $rootScope.user.guid).success(function(awesomeClips) {
       $scope.awesomeClips = awesomeClips;
       $scope.activeClip = awesomeClips[0];
     });

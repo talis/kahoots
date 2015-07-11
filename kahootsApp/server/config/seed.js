@@ -41,13 +41,16 @@ Clip.find({}).remove(function() {
       content : 'http://www.animalslook.com/img/cute/meet-cute-pygmy-hippos/meet-cute-pygmy-hippos01.jpg',
       name : 'hippo',
       source: "http://www.animalslook.com/meet-cute-pygmy-hippos/?f=1",
-    comments: ["wow"]
+      comments: ["wow"],
+      author: "4cxG2Zqk3r4YemcqV10SGA"
+
     },
     {
       content : 'http://www.cutestatus.com/wp-content/uploads/2015/06/cute-status-whatsapp-status-cool-status-nice-status.jpg',
       name : 'bunny',
       source:"http://justcuteanimals.com/wp-content/uploads/2014/03/cute-animal-pictures-tiny-bay-rabbit.jpg",
-      comments: ["cute"]
+      comments: ["cute"],
+      author: "4cxG2Zqk3r4YemcqV10SGA"
     },
     {
       content : 'http://cretique.com/wp-content/uploads/2015/06/wonderful-food-art-ideas-for-cute-meals3.jpg',

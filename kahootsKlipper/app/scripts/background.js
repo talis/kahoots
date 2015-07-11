@@ -6,10 +6,12 @@ var PERSONA_ENDPOINT = "https://users.talis.com";
 var LOGIN_COMPLETE_URL = PERSONA_ENDPOINT + "/auth/login?nc=";
 var isLoggedIn = false;
 var username = null;
+var userguid = null;
 
 document.addEventListener("DOMContentLoaded", function(event) {
    console.log("DOM fully loaded and parsed");
    ready = true;
+   getLoginData(function(){}, false);
 });
 
   // Listen for messages from popup and content scripts.
@@ -19,28 +21,30 @@ chrome.extension.onMessage.addListener(
 
 
     switch (request.directive) {
+
         case "login":
           alert("Login clicked");
-          getLoginData(function(user){
+          getLoginData(function(){
 
-            alert("user: " + user.profile.first_name);
-            sendResponse({"status": 200, "name":user.profile.first_name});
-          });
-
-
+            //alert("user: " + user.profile.first_name);
+            sendResponse({"status": 200, "name":username});
+          }, true);
           break;
-        case "popup-click":
+
+        case "klipper":
           if(confirm("popup-click!")){
             // TODO: check user if logged in before clipping.
             startKlipper();
             sendResponse({});
           }
           break;
+
         case "capture":
           //Take a screen shot and send to kahoots server
           screenshot(request);
           sendResponse({msg:"Sent clip to Kahoots App"});
           break;
+
         default:
           // helps debug when request directive doesn't match
           alert("Unmatched request of '" + request + "' from script to background.js from " + sender);
@@ -62,6 +66,9 @@ function startKlipper(){
      });
    });
 }
+/*
+   Takes a screenshot of current page. Send clip and info to Kahoots App.
+ */
 function screenshot(request) {
   chrome.tabs.captureVisibleTab(null, function (img) {
     var xhr = new XMLHttpRequest();
@@ -69,77 +76,90 @@ function screenshot(request) {
     formData.append("content", img);
     formData.append("rect", JSON.stringify(request.rect));
     formData.append("source", request.source);
+    formData.append("author", userguid);
     //formData.append("author", userEmail);
     xhr.open("POST", "http://localhost:9000/api/clips/file-upload/", true);
     xhr.send(formData);
   });
 }
 
-function getLoginData(callback){
+function getLoginData(callback, continueToLogin){
   try{
+    // create a new request object.
     var xhr = new XMLHttpRequest();
     xhr.open("GET", PERSONA_ENDPOINT+"/2/auth/login.json?cd=JSON_CALLBACK", true);
     xhr.onreadystatechange = function() {
+
       // 4: request finished and response is ready
       if (xhr.readyState === 4) {
-        var resp = this;
-        if (resp.status === 200) {
-          //alert('*Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
-          var data = JSON.parse(resp.responseText);
+        //var resp = this;
+        if (this.status === 200) {
+          // 200 good! - get data from response.
+          alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
+          var data = JSON.parse(this.responseText);
+          // If data exist, get username and guid.
           if (data) {
-            alert(JSON.stringify(data.profile) + "\n" + data.guid);
-            user = data;
+            //alert(JSON.stringify(data.profile) + "\n" + data.guid);
+            userguid = data.guid;
             username = data.profile.first_name;
             isLoggedIn = true;
-            callback(user);
+            callback(username);
           } else {
             alert('No data received for user, despite 200 \n');
-            rcallback(user);
+            callback(username);
           }
-        }else if(resp.status === 401){
+        }else if(this.status === 401){
+          // 401 user is undefined.
           alert("User not logged in");
-          user = null;
+          //user = null;
+          username = null;
+          userguid = null;
+          isLoggedIn = false;
+
           //try login
-          login(PERSONA_ENDPOINT, user);
+          if(continueToLogin) {
+            login(PERSONA_ENDPOINT, username);
+          }
         }else{
-          alert('*Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
+          // some other status. Error occured.
+          alert('ERROR:\nStatus: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
         }
       }
     };
     xhr.send();
-    alert("Sent Request");
+    //alert("Sent Request");
   }catch(e){
-    alert("Error trying ot get user data");
+    console.log("Error trying ot get user data");
   }
-
 }
 
-function login(PERSONA_ENDPOINT, user){
-  if(user !== undefined && user !== null){
-    alert("[login] user is not null:" + "\n" + user);
-    //user is logged in.
-    //get user's GUID
+
+/*
+   If the user is not logged in then this method should be called.
+   This method redirect the user to login, opens a new tab.
+   Once the user has logged in the tab will close.
+ */
+function login(PERSONA_ENDPOINT, username){
+  if(username !== undefined && username !== null){
+    //alert("[login] user is not null:" + "\n" + user);
+    // TODO: get user's GUID
   }else{
-    alert("[login] user is null, attempt to login");
+    //alert("[login] user is null, attempt to login");
     //user is not logged in.
     // set up the next location which will either use the nextPath or whatever was in rootScope.absUrl if it was specified
     var nextLocation = PERSONA_ENDPOINT+'/auth/providers/google/login?redirectUri=&nc=' + new Date().getTime();
 
+    // create a new tab where the user can login.
     chrome.tabs.create( {
       "url": nextLocation
     },function(tab) {
-      alert("here");
       thistabId = tab.id;
       chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+        // when the url === LOGIN_COMPLETE_URL login is complete. close tab.
         if(thistabId===tabId && changeInfo.url.substring(0, LOGIN_COMPLETE_URL.length)===LOGIN_COMPLETE_URL){
           chrome.tabs.remove(tabId);
         }
       });
     });
-
-
-
-
-
   }
 }

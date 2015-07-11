@@ -1,9 +1,7 @@
+
 // Handles click events for clip button
-var username;
-
-function clip_clickHandler(e) {
-
-  chrome.extension.sendMessage({directive: "popup-click"}, function(response) {
+function clip_clickHandle(e){
+  chrome.extension.sendMessage({directive: "klipper"}, function(response) {
     this.close(); // close the popup when the background finishes processing request
   });
 }
@@ -15,23 +13,25 @@ function signin_clickHandler(e) {
   this.close();
 }
 
-var main = function() {
-    document.getElementById('signin').addEventListener('click', signin_clickHandler);
-    document.getElementById('clip').addEventListener('click', clip_clickHandler);
-}
 
 document.addEventListener('DOMContentLoaded', function () {
-  //check logged in.
+  // popup has loaded.
+  // check logged in.
   chrome.runtime.getBackgroundPage(function (backgroundPage) {
     if(backgroundPage.username !== null) {
+      // User is logged in.
       username = backgroundPage.username;
-      document.getElementById('welcome-msg').innerText = "Hello, " + username;
+      $('.welcome-msg').text("Hello, " + username);
+      $('#clip').click(clip_clickHandle);
+      $('#signin').hide();
     }else{
-      document.getElementById('welcome-msg').innerText = "You need to login!";
+      // User is null.
+      $('.welcome-msg').text("You need to login!");
+      $('#signin').click(signin_clickHandler);
+      $('#clip').hide();
     }
   });
 
-  main();
 });
 
 
