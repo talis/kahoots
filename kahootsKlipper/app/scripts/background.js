@@ -21,8 +21,15 @@ chrome.extension.onMessage.addListener(
 
 
     switch (request.directive) {
+      case "logout":
+        alert("Logout clicked");
+        logout();
 
-        case "login":
+
+        sendResponse({"msg": "Logged out"});
+
+        break;
+      case "login":
           alert("Login clicked");
           getLoginData(function(){
 
@@ -31,7 +38,7 @@ chrome.extension.onMessage.addListener(
           }, true);
           break;
 
-        case "klipper":
+      case "klipper":
           if(confirm("popup-click!")){
             // TODO: check user if logged in before clipping.
             startKlipper();
@@ -82,7 +89,25 @@ function screenshot(request) {
     xhr.send(formData);
   });
 }
+function logout(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', PERSONA_ENDPOINT + "/auth/logout");
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4) {
+        if (typeof cb !== "undefined") {
+          cb(this);
+        }
+        else {
+          isLoggedIn = false;
+          username = null;
+          user.guid = null;
+          alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
+        }
+      }
+    };
+    xhr.send(null);
 
+}
 function getLoginData(callback, continueToLogin){
   try{
     // create a new request object.
@@ -118,7 +143,7 @@ function getLoginData(callback, continueToLogin){
 
           //try login
           if(continueToLogin) {
-            login(PERSONA_ENDPOINT, username);
+            login(PERSONA_ENDPOINT, username)
           }
         }else{
           // some other status. Error occured.
@@ -139,7 +164,7 @@ function getLoginData(callback, continueToLogin){
    This method redirect the user to login, opens a new tab.
    Once the user has logged in the tab will close.
  */
-function login(PERSONA_ENDPOINT, username){
+function login(PERSONA_ENDPOINT, username ){
   if(username !== undefined && username !== null){
     //alert("[login] user is not null:" + "\n" + user);
     // TODO: get user's GUID
@@ -157,9 +182,11 @@ function login(PERSONA_ENDPOINT, username){
       chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         // when the url === LOGIN_COMPLETE_URL login is complete. close tab.
         if(thistabId===tabId && changeInfo.url.substring(0, LOGIN_COMPLETE_URL.length)===LOGIN_COMPLETE_URL){
+          getLoginData(function(){}, false);
           chrome.tabs.remove(tabId);
         }
       });
     });
+
   }
 }

@@ -12,7 +12,12 @@ function signin_clickHandler(e) {
   });
   this.close();
 }
-
+//Handles click events for sign in button.
+function logout_clickHandler(e) {
+  chrome.extension.sendMessage({directive: "logout"}, function(response) {
+  });
+  this.close();
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   // popup has loaded.
@@ -23,12 +28,15 @@ document.addEventListener('DOMContentLoaded', function () {
       username = backgroundPage.username;
       $('.welcome-msg').text("Hello, " + username);
       $('#clip').click(clip_clickHandle);
+      $('#logout').click(logout_clickHandler);
       $('#signin').hide();
     }else{
       // User is null.
       $('.welcome-msg').text("You need to login!");
       $('#signin').click(signin_clickHandler);
       $('#clip').hide();
+      $('#logout').hide();
+
     }
   });
 
