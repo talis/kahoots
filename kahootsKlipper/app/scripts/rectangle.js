@@ -24,18 +24,25 @@ var myCanvas = {
 myCanvas.initCanvas = function() {
 
   var canvas = document.getElementById('canvas');
+  document.addEventListener('keydown', function(e){
+    if(e.keyCode===88){
+      document.body.removeChild(canvas);
+    }
+  });
   canvas.canvasPos = canvas.getBoundingClientRect();
   canvas.ctx = canvas.getContext('2d');
   canvas.ctx.globalAlpha = 0.2;
   canvas.ctx.fillStyle = "#666699";
   canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
   this.canvas = canvas;
-  this.setMouseListeners();
+  this.setListeners();
 };
 
-myCanvas.setMouseListeners = function(){
+myCanvas.setListeners = function(){
     // Initialise the top left co-ords of the rectangle.
   var self = this;
+
+
   this.canvas.onmousedown = function (e) {
       var startPos = getCursorPosition(e, this);
       self.rect.x = startPos.x;
@@ -48,6 +55,7 @@ myCanvas.setMouseListeners = function(){
   this.canvas.onmouseup = function (e) {
       this.ctx.clearRect(0, 0, this.width, this.height);
       self.dragging = false;
+      if(!confirm("Do you want to send this clip to Kahoots App?")){return;}
       // Remove the canvas from body.
       document.body.removeChild(this);
       // Message to background.
@@ -63,15 +71,30 @@ myCanvas.setMouseListeners = function(){
 
     // Drags out a image of a rectangle.
   this.canvas.onmousemove = function (e) {
-      if (!self.dragging) {return;}
-      var bottom = getCursorPosition(e, this);
-      self.rect.width = (bottom.x - self.rect.x);
-      self.rect.height = (bottom.y - self.rect.y);
-      // re-fill canvas
-      this.ctx.clearRect(0, 0, this.width, this.height);
-      this.ctx.fillRect(0, 0, this.width, this.height);
-      // draw new rectangle
-      this.ctx.clearRect(self.rect.x, self.rect.y, self.rect.width, self.rect.height);
+    var pointer = getCursorPosition(e, this);
+    // re-fill canvas
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.fillRect(0, 0, this.width, this.height);
+      if (!self.dragging) {
+        this.ctx.fillStyle = "#000000";
+        this.ctx.globalAlpha = 1;
+        this.ctx.beginPath();
+        this.ctx.moveTo(pointer.x, 0);
+        this.ctx.lineTo(pointer.x, this.height);
+        this.ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, pointer.y);
+        this.ctx.lineTo(this.width ,pointer.y);
+        this.ctx.stroke();
+        this.ctx.fillStyle = "#666699";
+        this.ctx.globalAlpha = 0.2;
+      }else {
+        self.rect.width = (pointer.x - self.rect.x);
+        self.rect.height = (pointer.y - self.rect.y);
+
+        // draw new rectangle
+        this.ctx.clearRect(self.rect.x, self.rect.y, self.rect.width, self.rect.height);
+      }
   };
 };
 

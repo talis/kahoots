@@ -1,54 +1,50 @@
-// TODO: check if user is logged in.
 
-// Wait for page to load before running background script.
-var ready = false;
 var PERSONA_ENDPOINT = "https://users.talis.com";
 var LOGIN_COMPLETE_URL = PERSONA_ENDPOINT + "/auth/login?nc=";
-var isLoggedIn = false;
-var username = null;
-var userguid = null;
 
-document.addEventListener("DOMContentLoaded", function(event) {
-   console.log("DOM fully loaded and parsed");
-   ready = true;
-   getLoginData(function(){}, false);
-});
+var mybackground = {
+  user:{
+    isLoggedin:false,
+    name:null,
+    guid:null
+  }
+};
 
+mybackground.init = function(){
+  this.getLoginData(function(){}, false);
+  this.addListeners();
+};
+
+
+
+mybackground.addListeners = function(){
+  var self = this;
   // Listen for messages from popup and content scripts.
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
-    // Login from talis-uploader-desktop-app
-
 
     switch (request.directive) {
       case "logout":
-        alert("Logout clicked");
-        logout();
-
-
+        //alert("Logout clicked");
+        self.logout();
         sendResponse({"msg": "Logged out"});
-
         break;
       case "login":
-          alert("Login clicked");
-          getLoginData(function(){
-
-            //alert("user: " + user.profile.first_name);
-            sendResponse({"status": 200, "name":username});
+          //alert("Login clicked");
+          self.getLoginData(function(){
+          //alert("user: " + user.profile.first_name);
+          sendResponse({"status": 200, "name":self.user.name});
           }, true);
           break;
 
       case "klipper":
-          if(confirm("popup-click!")){
-            // TODO: check user if logged in before clipping.
-            startKlipper();
+            self.startKlipper();
             sendResponse({});
-          }
           break;
 
         case "capture":
           //Take a screen shot and send to kahoots server
-          screenshot(request);
+          self.screenshot(request);
           sendResponse({msg:"Sent clip to Kahoots App"});
           break;
 
@@ -57,18 +53,19 @@ chrome.extension.onMessage.addListener(
           alert("Unmatched request of '" + request + "' from script to background.js from " + sender);
     }
   }
-);
+)
+};
 
 
 /*
    Allows the user to select part of the screen to clip.
    When finished sends a message "capture" with rectangle dimensions and url.
  */
-function startKlipper(){
+mybackground.startKlipper = function(){
    chrome.tabs.executeScript(null, { // defaults to the current tab
      file: "scripts/canvas.js"
    }, function(){
-     chrome.tabs.executeScript(null, { // defaults to the current tab
+     chrome.tabs.executeScript(null, {
        file: "scripts/rectangle.js"
      });
    });
@@ -76,20 +73,25 @@ function startKlipper(){
 /*
    Takes a screenshot of current page. Send clip and info to Kahoots App.
  */
-function screenshot(request) {
+mybackground.screenshot = function(request) {
+  var self = this;
   chrome.tabs.captureVisibleTab(null, function (img) {
     var xhr = new XMLHttpRequest();
     var formData = new FormData();
     formData.append("content", img);
     formData.append("rect", JSON.stringify(request.rect));
     formData.append("source", request.source);
-    formData.append("author", userguid);
+    formData.append("author", self.user.guid);
     //formData.append("author", userEmail);
     xhr.open("POST", "http://localhost:9000/api/clips/file-upload/", true);
     xhr.send(formData);
   });
 }
-function logout(){
+/*
+   Allows the user to logout of Persona
+ */
+mybackground.logout = function(){
+  var self = this;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', PERSONA_ENDPOINT + "/auth/logout");
     xhr.onreadystatechange = function () {
@@ -98,17 +100,22 @@ function logout(){
           cb(this);
         }
         else {
-          isLoggedIn = false;
-          username = null;
-          user.guid = null;
+          self.user.isLoggedIn = false;
+          self.user.name = null;
+          self.user.guid = null;
           alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
         }
       }
     };
     xhr.send(null);
-
 }
-function getLoginData(callback, continueToLogin){
+/*
+   Gets data from Persona, if the user exists then callback is called.
+   Else the user is set to null. If the user is not logged in and the continueToLogin
+   is true the user will be redirected to sign in Persona.
+ */
+mybackground.getLoginData = function(callback, continueToLogin){
+  var self = this;
   try{
     // create a new request object.
     var xhr = new XMLHttpRequest();
@@ -120,30 +127,30 @@ function getLoginData(callback, continueToLogin){
         //var resp = this;
         if (this.status === 200) {
           // 200 good! - get data from response.
-          alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
+          //alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
           var data = JSON.parse(this.responseText);
           // If data exist, get username and guid.
           if (data) {
             //alert(JSON.stringify(data.profile) + "\n" + data.guid);
-            userguid = data.guid;
-            username = data.profile.first_name;
-            isLoggedIn = true;
-            callback(username);
+            self.user.guid = data.guid;
+            self.user.name = data.profile.first_name;
+            self.user.isLoggedIn = true;
+            callback(self.user.name);
           } else {
             alert('No data received for user, despite 200 \n');
-            callback(username);
+            //callback(username);
           }
         }else if(this.status === 401){
           // 401 user is undefined.
-          alert("User not logged in");
+          //alert("User not logged in");
           //user = null;
-          username = null;
-          userguid = null;
-          isLoggedIn = false;
+          self.user.name = null;
+          self.user.guid = null;
+          self.user.isLoggedIn = false;
 
           //try login
           if(continueToLogin) {
-            login(PERSONA_ENDPOINT, username)
+            self.login()
           }
         }else{
           // some other status. Error occured.
@@ -156,7 +163,7 @@ function getLoginData(callback, continueToLogin){
   }catch(e){
     console.log("Error trying ot get user data");
   }
-}
+};
 
 
 /*
@@ -164,11 +171,9 @@ function getLoginData(callback, continueToLogin){
    This method redirect the user to login, opens a new tab.
    Once the user has logged in the tab will close.
  */
-function login(PERSONA_ENDPOINT, username ){
-  if(username !== undefined && username !== null){
-    //alert("[login] user is not null:" + "\n" + user);
-    // TODO: get user's GUID
-  }else{
+mybackground.login = function(){
+  var self = this;
+  if(this.user.name == undefined || this.user.name == null){
     //alert("[login] user is null, attempt to login");
     //user is not logged in.
     // set up the next location which will either use the nextPath or whatever was in rootScope.absUrl if it was specified
@@ -182,11 +187,16 @@ function login(PERSONA_ENDPOINT, username ){
       chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         // when the url === LOGIN_COMPLETE_URL login is complete. close tab.
         if(thistabId===tabId && changeInfo.url.substring(0, LOGIN_COMPLETE_URL.length)===LOGIN_COMPLETE_URL){
-          getLoginData(function(){}, false);
+          self.getLoginData(function(){}, false);
           chrome.tabs.remove(tabId);
         }
       });
     });
 
   }
-}
+};
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  console.log("DOM fully loaded and parsed");
+  mybackground.init();
+});
