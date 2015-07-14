@@ -78,6 +78,7 @@ mybackground.startKlipper = function(){
 mybackground.screenshot = function(request) {
   var self = this;
   //var outerTs = (new Date()).getTime();
+  alert(self.user.guid);
   chrome.tabs.captureVisibleTab(null, function (img) {
     //var innerTs = (new Date()).getTime();
 

@@ -66,5 +66,10 @@ angular.module('kahootsAppApp')
     };
 
 
+    $http.get('/api/group_users/mygroups/' + $rootScope.user.guid+"?access_token="+$rootScope.oauth.access_token, {headers:  {
+      'Authorization': 'Bearer ' + $rootScope.oauth.access_token }}).success(function(awesomeGroups) {
+      console.log("myGroups:" + JSON.stringify(awesomeGroups));
+    });
+
   });
 
