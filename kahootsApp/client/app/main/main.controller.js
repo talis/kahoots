@@ -34,7 +34,8 @@ angular.module('kahootsAppApp')
     });*/
     // Get all my clips
 
-    $http.get('/api/clips/mine/' + $rootScope.user.guid).success(function(awesomeClips) {
+    $http.get('/api/clips/mine/' + $rootScope.user.guid+"?access_token="+$rootScope.oauth.access_token, {headers:  {
+      'Authorization': 'Bearer ' + $rootScope.oauth.access_token }}).success(function(awesomeClips) {
       $scope.awesomeClips = awesomeClips;
       $scope.activeClip = awesomeClips[0];
     });

@@ -24,11 +24,6 @@ var myCanvas = {
 myCanvas.initCanvas = function() {
 
   var canvas = document.getElementById('canvas');
-  document.addEventListener('keydown', function(e){
-    if(e.keyCode===88){
-      document.body.removeChild(canvas);
-    }
-  });
   canvas.canvasPos = canvas.getBoundingClientRect();
   canvas.ctx = canvas.getContext('2d');
   canvas.ctx.globalAlpha = 0.2;
@@ -38,11 +33,24 @@ myCanvas.initCanvas = function() {
   this.setListeners();
 };
 
+myCanvas.removeCanvas = function(){
+
+  if(this.canvas!==null){
+    document.body.removeChild(this.canvas);
+    this.canvas=null;
+    console.log( " Removed canvas");
+  }
+}
+
 myCanvas.setListeners = function(){
     // Initialise the top left co-ords of the rectangle.
   var self = this;
 
-
+  document.addEventListener('keydown', function(e){
+    if(e.keyCode===88){
+      myCanvas.removeCanvas();
+    }
+  });
   this.canvas.onmousedown = function (e) {
       var startPos = getCursorPosition(e, this);
       self.rect.x = startPos.x;
@@ -57,8 +65,9 @@ myCanvas.setListeners = function(){
       self.dragging = false;
       if(!confirm("Do you want to send this clip to Kahoots App?")){return;}
       // Remove the canvas from body.
-      document.body.removeChild(this);
+      myCanvas.removeCanvas();
       // Message to background.
+      console.log("About to send \'capture\' msg");
       chrome.extension.sendMessage({
         directive: "capture",
         rect: self.rect,

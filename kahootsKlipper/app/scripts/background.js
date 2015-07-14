@@ -3,6 +3,7 @@ var PERSONA_ENDPOINT = "https://users.talis.com";
 var LOGIN_COMPLETE_URL = PERSONA_ENDPOINT + "/auth/login?nc=";
 
 var mybackground = {
+  oauth:null,
   user:{
     isLoggedin:false,
     name:null,
@@ -44,6 +45,7 @@ chrome.extension.onMessage.addListener(
 
         case "capture":
           //Take a screen shot and send to kahoots server
+          //alert("got \'capture\' msg");
           self.screenshot(request);
           sendResponse({msg:"Sent clip to Kahoots App"});
           break;
@@ -75,16 +77,25 @@ mybackground.startKlipper = function(){
  */
 mybackground.screenshot = function(request) {
   var self = this;
+  //var outerTs = (new Date()).getTime();
   chrome.tabs.captureVisibleTab(null, function (img) {
+    //var innerTs = (new Date()).getTime();
+
+    //alert("Captured img");
     var xhr = new XMLHttpRequest();
+    //xhr.setRequestHeader('Authorization', 'Bearer '+ self.oauth.access_token);
     var formData = new FormData();
     formData.append("content", img);
     formData.append("rect", JSON.stringify(request.rect));
     formData.append("source", request.source);
     formData.append("author", self.user.guid);
-    //formData.append("author", userEmail);
-    xhr.open("POST", "http://localhost:9000/api/clips/file-upload/", true);
+    //formData.append("outerTs", innerTs);
+    //formData.append("innerTs", outerTs);
+
+    xhr.open("POST", "http://localhost:9000/api/clips/file-upload/"+self.user.guid+"?access_token="+self.oauth.access_token, true);
+
     xhr.send(formData);
+    //alert("sending img to server");
   });
 }
 /*
@@ -103,6 +114,7 @@ mybackground.logout = function(){
           self.user.isLoggedIn = false;
           self.user.name = null;
           self.user.guid = null;
+          self.oauth = null;
           alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
         }
       }
@@ -131,7 +143,8 @@ mybackground.getLoginData = function(callback, continueToLogin){
           var data = JSON.parse(this.responseText);
           // If data exist, get username and guid.
           if (data) {
-            //alert(JSON.stringify(data.profile) + "\n" + data.guid);
+            //alert(JSON.stringify(data.oauth.access_token));
+            self.oauth = data.oauth;
             self.user.guid = data.guid;
             self.user.name = data.profile.first_name;
             self.user.isLoggedIn = true;
@@ -147,7 +160,7 @@ mybackground.getLoginData = function(callback, continueToLogin){
           self.user.name = null;
           self.user.guid = null;
           self.user.isLoggedIn = false;
-
+          self.oauth = null;
           //try login
           if(continueToLogin) {
             self.login()

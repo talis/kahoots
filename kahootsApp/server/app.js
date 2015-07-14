@@ -10,9 +10,14 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
+var redis = require('redis');
 
-
-
+// Create new redis client
+var client = redis.createClient();
+client.on('connect', function() {
+  //AppLogger.info('App: redis connected');
+  console.log('App: redis connected');
+});
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
@@ -27,22 +32,35 @@ var app = express();
 var persona = require('persona_client');
 try {
   // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+  //var personaClient = persona.createClient({
+  //  persona_host: config.oauth.host,
+  //  persona_port: config.oauth.port,
+  //  persona_scheme: config.oauth.scheme,
+  //  persona_oauth_route: config.oauth.route,
+  //  enable_debug: true
+  //});
+  var persona = require('persona_client');
   var personaClient = persona.createClient({
     persona_host: config.oauth.host,
     persona_port: config.oauth.port,
     persona_scheme: config.oauth.scheme,
     persona_oauth_route: config.oauth.route,
+    redis_host:"localhost",
+    redis_port:6379,
+    redis_db:0,
     enable_debug: true
+    //logger: AppLogger
   });
   // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
 } catch (err) {
-  console.log(err);
+  console.log("Error in app.js (PERSONA)"+err);
 
 }
 
 // Add PersonaClient to the req before passing it to controllers
 // If using express, use this middleware (https://github.com/talis/persona-node-client/)
 app.use(function (req, res, next) {
+  req.redisClient = client;
   req.personaClient = personaClient;
   next();
 });

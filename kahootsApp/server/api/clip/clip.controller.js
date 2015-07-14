@@ -17,14 +17,18 @@ var im = require('imagemagick');
 //Get a list of my clips
 exports.mine = function(req, res){
   console.log("userguid:" + req.params.id);
-  Clip.find()
-    .where('author')
-    .in([req.params.id])
-    .exec(function (err, clip) {
-    if(err) { return handleError(res, err); }
-    if(!clip) { return res.send(404); }
-    return res.json(clip);
-  });
+  console.log(req.headers);
+  req.personaClient.validateToken(req, res, function () {
+    Clip.find()
+      .where('author')
+      .in([req.params.id])
+      .exec(function (err, clip) {
+        if(err) { return handleError(res, err); }
+        if(!clip) { return res.send(404); }
+        return res.json(clip);
+      });
+  },req.params.id);
+
 };
 
 // Get list of clips
@@ -168,38 +172,40 @@ exports.update = function(req, res) {
   };
 
   exports.upload = function (req, res) {
+    console.log("upload received msg");
+    //console.log("outerTs: " + req.body.outerTs);
+    //console.log("innerTs: " + req.body.innerTs);
+
     //console.log(req.body.rect);
     //console.log(JSON.stringify(req.files) + "files"); // form files
-    var img = req.body.content;
-    var rect = JSON.parse(req.body.rect);
-    var source = req.body.source;
+    //req.personaClient.validateToken(req, res, function () {
+      var img = req.body.content;
+      var rect = JSON.parse(req.body.rect);
+      //var source = req.body.source;
 
-
-
-
-
-    var data = img.replace(/^data:image\/\w+;base64,/, "");
-    var buf = new Buffer(data, 'base64');
-    var fs = require('fs');
-    var fileguid = guid();
-    //var filename = "./client/assets/uploads/"+fileguid+".png";
-    var filename = fileguid+".png";
-    fs.writeFile("temp.png",buf , function(err) {
-      if(err) {
-        return console.log(err);
-      }
-      console.log("The file was saved!");
-      req.body.content = "assets/uploads/"+filename;
-      exports.create(req,res, function(){});
-      //crop img
-      var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
-      console.log(args[2]);
-      im.convert(args, function(err){
-        if(err){console.log("error cropping")}
-        console.log("cropped!");
+      var data = img.replace(/^data:image\/\w+;base64,/, "");
+      var buf = new Buffer(data, 'base64');
+      var fs = require('fs');
+      var fileguid = guid();
+      //var filename = "./client/assets/uploads/"+fileguid+".png";
+      var filename = fileguid+".png";
+      fs.writeFile("temp.png",buf , function(err) {
+        if(err) {
+          return handleError(res, err);
+        }
+        console.log("The file was saved!");
+        req.body.content = "assets/uploads/"+filename;
+        exports.create(req,res, function(){});
+        //crop img
+        var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
+        console.log(args[2]);
+        im.convert(args, function(err){
+          if(err){return handleError(res, err);}
+          console.log("cropped!");
+          res.send(200, "OK");
+        });
       });
-    });
-
+    //},req.params.id);
   }
 
   function handleError(res, err) {
