@@ -2,24 +2,21 @@
 
 <header class="hero-unit" id="banner">
   <div class="container">
-    <h1>'Allo, {{username}}</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
+    <h1>Hello, {{username}}!</h1>
   </div>
 </header>
 
 
-<div class="header">
-  <h1>Kahoots</h1>
-</div>
+
 
 <div class="active-clip">
   <div class="col-md-12">
+
     <h4>Active Clip</h4>
-    <img class="img-rounded" ng-src="{{activeClip.content}}">
+    <p>
+    <img class="img-rounded" ng-src="{{activeClip.content}}" allign="left">
     <h6><a ng-href="{{activeClip.source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
-  </div>
-  <div class="col-md-12">
+
     <h2>Comments</h2>
     <ul class="comments" ng-repeat="comment in activeClip.comments">
       <li>{{comment}}</li>
@@ -30,6 +27,7 @@
       <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
 
     </form>
+    </p>
   </div>
 </div>
 <div class="all-clips">

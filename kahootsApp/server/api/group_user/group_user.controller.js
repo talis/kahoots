@@ -4,37 +4,34 @@ var _ = require('lodash');
 var GroupUser = require('./group_user.model');
 var Group = require('../group/group.model');
 
-// Get a list of group_users WHERE user_id
+// Get a list of group objects WHERE user_id
 exports.mygroups = function(req, res){
-  console.log("mygroups called");
+  //console.log("mygroups called");
   req.personaClient.validateToken(req, res, function () {
     GroupUser.find()
       .where('user_id')
       .in([req.params.id])
       .exec(function (err, group_user) {
-        if (err) {
-          return handleError(res, err);
-        }
-        if (!group_user) {
-          return res.send(404);
-        }
-        console.log("Group_user "+ group_user);
-        // group_user = [{group_id, user_id}]
+        if (err) { return handleError(res, err); }
+        if (!group_user) { return res.send(404); }
+
+        // group_user is a list of {group_id, user_id} objs
+        //console.log("Group_user "+ group_user);
+        // Just need array group_id to query the group collection.
         var groupList = [];
-        console.log(group_user[0].group_id);
         for(var i=0; i<group_user.length; i++){
-          console.log("in loop");
-          Group.findById('g1', function (err, group) {
-            if(err) { return handleError(res, err); }
-            if(!group) { return res.send(404); }
-            console.log("Group " + group);
-            groupList.push(group);
-            console.log(groupList.length);
-          });
+          groupList.push(group_user[i].group_id);
         }
-        console.log("\n\nGroupList: " + groupList);
-        return res.json(groupList);
-        // TODO: Get a list of just group objects.
+        // Now query Group collection to get all groups in list.
+        Group.find()
+          .where('_id')
+          .in(groupList)
+          .exec(function(err,group){
+            if(err){ return handleError(res,err); }
+            if(!group){ return res.send(404); }
+            console.log("group: " + group);
+            return res.json(group);
+          });
       });
   }, req.params.id);
 };

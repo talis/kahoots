@@ -65,11 +65,14 @@ angular.module('kahootsAppApp')
       $scope.activeClip = clip;
     };
 
-
+    //Tests
     $http.get('/api/group_users/mygroups/' + $rootScope.user.guid+"?access_token="+$rootScope.oauth.access_token, {headers:  {
       'Authorization': 'Bearer ' + $rootScope.oauth.access_token }}).success(function(awesomeGroups) {
       console.log("myGroups:" + JSON.stringify(awesomeGroups));
     });
-
+    $http.get('/api/group_clips/group/' + $rootScope.user.guid + "?group_id=g1" +"&access_token="+$rootScope.oauth.access_token, {headers:  {
+      'Authorization': 'Bearer ' + $rootScope.oauth.access_token }}).success(function(awesomeClips) {
+      console.log("g1 clips:" + JSON.stringify(awesomeClips));
+    });
   });
 
