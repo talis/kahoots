@@ -5,6 +5,7 @@ angular.module('kahootsAppApp')
     $routeProvider
       .when('/allClips', {
         templateUrl: 'app/allClips/allClips.html',
-        controller: 'AllClipsCtrl'
+        controller: 'AllClipsCtrl',
+        loginRequired: true
       });
   });

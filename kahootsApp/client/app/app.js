@@ -9,7 +9,7 @@ angular.module('kahootsAppApp', [
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .otherwise({
-        redirectTo: '/main'
+        redirectTo: '/'
       });
 
     $locationProvider.html5Mode(true);

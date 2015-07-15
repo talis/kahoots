@@ -16,8 +16,8 @@ var im = require('imagemagick');
 
 //Get a list of my clips
 exports.mine = function(req, res){
-  console.log("userguid:" + req.params.id);
-  console.log(req.headers);
+  //console.log("userguid:" + req.params.id);
+  //console.log(req.headers);
   req.personaClient.validateToken(req, res, function () {
     Clip.find()
       .where('author')
@@ -58,99 +58,42 @@ exports.create = function(req, res) {
   });
 };
 
-// Updates an existing clip in the DB.
-exports.update = function(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  Clip.findById(req.params.id, function (err, clip) {
-    if (err) {
-      return handleError(res, err);
-    }
-    if (!clip) {
-      return res.send(404);
-    }
-    var updated = _.merge(clip, req.body);
-
-    // This is necessary to make Mongo save, because we are using
-    // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
-    // to detect modifications
-    updated.markModified('comments');
-
-
-    updated.save(function (err) {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.json(200, clip);
-    });
-  });
-}
-// Get list of clips
-  exports.index = function (req, res) {
-    Clip.find(function (err, clips) {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.json(200, clips);
-    });
-  };
-
-// Get a single clip
-  exports.show = function (req, res) {
-    Clip.findById(req.params.id, function (err, clip) {
-      if (err) {
-        return handleError(res, err);
-      }
-      if (!clip) {
-        return res.send(404);
-      }
-      return res.json(clip);
-    });
-  };
-
-// Creates a new clip in the DB.
-  exports.create = function (req, res, callback) {
-    console.log("create");
-    Clip.create(req.body, function (err, clip) {
-      console.log("creating this ->" + clip);
-      if (err) {
-        //return handleError(res, err);
-        callback(err, null);
-      }
-      //return res.json(201, clip);
-      console.log("Hello");
-      callback(null, clip);
-    });
-  };
 
 // Updates an existing clip in the DB.
   exports.update = function (req, res) {
-    if (req.body._id) {
-      delete req.body._id;
-    }
-    Clip.findById(req.params.id, function (err, clip) {
-      if (err) {
-        return handleError(res, err);
+
+    //console.log("UPDATE "+ JSON.stringify(req.body));
+    req.personaClient.validateToken(req, res, function () {
+      if (req.body._id) {
+        delete req.body._id;
       }
-      if (!clip) {
-        return res.send(404);
-      }
-      var updated = _.merge(clip, req.body);
 
-      // This is necessary to make Mongo save, because we are using
-      // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
-      // to detect modifications
-      updated.markModified('comments');
-
-
-      updated.save(function (err) {
+      Clip.findById(req.params.id, function (err, clip) {
         if (err) {
+          console.log("error in find by id");
           return handleError(res, err);
         }
-        return res.json(200, clip);
+        if (!clip) {
+          console.log("no clip found");
+          return res.send(404);
+        }
+
+        //var updated = _.merge(clip, req.body.clip);
+        clip.comments = req.body.clip.comments;
+        var updated = clip;
+        // This is necessary to make Mongo save, because we are using
+        // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
+        // to detect modifications
+        updated.markModified('comments');
+        updated.save(function (err) {
+          if (err) {
+            return handleError(res, err);
+          }
+          //console.log(clip);
+          return res.json(200, clip);
+        });
       });
-    });
+    }, req.query.user_id);
   };
 
 // Deletes a clip from the DB.
@@ -172,13 +115,14 @@ exports.update = function(req, res) {
   };
 
   exports.upload = function (req, res) {
+    var response = res;
     console.log("upload received msg");
     //console.log("outerTs: " + req.body.outerTs);
     //console.log("innerTs: " + req.body.innerTs);
-
+    //console.log(req.body);
     //console.log(req.body.rect);
     //console.log(JSON.stringify(req.files) + "files"); // form files
-    //req.personaClient.validateToken(req, res, function () {
+    req.personaClient.validateToken(req, res, function () {
       var img = req.body.content;
       var rect = JSON.parse(req.body.rect);
       //var source = req.body.source;
@@ -189,24 +133,38 @@ exports.update = function(req, res) {
       var fileguid = guid();
       //var filename = "./client/assets/uploads/"+fileguid+".png";
       var filename = fileguid+".png";
-      fs.writeFile("temp.png",buf , function(err) {
+     console.log("About to write to temp file");
+      fs.writeFile("temp.png", buf , function(err) {
         if(err) {
+          console.log("error writing file " + err);
           return handleError(res, err);
         }
         console.log("The file was saved!");
         req.body.content = "assets/uploads/"+filename;
-        exports.create(req,res, function(){});
+        exports.create(req,res, function(){
+          if(err) {
+            console.log("Error in create " + err);
+            return handleError(res, err);}
+          //console.dir(res);
+        });
         //crop img
         var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
-        console.log(args[2]);
+        console.log("About to convert");
         im.convert(args, function(err){
-          if(err){return handleError(res, err);}
+          if(err){
+            console.log("Error in convert im" + err);
+            return handleError(res, err);
+          }
           console.log("cropped!");
-          res.send(200, "OK");
+
         });
+        console.log("200 wrote to file");
       });
-    //},req.params.id);
-  }
+
+    },req.params.id);
+
+  };
+
 
   function handleError(res, err) {
     return res.send(500, err);

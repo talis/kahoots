@@ -13,12 +13,12 @@
   <div class="col-md-12">
 
     <h4>Active Clip</h4>
-    <p>
+
     <img class="img-rounded" ng-src="{{activeClip.content}}" allign="left">
     <h6><a ng-href="{{activeClip.source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
 
     <h2>Comments</h2>
-    <ul class="comments" ng-repeat="comment in activeClip.comments">
+    <ul class="comments" ng-repeat="comment in activeClip.comments track by $index">
       <li>{{comment}}</li>
     </ul>
 
@@ -27,7 +27,7 @@
       <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
 
     </form>
-    </p>
+
   </div>
 </div>
 <div class="all-clips">

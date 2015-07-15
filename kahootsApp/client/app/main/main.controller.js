@@ -3,8 +3,9 @@
 angular.module('kahootsAppApp')
   .controller('MainCtrl', function ($scope, $http, $rootScope) {
     $scope.newComment='';
-    $scope.awesomeThings = [];
+    $scope.awesomeThings =[];
     $scope.awesomeClips=[];
+    $scope.awesomeGroups=[];
     $scope.activeClip;
     $scope.username = $rootScope.user.profile.first_name;
 
@@ -65,14 +66,17 @@ angular.module('kahootsAppApp')
       $scope.activeClip = clip;
     };
 
-    //Tests
-    $http.get('/api/group_users/mygroups/' + $rootScope.user.guid+"?access_token="+$rootScope.oauth.access_token, {headers:  {
+    //Tests - need to replace group_d with an existing one.
+    /*$http.get('/api/group_users/mygroups/' + $rootScope.user.guid+"?access_token="+$rootScope.oauth.access_token, {headers:  {
       'Authorization': 'Bearer ' + $rootScope.oauth.access_token }}).success(function(awesomeGroups) {
+      $scope.awesomeGroups = awesomeGroups;
       console.log("myGroups:" + JSON.stringify(awesomeGroups));
-    });
-    $http.get('/api/group_clips/group/' + $rootScope.user.guid + "?group_id=g1" +"&access_token="+$rootScope.oauth.access_token, {headers:  {
+    }).then(
+    $http.get('/api/group_clips/group/' + $rootScope.user.guid + "?group_id="+"55a62ece20e0208d21a3d84e" +"&access_token="+$rootScope.oauth.access_token, {headers:  {
       'Authorization': 'Bearer ' + $rootScope.oauth.access_token }}).success(function(awesomeClips) {
       console.log("g1 clips:" + JSON.stringify(awesomeClips));
-    });
+    })
+    );*/
   });
+
 

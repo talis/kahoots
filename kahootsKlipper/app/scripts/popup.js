@@ -2,24 +2,24 @@
 // Handles click events for clip button
 function clip_clickHandle(e){
   chrome.extension.sendMessage({directive: "klipper"}, function(response) {
-    this.close(); // close the popup when the background finishes processing request
+    this.close();
+  // close the popup when the background finishes processing request
   });
-
 }
 
 //Handles click events for sign in button.
 function signin_clickHandler(e) {
   chrome.extension.sendMessage({directive: "login"}, function(response) {
-    this.close();
-  });
 
+  });
+  this.close();
 }
 //Handles click events for sign in button.
 function logout_clickHandler(e) {
   chrome.extension.sendMessage({directive: "logout"}, function(response) {
-    this.close();
-  });
 
+  });
+  this.close();
 }
 
 document.addEventListener('DOMContentLoaded', function () {

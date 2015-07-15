@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
 
 
 var ClipSchema = new Schema({
-  _id: String,
   content: String,
   name: String,
   comments: [String],

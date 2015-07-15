@@ -5,6 +5,9 @@ angular.module('kahootsAppApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },{
+      'title': 'test',
+      'link': '/allClips'
     }];
 
     $scope.isCollapsed = true;

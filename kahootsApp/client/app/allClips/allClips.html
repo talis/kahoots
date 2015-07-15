@@ -1,3 +1,58 @@
-<div class="col-md-12">
-This is the allClips view.
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-1 bg-success"><h2>Active Clip</h2>
+    <div class="active-clip">
+    <img class="img-rounded" ng-src="{{activeClip.content}}" allign="left">
+    <h6><a ng-href="{{activeClip.source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+      </div>
+  </div>
+
+  <div class="col-md-4  bg-info">
+    <h2>Comments</h2>
+    <div class="comment-container">
+    <div class="comments" ng-repeat="comment in activeClip.comments track by $index">
+      {{comment}}
+    </div>
+      </div>
+    <form class="comment-form" ng-submit="updateClip()" name="commentForm">
+      <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment." required></textarea>
+      <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
+
+    </form>
+  </div>
+
 </div>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 bg-danger">
+    <h2>Other Clips</h2>
+    <div class="clips" ng-repeat="clip in awesomeClips">
+      <div class="col-md-2">
+      <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
+    </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <footer class="footer">
+    <div class="container">
+
+      <p>Angular Fullstack v2.0.13 |
+        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+        <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+    </div>
+</footer>

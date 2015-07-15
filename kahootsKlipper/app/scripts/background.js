@@ -94,7 +94,14 @@ mybackground.screenshot = function(request) {
     //formData.append("innerTs", outerTs);
 
     xhr.open("POST", "http://localhost:9000/api/clips/file-upload/"+self.user.guid+"?access_token="+self.oauth.access_token, true);
-
+    xhr.onreadystatechange = function () {
+      if (this.readyState === 4) {
+        if (typeof cb !== "undefined") {
+          cb(this);
+        }
+        return;
+      }
+    };
     xhr.send(formData);
     //alert("sending img to server");
   });
