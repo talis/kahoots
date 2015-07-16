@@ -18,9 +18,30 @@ angular.module('kahootsAppApp')
       // If user info exists, save in rootScope.
       if(user!== null){
         $rootScope.oauth = user.oauth;
-        $rootScope.user = user;
-        var next = '/main';
-        $location.path(next).replace();
+
+
+        //check if user exists in kahoots
+        $http.get('api/users/me/' + user.guid + "?access_token=" + $rootScope.oauth.access_token, {
+          headers: {
+            'Authorization': 'Bearer ' + $rootScope.oauth.access_token
+          }
+        }).success(function (user) {
+          console.log(user);
+          $rootScope.user = user;
+          var next = '/main';
+          $location.path(next).replace();
+        });
+        if($rootScope.user===null){
+          $http.defaults.headers.common.Authorization = 'Bearer ' + user.guid;
+          $http.post('api/users/' + user.guid + "?access_token=" + $rootScope.oauth.access_token,
+            $rootScope.user).success(function (user) {
+              console.log(user);
+              $rootScope.user = user;
+              var next = '/main';
+              $location.path(next).replace();
+            });
+        }
+
       }else {
         //User is null, needs to login.
         $rootScope.oauth = null;

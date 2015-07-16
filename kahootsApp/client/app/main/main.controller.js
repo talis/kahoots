@@ -7,7 +7,7 @@ angular.module('kahootsAppApp')
     $scope.awesomeClips = [];
     $scope.awesomeGroups = [];
     $scope.activeClip;
-    $scope.username = $rootScope.user.profile.first_name;
+    $scope.username = $rootScope.user.first_name;
 
 
     $http.get('/api/things').success(function (awesomeThings) {
@@ -33,7 +33,7 @@ angular.module('kahootsAppApp')
      });*/
     // Get all my clips
 
-    $http.get('/api/clips/mine/' + $rootScope.user.guid + "?access_token=" + $rootScope.oauth.access_token, {
+    $http.get('/api/clips/mine/' + $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token, {
       headers: {
         'Authorization': 'Bearer ' + $rootScope.oauth.access_token
       }
@@ -82,13 +82,13 @@ angular.module('kahootsAppApp')
      );*/
 
     //Testing create and get user.
-    $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.user.guid;
-    $http.post('api/users/' + $rootScope.user.guid + "?access_token=" + $rootScope.oauth.access_token,
+    $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.user._id;
+    $http.post('api/users/' + $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token,
       $rootScope.user).success(function (user) {
         console.log(user);
       });
 
-    $http.get('api/users/me/' + $rootScope.user.guid + "?access_token=" + $rootScope.oauth.access_token, {
+    $http.get('api/users/me/' + $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token, {
       headers: {
         'Authorization': 'Bearer ' + $rootScope.oauth.access_token
       }
