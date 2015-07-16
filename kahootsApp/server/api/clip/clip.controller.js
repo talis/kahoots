@@ -1,23 +1,13 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
-
-
 'use strict';
 
 var _ = require('lodash');
 var Clip = require('./clip.model');
 var im = require('imagemagick');
 
-//Get a list of my clips
+// GET api/clips/mine/:id
+// Gets all clips for given user_id
 exports.mine = function(req, res){
   //console.log("userguid:" + req.params.id);
-  //console.log(req.headers);
   req.personaClient.validateToken(req, res, function () {
     Clip.find()
       .where('author')
@@ -25,13 +15,14 @@ exports.mine = function(req, res){
       .exec(function (err, clip) {
         if(err) { return handleError(res, err); }
         if(!clip) { return res.send(404); }
-        return res.json(clip);
+        return res.json(200, clip);
       });
   },req.params.id);
 
 };
 
-// Get list of clips
+// GET api/clips/
+// Gets all clips in db.
 exports.index = function(req, res) {
   Clip.find(function ( err, clips) {
     if(err) { return handleError(res, err); }
@@ -39,7 +30,8 @@ exports.index = function(req, res) {
   });
 };
 
-// Get a single clip
+// GET api/clips/:id
+// Get a single clip with clip_id
 exports.show = function(req, res) {
   Clip.findById(req.params.id, function (err, clip) {
     if(err) { return handleError(res, err); }
@@ -48,8 +40,8 @@ exports.show = function(req, res) {
   });
 };
 
-
-// Creates a new clip in the DB.
+// POST api/clips/
+// For a given clip object, creates a new clip in the DB.
 exports.create = function(req, res) {
   console.log("create");
   Clip.create(req.body, function(err, clip) {
@@ -58,16 +50,14 @@ exports.create = function(req, res) {
   });
 };
 
-
-// Updates an existing clip in the DB.
+// PATCH api/clips/:id
+// Updates an existing clip in the DB for a given json.
   exports.update = function (req, res) {
-
     //console.log("UPDATE "+ JSON.stringify(req.body));
     req.personaClient.validateToken(req, res, function () {
       if (req.body._id) {
         delete req.body._id;
       }
-
       Clip.findById(req.params.id, function (err, clip) {
         if (err) {
           console.log("error in find by id");
@@ -77,7 +67,6 @@ exports.create = function(req, res) {
           console.log("no clip found");
           return res.send(404);
         }
-
         //var updated = _.merge(clip, req.body.clip);
         clip.comments = req.body.clip.comments;
         var updated = clip;
@@ -96,6 +85,7 @@ exports.create = function(req, res) {
     }, req.query.user_id);
   };
 
+// DELETE api/clips/:id
 // Deletes a clip from the DB.
   exports.destroy = function (req, res) {
     Clip.findById(req.params.id, function (err, clip) {
@@ -114,6 +104,8 @@ exports.create = function(req, res) {
     });
   };
 
+// POST api/clips/file-upload/:id
+// Processes data from kahoots klipper, saves new clip to db.
   exports.upload = function (req, res) {
     var response = res;
     console.log("upload received msg");
@@ -165,10 +157,11 @@ exports.create = function(req, res) {
 
   };
 
-
+// Error handler.
   function handleError(res, err) {
     return res.send(500, err);
   }
+
 /**
  * Generates a GUID string.
  * @returns {String} The generated GUID.

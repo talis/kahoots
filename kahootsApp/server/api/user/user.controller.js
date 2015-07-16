@@ -3,7 +3,8 @@
 var _ = require('lodash');
 var User = require('./user.model');
 
-// Get your user object
+// GET api/users/me/:id
+// Get own user object.
 exports.search = function(req, res){
   console.log("SEARCH " + JSON.stringify(req.params));
   var response = res;
@@ -24,6 +25,7 @@ exports.search = function(req, res){
 
 };
 
+// GET api/users/
 // Get list of users
 exports.index = function(req, res) {
   User.find(function (err, users) {
@@ -32,6 +34,7 @@ exports.index = function(req, res) {
   });
 };
 
+// GET api/users/:id
 // Get a single user
 exports.show = function(req, res) {
   User.findById(req.params.id, function (err, user) {
@@ -41,7 +44,9 @@ exports.show = function(req, res) {
   });
 };
 
-// Creates a new user in the DB.
+// POST api/users/:id
+// Creates a new user in the DB, for a given json.
+// First checks user doesnt exist in db.
 exports.create = function(req, res) {
   //console.log(JSON.stringify(req.body) + "******");
   // check if user exists
@@ -62,8 +67,9 @@ exports.create = function(req, res) {
   });
 };
 
+// PUT api/groups/:id
 // Updates an existing user in the DB.
-// Also used to add a new group to a user.
+// Add new group.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   User.findById(req.params.id, function (err, user) {
@@ -78,6 +84,7 @@ exports.update = function(req, res) {
   });
 };
 
+// DELETE api/users/:id
 // Deletes a user from the DB.
 exports.destroy = function(req, res) {
   User.findById(req.params.id, function (err, user) {
@@ -90,6 +97,7 @@ exports.destroy = function(req, res) {
   });
 };
 
+// Handle errors
 function handleError(res, err) {
   return res.send(500, err);
 }
