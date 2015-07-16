@@ -10,7 +10,7 @@ var ClipSchema = new Schema({
   comments: [String],
   source: String,
   author: String,
-  datecreated: Date
+  groups:[String]
 });
 
 module.exports = mongoose.model('Clip', ClipSchema);

@@ -1,33 +1,28 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('LoginCtrl', function ($scope, userservice, $rootScope, $location) {
-    //Need to add these to a constants file
+  .controller('LoginCtrl', function ($scope, userservice, $rootScope, $location, $http) {
+    //Todo: Need to add these to a constants file
     var PERSONA_ENDPOINT = "https://users.talis.com:443";
     var KAHOOTS_ENDPOINT = "http://localhost:9000";
     var authProvider = "google";
     var shortCode = "talis";
 
-    // TODO: Try to get user data, if null, need to login.
-    // TODO: If user data not null redirect to main page.
-    // TODO: Add permissions to pages.
-    // TODO: If need to login, redirect to PERSONA then back to /login to get user data
+    // Get user info from Persona.
     userservice.getLoginData(shortCode, function(err, user){
       if(err){
         console.log('Failed to get user details');
         console.log(err);
         return;
       }
+      // If user info exists, save in rootScope.
       if(user!== null){
-
-        $rootScope.user = user;
         $rootScope.oauth = user.oauth;
-
+        $rootScope.user = user;
         var next = '/main';
         $location.path(next).replace();
-
       }else {
-        //User is null;
+        //User is null, needs to login.
         $rootScope.oauth = null;
 
         // Set up the next path
@@ -46,3 +41,5 @@ angular.module('kahootsAppApp')
       }
     });
   });
+
+
