@@ -8,7 +8,7 @@ angular.module('kahootsAppApp')
     var authProvider = "google";
     var shortCode = "talis";
 
-    // Get user info from Persona.
+    // Login. Get user info from Persona and set $rootScope.user.
     userservice.getLoginData(shortCode, function(err, user){
       if(err){
         console.log('Failed to get user details');
@@ -18,7 +18,6 @@ angular.module('kahootsAppApp')
       // If user info exists, save in rootScope.
       if(user!== null){
         $rootScope.oauth = user.oauth;
-
 
         //check if user exists in kahoots
         $http.get('api/users/me/' + user.guid + "?access_token=" + $rootScope.oauth.access_token, {
