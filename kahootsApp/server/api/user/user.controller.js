@@ -50,13 +50,14 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   //console.log(JSON.stringify(req.body) + "******");
   // check if user exists
+  var request = req;
   User.findById(req.params.id, function(err, user){
     if (err) { return handleError(res, err); }
     if(user){return res.json(302, user)}
     if(!user){
       // if user does not exist create new user
-      var newUser = req.body.profile;
-      newUser._id = req.params.id;
+      var newUser = request.body.profile;
+      newUser._id = request.params.id;
       User.create(newUser, function(err, user) {
         if(err) {
           console.log("Error creating new user"+err);

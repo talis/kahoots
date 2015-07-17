@@ -7,8 +7,8 @@
 
 var Thing = require('../api/thing/thing.model');
 var Clip = require('../api/clip/clip.model');
-var GroupClip = require('../api/group_clip/group_clip.model');
-var GroupUser = require('../api/group_user/group_user.model');
+//var GroupClip = require('../api/group_clip/group_clip.model');
+//var GroupUser = require('../api/group_user/group_user.model');
 var Group = require('../api/group/group.model');
 
 
@@ -63,91 +63,6 @@ Clip.find({}).remove(function() {
       comments: ["woop"],
       author  : "4cxG2Zqk3r4YemcqV10SGA"
     }
-  ).then(addGroups());
-
+  );
 });
 
-var addGroups = function() {
-  Group.find({}).remove(function () {
-    Group.create({
-        name: 'Test group1',
-        info: 'Summer project test clips.'
-      },
-      {
-        name: 'Test group2',
-        info: 'Kahoots clips'
-      }).then(GroupUserClips());
-  });
-};
-
-// Add users to group 1
-var GroupUserClips = function(){
-GroupClip.find({}).remove(function() {
-  GroupUser.find({}).remove(function () {
-    Group.find()
-      .where('name')
-      .in(['Test group1'])
-      .exec(function (err, group) {
-        GroupUser.create({
-          group_id: group[0]._id,
-          user_id: "4cxG2Zqk3r4YemcqV10SGA"
-        }, {
-          group_id: group[0]._id,
-          user_id: "fdgNy6QWGmIAl7BRjEsFtA"
-        });
-        // clip 2
-        Clip.find()
-          .where('name')
-          .in(['hippo'])
-          .exec(function (err, clip) {
-            GroupClip.create({
-              group_id: group[0]._id,
-              clip_id: clip[0]._id
-            })
-          });
-        // clip 1
-        Clip.find()
-          .where('name')
-          .in(['cat soup'])
-          .exec(function (err, clip) {
-            GroupClip.create({
-              group_id: group[0]._id,
-              clip_id: clip[0]._id
-            })
-          });
-      });
-
-// Add a user and clips to group 2
-    Group.find()
-      .where('name')
-      .in(['Test group2'])
-      .exec(function (err, group) {
-        //users
-        GroupUser.create({
-          group_id: group[0]._id,
-          user_id: "4cxG2Zqk3r4YemcqV10SGA"
-        });
-        // clip 1
-        Clip.find()
-          .where('name')
-          .in(['Watermelon'])
-          .exec(function (err, clip) {
-            GroupClip.create({
-              group_id: group[0]._id,
-              clip_id: clip[0]._id
-            })
-          });
-        // clip 3
-        Clip.find()
-          .where('name')
-          .in(['bunny'])
-          .exec(function (err, clip) {
-            GroupClip.create({
-              group_id: group[0]._id,
-              clip_id: clip[0]._id
-            })
-          });
-      });
-  });
-});
-};

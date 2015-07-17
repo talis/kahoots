@@ -7,6 +7,7 @@ angular.module('kahootsAppApp')
     var KAHOOTS_ENDPOINT = "http://localhost:9000";
     var authProvider = "google";
     var shortCode = "talis";
+    $scope.guid = null;
 
     // Login. Get user info from Persona and set $rootScope.user.
     userservice.getLoginData(shortCode, function(err, user){
@@ -18,28 +19,26 @@ angular.module('kahootsAppApp')
       // If user info exists, save in rootScope.
       if(user!== null){
         $rootScope.oauth = user.oauth;
-
+        console.log(JSON.stringify(user));
         //check if user exists in kahoots
-        $http.get('api/users/me/' + user.guid + "?access_token=" + $rootScope.oauth.access_token, {
-          headers: {
-            'Authorization': 'Bearer ' + $rootScope.oauth.access_token
-          }
-        }).success(function (user) {
-          console.log(user);
+        $http.defaults.headers.common.Authorization = 'Bearer ' + user.guid;
+        $http.post('api/users/' + user.guid + "?access_token=" + $rootScope.oauth.access_token, user).success(function (user) {
+          // set $rootScope.user
           $rootScope.user = user;
+          // redirect to main
           var next = '/main';
           $location.path(next).replace();
+        }).error(function(user, status){
+          if(status=== 302){
+            $rootScope.user = user;
+            // redirect to main
+            var next = '/main';
+            $location.path(next).replace();
+          }else{
+            // todo: Handle this error
+            console.log("Error Logging in");
+          }
         });
-        if($rootScope.user===null){
-          $http.defaults.headers.common.Authorization = 'Bearer ' + user.guid;
-          $http.post('api/users/' + user.guid + "?access_token=" + $rootScope.oauth.access_token,
-            $rootScope.user).success(function (user) {
-              console.log(user);
-              $rootScope.user = user;
-              var next = '/main';
-              $location.path(next).replace();
-            });
-        }
 
       }else {
         //User is null, needs to login.

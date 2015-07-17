@@ -56,7 +56,7 @@ angular.module('kahootsAppApp')
      };*/
 
     //Testing create and get user.
-    /*$http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.user._id;
+    $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.user._id;
     $http.post('api/users/' + $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token,
       $rootScope.user).success(function (user) {
         console.log(user);
@@ -69,7 +69,7 @@ angular.module('kahootsAppApp')
     }).success(function (user) {
       console.log(user);
 
-    });*/
+    });
 
 
   });
