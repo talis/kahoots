@@ -127,6 +127,33 @@ exports.create = function(req, res) {
   });
 };
 
+
+//POST api/groups/:user_id
+// User can create a new Group.
+exports.addGroup = function(req,res){
+  var user_id = req.params.user_id;
+  req.personaClient.validateToken(req, res, function () {
+    // Create new group in db.
+    Group.create(req.body, function(err, group) {
+      if(err) { return handleError(res, err); }
+      // Add user to group and vice versa.
+      group.users.push(user_id);
+      group.save(function (err) {
+        if (err) {return handleError(res, err);}
+      });
+      User.findById(user_id, function (err, user) {
+        if (err) {return handleError(res, err);}
+        if (!user) {return res.send(404, "No user exists with id:" + user_id);}
+        user.group.push(group._id);
+        user.save(function (err) {
+          if (err) {return handleError(res, err);}
+        });
+        return res.json(201, group);
+      });
+    });
+  }, user_id);
+};
+
 // PUT api/groups/:id
 // Updates an existing group in the DB.
 exports.update = function(req, res) {

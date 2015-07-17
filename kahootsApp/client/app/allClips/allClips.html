@@ -10,11 +10,12 @@
 <body>
 
 <div ng-include="'components/navbar/navbar.html'"></div>
-
+<div class="row">
 <div class="col-md-10 col-md-offset-1">
   <div class="welcome">
     <h1>Hello, {{user.first_name}}!</h1>
   </div>
+</div>
 </div>
 
 <div class="row">
@@ -40,11 +41,25 @@
   </div>
 </div>
 
+<div class="row">
 <div class="create-group">
   <div class="col-md-10 col-md-offset-1 bg-warning">
     <h3>Create a new group.</h3>
+    <form role="form">
+      <div class="form-group">
+        <label for="name">Group name:</label>
+        <input ng-model="newGroup.name" class="form-control" id="name">
+      </div>
+      <div class="form-group">
+        <label for="description">Group description:</label>
+        <input ng_model="newGroup.description" class="form-control" id="description">
+      </div>
+      <button type="submit" class="btn btn-default" ng-click="createNewGroup()">Submit</button>
+      <button type="cancel" class="btn btn-default" ng-click="toggleCreateGroup()">Cancel</button>
+    </form>
   </div>
-</div>
+  </div>
+  </div>
 
 
 <div class="row">
@@ -54,7 +69,7 @@
       <li ng-repeat="group in awesomeGroups track by $index">
         <a href="#{{group}}">{{group.name}}</a>
       <li/>
-      <li><a href="#new-group" ng-click="createGroup()"><b>+ Group</b></a></li>
+      <li><a href="#new-group" ng-click="toggleCreateGroup()"><b>+ Group</b></a></li>
     </ul>
 
     <div class="tab-content">

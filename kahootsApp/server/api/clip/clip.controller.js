@@ -50,15 +50,18 @@ exports.create = function(req, res) {
   });
 };
 
-// PATCH api/clips/:id
+// PUT api/clips/:clip_id/users/:user_id
 // Updates an existing clip in the DB for a given json.
   exports.update = function (req, res) {
-    //console.log("UPDATE "+ JSON.stringify(req.body));
+    var user_id = req.params.user_id;
+    var clip_id = req.params.clip_id;
+    console.log(req.params);
     req.personaClient.validateToken(req, res, function () {
+      console.log("UPDATE "+ JSON.stringify(req.body));
       if (req.body._id) {
         delete req.body._id;
       }
-      Clip.findById(req.params.id, function (err, clip) {
+      Clip.findById(clip_id, function (err, clip) {
         if (err) {
           console.log("error in find by id");
           return handleError(res, err);
@@ -68,7 +71,7 @@ exports.create = function(req, res) {
           return res.send(404);
         }
         //var updated = _.merge(clip, req.body.clip);
-        clip.comments = req.body.clip.comments;
+        clip.comments = req.body.comments;
         var updated = clip;
         // This is necessary to make Mongo save, because we are using
         // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
@@ -82,7 +85,7 @@ exports.create = function(req, res) {
           return res.json(200, clip);
         });
       });
-    }, req.query.user_id);
+    }, user_id);
   };
 
 // DELETE api/clips/:id
