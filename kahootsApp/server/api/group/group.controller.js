@@ -93,14 +93,29 @@ exports.index = function(req, res) {
   });
 };
 
-// GET api/groups/:id
-// Get a single group
-exports.show = function(req, res) {
-  Group.findById(req.params.id, function (err, group) {
-    if(err) { return handleError(res, err); }
-    if(!group) { return res.send(404); }
-    return res.json(group);
-  });
+// GET api/groups/:user_id
+// Get all user's groups.
+exports.myGroups = function(req, res) {
+  var user_id = req.params.user_id;
+  req.personaClient.validateToken(req, res, function () {
+    User.findById(user_id, function (err, user) {
+      if (err) {
+        return handleError(res, err);
+      }
+      if (!user) {
+        return res.send(404, "No user exists with id:" + user_id);
+      }
+
+      Group.find()
+        .where('_id')
+        .in(user.group)
+        .exec(function (err, group) {
+          if (err) {return handleError(res, err);}
+          if (!group) {return res.send(404);}
+          return res.json(group);
+        });
+    });
+  }, req.params.id);
 };
 
 // POST api/groups/

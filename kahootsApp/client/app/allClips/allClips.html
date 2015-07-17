@@ -1,4 +1,21 @@
+<html lang="en">
+<head>
+  <title>Bootstrap Case</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
 <div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="col-md-10 col-md-offset-1">
+  <div class="welcome">
+    <h1>Hello, {{user.first_name}}!</h1>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-1 bg-success"><h2>Active Clip</h2>
@@ -21,20 +38,41 @@
 
     </form>
   </div>
-
 </div>
-<div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-danger">
-    <h2>Other Clips</h2>
-    <div class="clips" ng-repeat="clip in awesomeClips">
-      <div class="col-md-2">
-      <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
-    </div>
-    </div>
+
+<div class="create-group">
+  <div class="col-md-10 col-md-offset-1 bg-warning">
+    <h3>Create a new group.</h3>
   </div>
 </div>
 
 
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 bg-danger">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#home">My Clips</a></li>
+      <li ng-repeat="group in awesomeGroups track by $index">
+        <a href="#{{group}}">{{group.name}}</a>
+      <li/>
+      <li><a href="#new-group" ng-click="createGroup()"><b>+ Group</b></a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="myclips" class=""tab pane fade in active>
+        <h3>My Clips</h3>
+        <div class="clips" ng-repeat="clip in awesomeClips">
+          <div class="col-md-2">
+            <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+</body>
 
 
 
