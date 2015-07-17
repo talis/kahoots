@@ -9,6 +9,7 @@ angular.module('kahootsAppApp')
     };
     $scope.awesomeClips=[];
     $scope.activeClip;
+    $scope.activeGroup = null;
     $scope.user = $rootScope.user;
     $scope.awesomeGroups = [];
 
@@ -40,6 +41,7 @@ angular.module('kahootsAppApp')
           $scope.newGroup.description = '';
           //todo: update group and user
         });
+      $scope.toggleCreateGroup();
     };
 
     // Add new comment to clip.
@@ -48,7 +50,7 @@ angular.module('kahootsAppApp')
       if($scope.newComment ==''){return;}
       var id = $scope.activeClip._id;
       $scope.activeClip.comments.push($scope.newComment);
-      console.log($scope.activeClip.comments);
+      //console.log($scope.activeClip.comments);
       $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.oauth.access_token;
       $http.post('/api/clips/' + id + "/users/" + $scope.user._id +"?access_token="+$rootScope.oauth.access_token, $scope.activeClip);
       $scope.newComment = '';
@@ -58,7 +60,11 @@ angular.module('kahootsAppApp')
     $scope.updateActiveClip = function(clip){
       $scope.activeClip = clip;
     };
-    // Set a new active clip.
+    // Set a new active group.
+    $scope.updateActiveGroup = function(group){
+      $scope.activeGroup = group;
+    };
+    // Toggle create new group div.
     $scope.toggleCreateGroup = function(){
       $('.create-group').toggle();
     };

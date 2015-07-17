@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Clip = require('./clip.model');
+var Group = require('../group/group.model');
 var im = require('imagemagick');
 
 // GET api/clips/mine/:id
@@ -19,6 +20,29 @@ exports.mine = function(req, res){
       });
   },req.params.id);
 
+};
+
+// GET api/clips/groups/:group_id/users/:user_id
+// Get all clips in group
+exports.group = function(req, res){
+  req.personaClient.validateToken(req, res, function () {
+    // Get group
+    Group.findById(req.params.group_id, function (err, group) {
+      if(err) { return handleError(res, err); }
+      if(!clip) { return res.send(404); }
+      // Check user in group
+      if(group.users.indexOf(req.params.user_id)===-1){return res.send(404);}
+      // Get all clips in group
+      Clips.find()
+        .where('_id')
+        .in(group.clips)
+        .exec(function (err, clip) {
+          if(err) { return handleError(res, err); }
+          if(!clip) { return res.send(404); }
+          return res.json(200, clip);
+        });
+    });
+  }, req.params.user_id);
 };
 
 // GET api/clips/

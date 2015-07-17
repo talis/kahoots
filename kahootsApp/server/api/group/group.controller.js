@@ -11,9 +11,9 @@ var Clip = require('../clip/clip.model');
 // Add user to group and vice-versa.
 exports.addUser = function(req, res){
   var resp = res;
-  var user_id = req.params.user_id;
+  var user_id = req.params.other_user_id;
   var group_id = req.params.group_id;
-  var my_user_id = req.params.id;
+  var my_user_id = req.params.user_id;
   req.personaClient.validateToken(req, res, function () {
     // Check group exists.
     Group.findById(group_id, function (err, group) {
@@ -51,7 +51,7 @@ exports.addClip = function(req, res){
   //var resp = res;
   var clip_id = req.params.clip_id;
   var group_id = req.params.group_id;
-  var user_id = req.params.id;
+  var user_id = req.params.user_id;
   req.personaClient.validateToken(req, res, function () {
     // Check clip exists
     Clip.findById(clip_id, function(err, clip){
