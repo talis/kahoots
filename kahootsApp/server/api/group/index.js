@@ -8,6 +8,8 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
+router.post('/:group_id/users/:user_id/:id', controller.addUser);
+router.post('/:group_id/clips/:clip_id/:id', controller.addClip);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);

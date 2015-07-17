@@ -2,6 +2,87 @@
 
 var _ = require('lodash');
 var Group = require('./group.model');
+var User = require('../user/user.model');
+var Clip = require('../clip/clip.model');
+
+
+
+// POST api/groups/:group_id/users/:user_id/:id
+// Add user to group and vice-versa.
+exports.addUser = function(req, res){
+  var resp = res;
+  var user_id = req.params.user_id;
+  var group_id = req.params.group_id;
+  var my_user_id = req.params.id;
+  req.personaClient.validateToken(req, res, function () {
+    // Check group exists.
+    Group.findById(group_id, function (err, group) {
+      if (err) {return handleError(res, err);}
+      if (!group) {return res.send(404, "No group exists with id:" + group_id);}
+      // Check requesting user is in group - authorized to add.
+      if (group.users.indexOf(my_user_id) === -1) {return (401, "Unauthorized to add user to group.")}
+      // Check user not already in group
+      if (group.users.indexOf(user_id) !== -1) {return (404, "User already added to group.")}
+      // Check user exists
+      User.findById(user_id, function (err, user) {
+        if (err) {return handleError(res, err);}
+        if (!user) {return res.send(404, "No user exists with id:" + user_id);}
+        // Check group not already in user.
+        if (user.group.indexOf(group_id) !== -1) {return (404, "Group already added to user.")}
+        // Add user id to group
+        group.users.push(user_id);
+        group.save(function (err) {
+          if (err) {return handleError(res, err);}
+        });
+        // Add group to user
+        user.group.push(group_id);
+        user.save(function (err) {
+          if (err) {return handleError(res, err);}
+        });
+        return resp.json(200, group);
+      });
+    });
+  },my_user_id);
+};
+
+// POST api/groups/:group_id/clips/:clip_id/:id
+// Add clip to group and vice-versa.
+exports.addClip = function(req, res){
+  //var resp = res;
+  var clip_id = req.params.clip_id;
+  var group_id = req.params.group_id;
+  var user_id = req.params.id;
+  req.personaClient.validateToken(req, res, function () {
+    // Check clip exists
+    Clip.findById(clip_id, function(err, clip){
+      if(err){return handleError(res, err)}
+      if(!clip){return res.send(404, "Clip does not exist with id:" + clip_id)}
+      // Check user is author.
+      if(clip.author !== user_id){return res.send(404, "User not authorized to share clip with id:" + clip_id)}
+      // Check group not in clip already
+      if(clip.groups.indexOf(group_id)!==-1){return res.send(404, "Clip already in group, clip_id:" + clip_id)}
+      // Check group exists
+      Group.findById(group_id, function(err, group) {
+        if (err) {return handleError(res, err)}
+        if (!group) {return res.send(404, "Group does not exist with id:" + group_id)}
+        // Check user is in group and authorised to share with group.
+        if(group.users.indexOf(user_id)=== -1){return res.send(404, "User not in group, group_id:" + group_id)}
+        // Check Clip not in group.
+        if(group.clips.indexOf(clip_id)!== -1){return res.send(404, "Clip already in group, clip_id:" + clip_id)}
+        // Everything ok, add clip to group
+        group.clips.push(clip_id);
+        group.save(function (err) {
+          if (err) {return handleError(res, err);}
+        });
+        // Add group to clip
+        clip.groups.push(group_id);
+        clip.save(function (err) {
+          if (err) {return handleError(res, err);}
+        });
+      });
+    });
+  }, user_id);
+}
 
 // GET api/groups/
 // Get list of all groups in db.
@@ -62,4 +143,12 @@ exports.destroy = function(req, res) {
 // Handle error.
 function handleError(res, err) {
   return res.send(500, err);
+}
+
+// check if item exists in array
+function exists(item, array){
+  if(array.indexOf(item)===-1){
+    return;
+  }
+  return true;
 }
