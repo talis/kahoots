@@ -78,7 +78,6 @@ mybackground.startKlipper = function(){
 mybackground.screenshot = function(request) {
   var self = this;
   //var outerTs = (new Date()).getTime();
-  alert(self.user.guid);
   chrome.tabs.captureVisibleTab(null, function (img) {
     //var innerTs = (new Date()).getTime();
 
@@ -193,8 +192,7 @@ mybackground.getLoginData = function(callback, continueToLogin){
    Once the user has logged in the tab will close.
  */
 mybackground.login = function(){
-  var self = this;
-  if(this.user.name == undefined || this.user.name == null){
+  //var self = this;
     //alert("[login] user is null, attempt to login");
     //user is not logged in.
     // set up the next location which will either use the nextPath or whatever was in rootScope.absUrl if it was specified
@@ -214,7 +212,7 @@ mybackground.login = function(){
       });
     });
 
-  }
+
 };
 
 document.addEventListener("DOMContentLoaded", function(event) {

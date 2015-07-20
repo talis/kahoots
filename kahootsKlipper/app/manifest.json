@@ -3,7 +3,6 @@
 {
   "name": "__MSG_appName__",
   "version": "0.0.8",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkk4fZwqlxoKd4T6XbxhPYsEZ+rcPVFZzVbtCqpiVEhmYqRr82xeb198BoeSu6urpp7OwVfPqaGlNb+b5B6Rvn6QN8A3R/Mk8+mSniYaY4jQhSntqZ+/ha631QWN6JmIxwF/U/JNfiLjCcBYaIMHBXreAfodaTq1OgxwyKtaZW4qJf3HILeKk7BKXFpwNS8oOBO4FLpYD2aos5qr/cdnzzQ5cyGNqqiskqsq1ly58tyErF4QOpI7m8aF2mJgJh4fmMODtihW7EpNZ57d2GVKNlmFswfGf4kwmG/tWQ4XcXrFPFeafGMBTdGUqjCTXRJzuH2TAbFK9+u8Rifc6a84CpQIDAQAB",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -16,7 +15,6 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "scripts/chromereload.js",
       "scripts/background.js"
     ],
   "persistant": true
@@ -29,12 +27,5 @@
     "activeTab",
     "identity",
     "identity.email"
-  ],
-  "oauth2": {
-    "client_id": "694468161781-s7o71mc6m39820n4d5njcn57c1nugh71.apps.googleusercontent.com",
-    "scopes": [
-      "https://*/*",
-      "http://*/*"
-    ]
-  }
+  ]
 }

@@ -24,8 +24,8 @@ exports.mine = function(req, res){
 
 // GET api/clips/groups/:group_id/users/:user_id
 // Get all clips in group
-exports.group = function(req, res){
-  req.personaClient.validateToken(req, res, function () {
+/*exports.group = function(req, res){
+  //req.personaClient.validateToken(req, res, function () {
     // Get group
     Group.findById(req.params.group_id, function (err, group) {
       if(err) { return handleError(res, err); }
@@ -42,8 +42,8 @@ exports.group = function(req, res){
           return res.json(200, clip);
         });
     });
-  }, req.params.user_id);
-};
+  //}, req.params.user_id);
+};*/
 
 // GET api/clips/
 // Gets all clips in db.
