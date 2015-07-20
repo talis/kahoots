@@ -11,7 +11,6 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 var redis = require('redis');
-//var io = require('socket.io');
 
 
 // Create new redis client
@@ -69,12 +68,14 @@ app.use(function (req, res, next) {
 
 
 var server = require('http').createServer(app);
+var socketio = require('socket.io')(server, {
+  serveClient : (config.env === 'production') ? false:true,
+  path: '/socket/io-client'
+});
+require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
 
-
-//io = io.listen(server);
-//app.set('iosocket', io);
 
 
 // Start server
