@@ -4,6 +4,14 @@ var _ = require('lodash');
 var Clip = require('./clip.model');
 var Group = require('../group/group.model');
 var im = require('imagemagick');
+//var socketio = require('socketio');
+
+/*socketio.on('connection', function(socket){
+  socket.on('comment', function(msg){
+    console.log("Clip id: " + msg.target);
+    console.log("Comment: " + msg.chars);
+  })
+});*/
 
 // GET api/clips/mine/:id
 // Gets all clips for given user_id

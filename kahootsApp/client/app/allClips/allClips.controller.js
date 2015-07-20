@@ -12,6 +12,7 @@ angular.module('kahootsAppApp')
     $scope.activeGroup = null;
     $scope.user = $rootScope.user;
     $scope.awesomeGroups = [];
+    //$scope.socket = io();
 
     // Get all my clips.
     $http.get('/api/clips/mine/' + $rootScope.user._id+"?access_token="+$rootScope.oauth.access_token, {headers:  {

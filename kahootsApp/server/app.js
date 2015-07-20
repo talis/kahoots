@@ -11,6 +11,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 var redis = require('redis');
+//var io = require('socket.io');
+
 
 // Create new redis client
 var client = redis.createClient();
@@ -70,10 +72,18 @@ var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
 
+
+//io = io.listen(server);
+//app.set('iosocket', io);
+
+
 // Start server
 server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
+
+
+
 
 // Expose app
 exports = module.exports = app;
