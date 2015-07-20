@@ -18,7 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/thing/thing.socket').register(socket);
+  require('../api/clip/clip.socket').register(socket);
 }
 
 module.exports = function (socketio) {
@@ -54,6 +54,4 @@ module.exports = function (socketio) {
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
   });
-};/**
- * Created by lauren on 20/07/15.
- */
+};

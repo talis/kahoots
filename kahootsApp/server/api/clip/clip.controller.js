@@ -4,14 +4,7 @@ var _ = require('lodash');
 var Clip = require('./clip.model');
 var Group = require('../group/group.model');
 var im = require('imagemagick');
-//var socketio = require('socketio');
-
-/*socketio.on('connection', function(socket){
-  socket.on('comment', function(msg){
-    console.log("Clip id: " + msg.target);
-    console.log("Comment: " + msg.chars);
-  })
-});*/
+var fs = require('fs');
 
 // GET api/clips/mine/:id
 // Gets all clips for given user_id
@@ -102,14 +95,12 @@ exports.create = function(req, res) {
           console.log("no clip found");
           return res.send(404);
         }
-        //var updated = _.merge(clip, req.body.clip);
         clip.comments = req.body.comments;
-        var updated = clip;
         // This is necessary to make Mongo save, because we are using
         // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
         // to detect modifications
-        updated.markModified('comments');
-        updated.save(function (err) {
+        clip.markModified('comments');
+        clip.save(function (err) {
           if (err) {
             return handleError(res, err);
           }
@@ -144,48 +135,31 @@ exports.create = function(req, res) {
   exports.upload = function (req, res) {
     var response = res;
     console.log("upload received msg");
-    //console.log("outerTs: " + req.body.outerTs);
-    //console.log("innerTs: " + req.body.innerTs);
-    //console.log(req.body);
-    //console.log(req.body.rect);
-    //console.log(JSON.stringify(req.files) + "files"); // form files
+    // Authorize sender
     req.personaClient.validateToken(req, res, function () {
-      var img = req.body.content;
       var rect = JSON.parse(req.body.rect);
-      //var source = req.body.source;
-
-      var data = img.replace(/^data:image\/\w+;base64,/, "");
+      var data = (req.body.content).replace(/^data:image\/\w+;base64,/, "");
       var buf = new Buffer(data, 'base64');
-      var fs = require('fs');
-      var fileguid = guid();
-      //var filename = "./client/assets/uploads/"+fileguid+".png";
-      var filename = fileguid+".png";
-     console.log("About to write to temp file");
+
+      var filename = guid() +".png";
+
+      // write img to temp file
       fs.writeFile("temp.png", buf , function(err) {
-        if(err) {
-          console.log("error writing file " + err);
-          return handleError(res, err);
+        if(err) {return handleError(res, err);
         }
-        console.log("The file was saved!");
-        req.body.content = "assets/uploads/"+filename;
-        exports.create(req,res, function(){
-          if(err) {
-            console.log("Error in create " + err);
-            return handleError(res, err);}
-          //console.dir(res);
-        });
+
         //crop img
         var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
-        console.log("About to convert");
         im.convert(args, function(err){
-          if(err){
-            console.log("Error in convert im" + err);
-            return handleError(res, err);
-          }
-          console.log("cropped!");
+          if(err){return handleError(res, err);}
 
+          // set content to a file that the img will be saved to.
+          req.body.content = "assets/uploads/"+filename;
+          // create new clip in db.
+          exports.create(req,res, function(){
+            if(err) {return handleError(res, err);}
+          });
         });
-        console.log("200 wrote to file");
       });
 
     },req.params.id);
