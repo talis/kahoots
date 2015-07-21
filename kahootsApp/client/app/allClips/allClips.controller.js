@@ -7,15 +7,20 @@ angular.module('kahootsAppApp')
       name: '',
       description: ''
     };
+    $scope.usersClips = [];
+    // List of clip obj
     $scope.visibleClips = [];
     $scope.activeClip = 0;
-    $scope.activeGroup = -1;
+    // List of group obj
     $scope.userGroups = [];
+    $scope.activeGroup = 0;
 
     var init = function(){
       // Get all my clips.
       clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
         $scope.visibleClips = clips;
+        $scope.usersClips = clips;
+        socket.syncUpdates('clip', $scope.usersClips);
         socket.syncUpdates('clip', $scope.visibleClips);
       });
       // Get all my groups.
@@ -33,15 +38,16 @@ angular.module('kahootsAppApp')
     // Add new group
     $scope.createNewGroup = function() {
       groupservice.addNewGroup($rootScope.user._id, $rootScope.oauth.access_token,
-        {'name': $scope.newGroup.name, 'description': $scope.newGroup.description}, function(){
+        {'name': $scope.newGroup.name, 'description': $scope.newGroup.description}, function () {
           $scope.newGroup.name = '';
           $scope.newGroup.description = '';
-      });
+        });
       $scope.toggleCreateGroup();
       socket.syncUpdates('user', $rootScope.user);
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
-        $scope.userGroups = groups;
-      });
+      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token,
+        function (groups) {
+          $scope.userGroups = groups;
+        });
     };
 
     // Add new comment to clip.
@@ -63,12 +69,18 @@ angular.module('kahootsAppApp')
     // Set a new active group.
     $scope.updateActiveGroup = function(group){
       $scope.activeGroup = group;
+      groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
+      group._id, function(clips){
+          $scope.visibleClips = clips;
+        });
+      // TODO: make tab active.
     };
 
     // Toggle create new group div.
     $scope.toggleCreateGroup = function(){
       $('.create-group').toggle();
     };
+
 
     init();
   });

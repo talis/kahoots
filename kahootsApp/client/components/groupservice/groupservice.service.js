@@ -20,6 +20,12 @@ angular.module('kahootsAppApp')
       });
     };
 
+    instance.getClips = function(user_id,access_token, group_id,  callback){
+      $http.get('/api/groups/' + group_id + '/users/' + user_id+"/clips?access_token="+access_token, {headers:  {
+        'Authorization': 'Bearer ' + access_token }}).success(function(clips) {
+        callback(clips);
+      });
+    };
 
     return instance;
   });
