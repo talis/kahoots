@@ -22,15 +22,15 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-1 bg-success"><h2>Active Clip</h2>
     <div class="active-clip">
-    <img class="img-rounded" ng-src="{{awesomeClips[index].content}}" allign="left">
-    <h6><a ng-href="{{awesomeClips[index].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+    <img class="img-rounded" ng-src="{{visibleClips[activeClip].content}}" allign="left">
+    <h6><a ng-href="{{visibleClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
       </div>
   </div>
 
   <div class="col-md-4  bg-info">
     <h2>Comments</h2>
     <div class="comment-container">
-    <div class="comments" ng-repeat="comment in awesomeClips[index].comments track by $index">
+    <div class="comments" ng-repeat="comment in visibleClips[activeClip].comments track by $index">
       {{comment}}
     </div>
       </div>
@@ -69,7 +69,7 @@
   <div class="col-md-10 col-md-offset-1 bg-danger">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#home">My Clips</a></li>
-      <li ng-repeat="group in awesomeGroups track by $index">
+      <li ng-repeat="group in userGroups track by $index">
         <a href="#{{group}}">{{group.name}}</a>
       <li/>
       <li><a href="#new-group" ng-click="toggleCreateGroup()"><b>+ Group</b></a></li>
@@ -78,7 +78,7 @@
     <div class="tab-content">
       <div id="myclips" class=""tab pane fade in active>
         <h3>My Clips</h3>
-        <div class="clips" ng-repeat="clip in awesomeClips">
+        <div class="clips" ng-repeat="clip in visibleClips">
           <div class="col-md-2">
             <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
           </div>

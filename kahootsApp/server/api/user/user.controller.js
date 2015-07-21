@@ -53,7 +53,7 @@ exports.create = function(req, res) {
   var request = req;
   User.findById(req.params.id, function(err, user){
     if (err) { return handleError(res, err); }
-    if(user){return res.json(302, user)}
+    if(user){return res.json(200, user)}
     if(!user){
       // if user does not exist create new user
       var newUser = request.body.profile;

@@ -7,7 +7,6 @@ angular.module('kahootsAppApp')
     var KAHOOTS_ENDPOINT = "http://localhost:9000";
     var authProvider = "google";
     var shortCode = "talis";
-    $scope.guid = null;
 
     // Login. Get user info from Persona and set $rootScope.user.
     userservice.getLoginData(shortCode, function(err, user){
@@ -19,28 +18,16 @@ angular.module('kahootsAppApp')
       // If user info exists, save in rootScope.
       if(user!== null){
         $rootScope.oauth = user.oauth;
-        //console.log(JSON.stringify(user));
         //check if user exists in kahoots
-        $http.defaults.headers.common.Authorization = 'Bearer ' + user.guid;
-        $http.post('api/users/' + user.guid + "?access_token=" + $rootScope.oauth.access_token, user).success(function (user) {
-          // set $rootScope.user
+        userservice.getUser(user.guid, $rootScope.oauth.access_token, function(user){
           $rootScope.user = user;
           // redirect to main
-          var next = '/main';
+          var next = '/allClips';
           $location.path(next).replace();
-        }).error(function(user, status){
-          if(status=== 302){
-            $rootScope.user = user;
-            // redirect to main
-            var next = '/main';
-            $location.path(next).replace();
-          }else{
-            // todo: Handle this error
-            console.log("Error Logging in");
-          }
         });
 
-      }else {
+      }
+      else {
         //User is null, needs to login.
         $rootScope.oauth = null;
 

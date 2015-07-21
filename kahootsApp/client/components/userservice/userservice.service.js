@@ -38,5 +38,15 @@ angular.module('kahootsAppApp')
       });
     };
 
+    instance.getUser = function(user_id, access_token, callback){
+      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
+      $http.post('api/users/' + user_id + "?access_token=" + access_token).success(function (user) {
+           callback(user);
+      }).error(function(user, err){
+        callback(404, 'user not found');
+      });
+    };
+
+
     return instance;
   });
