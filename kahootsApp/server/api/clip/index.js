@@ -10,7 +10,7 @@ var multer  = require('multer');
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.get('/mine/:id', controller.mine);
-//router.get('/groups/:group_id/users/:user_id', controller.group());
+router.post('/:clip_id/users/:user_id/groups/:group_id/:comment', controller.addComment);
 router.post('/', controller.create);
 router.post('/file-upload/:id', [ multer({ }), controller.upload]);
 router.post('/:clip_id/users/:user_id', controller.update);

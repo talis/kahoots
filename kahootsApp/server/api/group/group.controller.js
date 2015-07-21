@@ -82,7 +82,7 @@ exports.addClip = function(req, res){
       });
     });
   }, user_id);
-}
+};
 
 // GET api/groups/:group_id/users/:user_id/clips
 // Get a list of all clips for a given group

@@ -22,15 +22,15 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-1 bg-success"><h2>Active Clip</h2>
     <div class="active-clip">
-    <img class="img-rounded" ng-src="{{activeClip.content}}" allign="left">
-    <h6><a ng-href="{{activeClip.source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+    <img class="img-rounded" ng-src="{{awesomeClips[index].content}}" allign="left">
+    <h6><a ng-href="{{awesomeClips[index].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
       </div>
   </div>
 
   <div class="col-md-4  bg-info">
     <h2>Comments</h2>
     <div class="comment-container">
-    <div class="comments" ng-repeat="comment in activeClip.comments track by $index">
+    <div class="comments" ng-repeat="comment in awesomeClips[index].comments track by $index">
       {{comment}}
     </div>
       </div>
@@ -61,6 +61,8 @@
   </div>
   </div>
   </div>
+
+
 
 
 <div class="row">

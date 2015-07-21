@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:user_id', controller.myGroups);
-router.get('/:group_id/users/:user_id/clips', controller.getGroupClips());
+router.get('/:group_id/users/:user_id/clips', controller.getGroupClips);
 router.post('/', controller.create);
 router.post('/:user_id', controller.newGroup);
 router.post('/:group_id/users/:other_user_id/:user_id', controller.addUser);

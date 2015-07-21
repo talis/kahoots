@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var Clip = require('./clip.model');
 var Group = require('../group/group.model');
+var User = require('../user/user.model');
+
 var im = require('imagemagick');
 var fs = require('fs');
 
@@ -76,8 +78,8 @@ exports.create = function(req, res) {
 // Updates an existing clip in the DB for a given json.
   exports.update = function (req, res) {
     req.personaClient.validateToken(req, res, function () {
-      //console.log("UPDATE "+ JSON.stringify(req.body));
-      if (req.body._id) {delete req.body._id;}
+      console.dir(req);
+      //if (req.body._id) {delete req.body._id;}
 
       Clip.findById(req.params.clip_id, function (err, clip) {
         if (err) {return handleError(res, err);}
@@ -96,6 +98,45 @@ exports.create = function(req, res) {
       });
     }, req.params.user_id);
   };
+
+
+
+// POST api/clips/:clip_id/users/:user_id/groups/:group_id/comment
+// Add a new comment to the clip
+exports.addComment = function (req, res) {
+  req.personaClient.validateToken(req, res, function () {
+    Clip.findById(req.params.clip_id, function(err, clip){
+      if (err) {return handleError(res, err);}
+      if (!clip) {return res.send(404);}
+
+      User.findById(req.params.user_id, function(err, user) {
+        if (err) {return handleError(res, err);}
+        if (!user) {return res.send(404);}
+
+        //TODO: This is for testing purposes only.
+        // If user is author can comment.
+        if(req.params.group_id === "none" && clip.author === user._id){
+          clip.comments.push(user.first_name+ " : " + req.params.comment);
+          clip.markModified('comments');
+          clip.save(function (err) {
+            if (err) {return handleError(res, err);}
+            return res.json(200);
+          });
+        }
+        // If user & clip in same group can comment
+        if(clip.groups.indexOf(req.params.group_id) !== -1 &&
+          user.group.indexOf(req.params.group_id) !== -1){
+          clip.comments.push(req.params.comment);
+          clip.markModified('comments');
+          clip.save(function (err) {
+            if (err) {return handleError(res, err);}
+            return res.json(200);
+          });
+        }
+      });
+    });
+  }, req.params.user_id);
+};
 
 // DELETE api/clips/:id
 // Deletes a clip from the DB.
@@ -119,8 +160,11 @@ exports.create = function(req, res) {
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
   exports.upload = function (req, res) {
+    console.log("Uploading new clip");
     // Authorize sender
     req.personaClient.validateToken(req, res, function () {
+      console.log("Authorized user");
+
       var rect = JSON.parse(req.body.rect);
       var data = (req.body.content).replace(/^data:image\/\w+;base64,/, "");
       var buf = new Buffer(data, 'base64');
@@ -130,16 +174,22 @@ exports.create = function(req, res) {
       // write img to temp file
       fs.writeFile("temp.png", buf , function(err) {
         if(err) {return handleError(res, err);}
+        console.log("Temp png created");
 
         //crop img
         var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
         im.convert(args, function(err){
-          if(err){return handleError(res, err);}
+          console.log("Clipped");
+
+          if(err){
+            console.log("error here");
+            return handleError(res, err);}
           // set content to a file that the img will be saved to.
           req.body.content = "assets/uploads/"+filename;
-
+          console.log("here");
           // create new clip in db.
           exports.create(req,res, function(){
+            console.log("Created new clip");
             if(err) {return handleError(res, err);}
           }); // Finish creating clip in db.
         }); // Finish cropping img.
