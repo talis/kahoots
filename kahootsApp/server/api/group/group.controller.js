@@ -10,7 +10,7 @@ var Clip = require('../clip/clip.model');
 // POST api/groups/:group_id/users/:user_id/:id
 // Add user to group and vice-versa.
 exports.addUser = function(req, res){
-  var resp = res;
+  //var resp = res;
   var user_id = req.params.other_user_id;
   var group_id = req.params.group_id;
   var my_user_id = req.params.user_id;
@@ -39,7 +39,7 @@ exports.addUser = function(req, res){
         user.save(function (err) {
           if (err) {return handleError(res, err);}
         });
-        return resp.json(200, group);
+        return res.json(200, group);
       });
     });
   },my_user_id);
@@ -84,6 +84,27 @@ exports.addClip = function(req, res){
   }, user_id);
 }
 
+// GET api/groups/:group_id/users/:user_id/clips
+// Get a list of all clips for a given group
+exports.getGroupClips = function(req, res){
+  req.personaClient.validateToken(req, res, function () {
+    Group.findById(req.params.group_id, function (err, group) {
+      if (err) {return handleError(res, err);}
+      if (!group) {return res.send(404);}
+      // check user is in group.
+      if(group.users.indexOf(req.params.user_id) === -1){return res.send(404, "User not found in group")}
+      Clip.find()
+        .where('_id')
+        .in(group.clips)
+        .exec(function (err, clip) {
+        if(err) { return handleError(res, err); }
+        if(!clip) { return res.send(404); }
+        return res.json(200, clip);
+      }); // End get clips in group.clips.
+    }); // End get group by id
+  }, req.params.user_id);
+};
+
 // GET api/groups/
 // Get list of all groups in db.
 exports.index = function(req, res) {
@@ -98,14 +119,11 @@ exports.index = function(req, res) {
 exports.myGroups = function(req, res) {
   var user_id = req.params.user_id;
   req.personaClient.validateToken(req, res, function () {
+    // Get user object by _id
     User.findById(user_id, function (err, user) {
-      if (err) {
-        return handleError(res, err);
-      }
-      if (!user) {
-        return res.send(404, "No user exists with id:" + user_id);
-      }
-
+      if (err) {return handleError(res, err);}
+      if (!user) {return res.send(404, "No user exists with id:" + user_id);}
+      // Find groups with _id in user.group array.
       Group.find()
         .where('_id')
         .in(user.group)
@@ -130,7 +148,7 @@ exports.create = function(req, res) {
 
 //POST api/groups/:user_id
 // User can create a new Group.
-exports.addGroup = function(req,res){
+exports.newGroup = function(req,res){
   var user_id = req.params.user_id;
   req.personaClient.validateToken(req, res, function () {
     // Create new group in db.
@@ -185,12 +203,4 @@ exports.destroy = function(req, res) {
 // Handle error.
 function handleError(res, err) {
   return res.send(500, err);
-}
-
-// check if item exists in array
-function exists(item, array){
-  if(array.indexOf(item)===-1){
-    return;
-  }
-  return true;
 }

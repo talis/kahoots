@@ -9,12 +9,8 @@ var fs = require('fs');
 // GET api/clips/mine/:id
 // Gets all clips for given user_id
 exports.mine = function(req, res){
-  //console.log("userguid:" + req.params.id);
   req.personaClient.validateToken(req, res, function () {
-    Clip.find()
-      .where('author')
-      .in([req.params.id])
-      .exec(function (err, clip) {
+    Clip.find({'author': req.params.id}, function (err, clip) {
         if(err) { return handleError(res, err); }
         if(!clip) { return res.send(404); }
         return res.json(200, clip);
@@ -22,6 +18,7 @@ exports.mine = function(req, res){
   },req.params.id);
 
 };
+
 
 // GET api/clips/groups/:group_id/users/:user_id
 // Get all clips in group
@@ -78,37 +75,26 @@ exports.create = function(req, res) {
 // PUT api/clips/:clip_id/users/:user_id
 // Updates an existing clip in the DB for a given json.
   exports.update = function (req, res) {
-    var user_id = req.params.user_id;
-    var clip_id = req.params.clip_id;
-    console.log(req.params);
     req.personaClient.validateToken(req, res, function () {
-      console.log("UPDATE "+ JSON.stringify(req.body));
-      if (req.body._id) {
-        delete req.body._id;
-      }
-      Clip.findById(clip_id, function (err, clip) {
-        if (err) {
-          console.log("error in find by id");
-          return handleError(res, err);
-        }
-        if (!clip) {
-          console.log("no clip found");
-          return res.send(404);
-        }
+      //console.log("UPDATE "+ JSON.stringify(req.body));
+      if (req.body._id) {delete req.body._id;}
+
+      Clip.findById(req.params.clip_id, function (err, clip) {
+        if (err) {return handleError(res, err);}
+        if (!clip) {return res.send(404);}
         clip.comments = req.body.comments;
-        // This is necessary to make Mongo save, because we are using
-        // Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
-        // to detect modifications
+        /*
+         * This is necessary to make Mongo save, because we are using
+         * Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
+         * to detect modifications
+         */
         clip.markModified('comments');
         clip.save(function (err) {
-          if (err) {
-            return handleError(res, err);
-          }
-          //console.log(clip);
+          if (err) {return handleError(res, err);}
           return res.json(200, clip);
         });
       });
-    }, user_id);
+    }, req.params.user_id);
   };
 
 // DELETE api/clips/:id
@@ -133,8 +119,6 @@ exports.create = function(req, res) {
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
   exports.upload = function (req, res) {
-    var response = res;
-    console.log("upload received msg");
     // Authorize sender
     req.personaClient.validateToken(req, res, function () {
       var rect = JSON.parse(req.body.rect);
@@ -145,22 +129,21 @@ exports.create = function(req, res) {
 
       // write img to temp file
       fs.writeFile("temp.png", buf , function(err) {
-        if(err) {return handleError(res, err);
-        }
+        if(err) {return handleError(res, err);}
 
         //crop img
         var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
         im.convert(args, function(err){
           if(err){return handleError(res, err);}
-
           // set content to a file that the img will be saved to.
           req.body.content = "assets/uploads/"+filename;
+
           // create new clip in db.
           exports.create(req,res, function(){
             if(err) {return handleError(res, err);}
-          });
-        });
-      });
+          }); // Finish creating clip in db.
+        }); // Finish cropping img.
+      }); // Finish writing img to temp file.
 
     },req.params.id);
 
