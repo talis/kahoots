@@ -11,215 +11,142 @@
 
 <div ng-include="'components/navbar/navbar.html'"></div>
 
+<!--Welcome Message-->
 <div class="row">
-  <div class="col-md-10 col-md-offset-1">
-    <div class="welcome">
+  <div class="welcome col-md-10 col-md-offset-1">
       <h1>Hello, {{user.first_name}}!</h1>
-    </div>
   </div>
 </div>
+<!--END Welcome Message-->
 
+<!--Choose View-->
 <div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-success">
-    <div class="view-type">
-      <div class="btn-group btn-group-justified" role="group" aria-label="...">
-        <div class="btn-group" role="group">
-          <button type="button" disabled class="btn btn-default">My Clips</button>
-        </div>
-        <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default">Groups</button>
-        </div>
+  <div class="view-options col-md-10 col-md-offset-1 bg-success">
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button id="my-view-btn" type="button" class="btn btn-default" ng-click="toggleView()">My Clips</button>
+      </div>
+      <div class="btn-group" role="group">
+          <button id="group-view-btn" type="button" class="btn btn-default" ng-click="toggleView()">Groups</button>
       </div>
     </div>
   </div>
 </div>
+<!--END Choose View-->
 
+<!--My Clips View-->
 <div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-warning">
-    <div class="myclips-view">
-      <div class="column">
-        <div class="col-md-8 bg-success">
-          <h2>Active Clip</h2>
-          <div class="active-clip-container">
-            <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{usersClips[activeClip].content}}">
-            <h6><a ng-href="{{usersClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+  <div class="my-clips-view col-md-10 col-md-offset-1 bg-warning">
+    <!--Active Clip Image-->
+    <div class="column">
+      <div class="col-md-8 bg-danger">
+        <div class="row">
+          <div class="col-md-4">
+            <h2>Active Clip</h2>
           </div>
-        </div>
-        <div class="col-md-4 bg-danger">
-          <h2>Notes</h2>
-          <div class="comment-container">
-            <div class="comments" ng-repeat="comment in usersClips[activeClip].comments track by $index">
-              {{comment}}
+          <div class="col-md-4">
+            <div class="btn-group" float="right">
+              <button type="button" class="btn btn-default dropdown-toggle share-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Share <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="group in userGroups track by $index"><a href="#" ng-click="shareClip(group)">{{group.name}}</a></li>
+                <li role="separator" class="divider"></li>
+              </ul>
             </div>
           </div>
-          <form class="comment-form" ng-submit="updateClip()" name="noteForm">
-            <textarea class="form-control" ng-model="newNote" rows="3" placeholder="Enter a new note." required></textarea>
-            <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Add">
-          </form>
         </div>
+        <div class="col-md-8">
+          <div class="active-clip">
+            <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{userClips[activeClip].content}}">
+            <h6><a ng-href="{{userClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+          </div>
         </div>
       </div>
     </div>
+    <!--END Active Clip Image-->
+    <!--Active Clip Comments-->
+    <div class="column">
+      <div class="col-md-4 bg-danger">
+        <h2>Notes</h2>
+        <div class="comment-container">
+          <div class="notes" ng-repeat="comment in userClips[activeClip].comments track by $index">
+            {{comment}}
+          </div>
+        </div>
+        <form class="note-form" ng-submit="addNote()" name="noteForm">
+          <textarea class="form-control" ng-model="newNote" rows="3" placeholder="Enter a new comment." required></textarea>
+          <input class="btn btn-primary" type="submit" ng-disabled="noteForm.$invalid" value="Post">
+        </form>
+      </div>
+    </div>
+    <!--END Active Clip Comments-->
   </div>
 </div>
+<!--END My Clips View-->
 
+<!--Group View-->
 <div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-warning">
-    <div class="groups-view">
-      <div class="column">
-        <div class="col-md-8 bg-danger">
-          <h2>Active Clip</h2>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <div class="group-view col-md-10 col-md-offset-1 bg-warning">
+    <!--Active Clip Image-->
+    <div class="column">
+      <div class="col-md-8 bg-danger">
+        <div class="row">
+          <div class="col-md-4">
+           <h2>Active Clip</h2>
+          </div>
+          <div class="col-md-4">
+           <div class="btn-group" float="right">
+            <button type="button" class="btn btn-default dropdown-toggle share-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Share <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
+              <li ng-repeat="group in userGroups track by $index"><a href="#" ng-click="shareClip(group)">{{group.name}}</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
             </ul>
-          </div>
-
+           </div>
+         </div>
+        </div>
+        <div class="col-md-8">
           <div class="active-clip-container">
             <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{visibleClips[activeClip].content}}">
             <h6><a ng-href="{{visibleClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
           </div>
         </div>
-        <div class="col-md-4 bg-success">
-          <div class="group-clips">
-            <h3>Clip's Groups</h3>
-            <ul class="nav nav-tabs">
-              <li ng-repeat="group in userGroups track by $index">
-                <a href="#{{group}}" ng-click="updateActiveGroup(group)">{{group.name}}</a>
-              <li/>
-            </ul>
-          <h3>Chat</h3>
-          <div class="comment-container">
-            <div class="comments" ng-repeat="comment in visibleClips[activeClip].comments track by $index">
-              {{comment}}
-            </div>
-          </div>
-          <form class="comment-form" ng-submit="updateClip()" name="commentForm">
-            <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment." required></textarea>
-            <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
-          </form>
-        </div>
       </div>
     </div>
-  </div>
-</div>
-</div>
-
-<div class="row">
-  <div class="create-group">
-    <div class="col-md-10 col-md-offset-1 bg-warning">
-      <h3>Create a new group.</h3>
-      <form role="form">
-        <div class="form-group">
-          <label for="name">Group name:</label>
-          <input ng-model="newGroup.name" class="form-control" id="name">
-        </div>
-        <div class="form-group">
-          <label for="description">Group description:</label>
-          <input ng_model="newGroup.description" class="form-control" id="description">
-        </div>
-        <button type="submit" class="btn btn-default" ng-click="createNewGroup()">Submit</button>
-        <button type="cancel" class="btn btn-default" ng-click="toggleCreateGroup()">Cancel</button>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="Add-user">
-    <div class="col-md-10 col-md-offset-1 bg-warning">
-      <h3>Add user to {{userGroups[activeGroup].name}}</h3>
-      <form role="form">
-        <div class="form-group">
-          <label for="email">User email:</label>
-          <input ng-model="newUser.email" class="form-control" id="email">
-        </div>
-        <button type="submit" class="btn btn-default" ng-click="null">Submit</button>
-        <button type="cancel" class="btn btn-default" ng-click="null">Cancel</button>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-warning">
-    <div class="my-clips">
-          <h3>My Clips</h3>
-          <div class="clips" ng-repeat="clip in usersClips">
-            <div class="col-md-2">
-              <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
-            </div>
+    <!--END Active Clip Image-->
+    <!--Active Clip Comment-->
+    <div class="column">
+      <div class="clip-groups col-md-4 bg-success">
+        <h3>Clip's Groups</h3>
+        <ul class="nav nav-tabs">
+          <li ng-repeat="group in userGroups track by $index">
+            <a href="#{{group}}" ng-click="setActiveGroup(group)">{{group.name}}</a>
+          <li/>
+        </ul>
+        <h3>Chat</h3>
+        <div class="comment-container">
+          <div class="comments" ng-repeat="comment in visibleClips[activeClip].comments track by $index">
+            {{comment}}
           </div>
         </div>
+        <form class="comment-form" ng-submit="addComment()" name="commentForm">
+          <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment." required></textarea>
+          <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
+        </form>
       </div>
     </div>
+    <!--END Active Clip Comment-->
   </div>
 </div>
+<!--END Group View-->
 
+<!--Add New Group-->
 <div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-warning">
-    <div class="group-clips">
-      <h3>My Groups</h3>
-      <ul class="nav nav-tabs">
-        <li ng-repeat="group in userGroups track by $index">
-          <a href="#{{group}}" ng-click="updateActiveGroup(group)">{{group.name}}</a>
-        <li/>
-        <li><a href="#new-group" ng-click="toggleCreateGroup()"><b>+ User</b></a></li>
-        <li><a href="#new-group" ng-click="toggleCreateGroup()"><b>+ Group</b></a></li>
-      </ul>
-
-      <div class="tab-content">
-        <div id="myclips" class=""tab pane fade in active>
-          <h3>{{userGroups[activeGroup].name}}</h3>
-          <div class="clips" ng-repeat="clip in visibleClips">
-            <div class="col-md-2">
-              <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-</div>
-</div>
-<!--div class="row">
-  <div class="col-md-6 col-md-offset-1 bg-success">
-  <h2>Active Clip</h2>
-    <div class="active-clip">
-    <img class="img-rounded" ng-src="{{visibleClips[activeClip].content}}" allign="left">
-    <h6><a ng-href="{{visibleClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
-      </div>
-  </div>
-
-  <div class="col-md-4  bg-info">
-    <h2>Comments</h2>
-    <div class="comment-container">
-    <div class="comments" ng-repeat="comment in visibleClips[activeClip].comments track by $index">
-      {{comment}}
-    </div>
-      </div>
-    <form class="comment-form" ng-submit="updateClip()" name="commentForm">
-      <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment." required></textarea>
-      <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
-
-    </form>
-  </div>
-</div>
-
-<div class="row">
-  <div class="create-group">
-    <div class="col-md-10 col-md-offset-1 bg-warning">
-      <h3>Create a new group.</h3>
-      <form role="form">
+  <div class="add-group col-md-10 col-md-offset-1 bg-warning">
+    <h3>Create a new group.</h3>
+    <form role="form" name="newGroup">
       <div class="form-group">
         <label for="name">Group name:</label>
         <input ng-model="newGroup.name" class="form-control" id="name">
@@ -228,41 +155,70 @@
         <label for="description">Group description:</label>
         <input ng_model="newGroup.description" class="form-control" id="description">
       </div>
-      <button type="submit" class="btn btn-default" ng-click="createNewGroup()">Submit</button>
-      <button type="cancel" class="btn btn-default" ng-click="toggleCreateGroup()">Cancel</button>
-     </form>
+      <button type="submit" class="btn btn-default" ng-click="addGroup()">Submit</button>
+      <button type="cancel" class="btn btn-default" onClick="toggleClass('add-group')">Cancel</button>
+    </form>
+  </div>
+</div>
+<!--END Add new Group-->
+
+<!--Add New User-->
+<div class="row">
+  <div class="add-user col-md-10 col-md-offset-1 bg-warning">
+    <h3>Add user to {{userGroups[activeGroup].name}}</h3>
+    <form role="form">
+      <div class="form-group">
+        <label for="email">User email:</label>
+        <input ng-model="newUser.email" class="form-control" id="email">
+      </div>
+      <button type="submit" class="btn btn-default" ng-click="addUser()">Submit</button>
+      <button type="cancel" class="btn btn-default" ng-click="toggleClass('.add-user')">Cancel</button>
+    </form>
+  </div>
+</div>
+<!--Add New User-->
+
+<!--All My Clips-->
+<div class="row">
+  <div class="my-clips col-md-10 col-md-offset-1 bg-warning">
+    <h3>My Clips</h3>
+    <div class="clips" ng-repeat="clip in userClips">
+      <div class="col-md-2">
+        <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(clip)">
+      </div>
     </div>
   </div>
- </div>
+</div>
+<!--END All My Clips-->
 
-
-
-
+<!--All Group Clips-->
 <div class="row">
-  <div class="col-md-10 col-md-offset-1 bg-danger">
+  <div class="group-clips col-md-10 col-md-offset-1 bg-warning">
+    <h3>My Groups</h3>
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#home">My Clips</a></li>
       <li ng-repeat="group in userGroups track by $index">
-        <a href="#{{group}}" ng-click="updateActiveGroup(group)">{{group.name}}</a>
+        <a href="#{{group}}" ng-click="setActiveGroup(group)">{{group.name}}</a>
       <li/>
-      <li><a href="#new-group" ng-click="toggleCreateGroup()"><b>+ Group</b></a></li>
+      <li><a href="#" ng-click="toggleClass('.add-user')"><b>+ User</b></a></li>
+      <li><a href="#" ng-click="toggleClass('.add-group')"><b>+ Group</b></a></li>
     </ul>
-
+    <div class="no-groups">
+      <p>You have no groups yet!</p>
+    </div>
     <div class="tab-content">
       <div id="myclips" class=""tab pane fade in active>
         <h3>{{userGroups[activeGroup].name}}</h3>
         <div class="clips" ng-repeat="clip in visibleClips">
           <div class="col-md-2">
-            <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="updateActiveClip(clip)">
+            <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(clip)">
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </div>
--->
+<!--END All Group Clips-->
+
 </body>
 
 

@@ -19,7 +19,7 @@ angular.module('kahootsAppApp')
       if(user!== null){
         $rootScope.oauth = user.oauth;
         //check if user exists in kahoots
-        userservice.getUser(user.guid, $rootScope.oauth.access_token, function(user){
+        userservice.getUser(user, $rootScope.oauth.access_token, function(user){
           $rootScope.user = user;
           // redirect to main
           var next = '/allClips';
