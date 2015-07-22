@@ -17,6 +17,9 @@ angular.module('kahootsAppApp')
     $scope.activeGroup = 0;
     $rootScope.activeView = 0;
 
+    /*
+       Toggles view from my-view to group-view
+     */
     $scope.toggleView = function(){
       $scope.activeClip = 0;
       $('.no-groups').hide();
@@ -37,7 +40,9 @@ angular.module('kahootsAppApp')
         $scope.activeView=0;
       }
     };
-
+    /*
+       Add a new note to a clip you own.
+     */
     $scope.addNote = function(){
       if($scope.newNote ===''){return;}
       // Add new note to clip in db
@@ -47,10 +52,14 @@ angular.module('kahootsAppApp')
       // Synchronize with clips
       socket.syncUpdates('clip', $scope.userClips);
     };
-
+    /*
+       Add a comment to a shared clip.
+     */
     // TODO: addComment
     $scope.addComment = function(){};
-
+    /*
+      share the active clip with the chosen group.
+     */
     $scope.shareClip = function(group) {
       console.log("Sharing:" + group);
       // send to server to share
@@ -73,7 +82,10 @@ angular.module('kahootsAppApp')
       }
 
     };
-
+    /*
+      Add a new group to the db.
+      @param newGroup
+     */
     $scope.addGroup = function(){
       console.log("Create new group\nName: "+$scope.newGroup.name);
       // Add group to kahoots db
@@ -92,30 +104,45 @@ angular.module('kahootsAppApp')
           $scope.userGroups = groups;
         });
     };
-
+    /*
+      Add user to active group.
+     */
     // TODO: addUser
     $scope.addUser = function(){};
-
+    /*
+      Set the clip to the active clip.
+      @param clip
+     */
     $scope.setActiveClip = function(clip){
+      console.log("Active clip:"+$scope.activeClip);
+      console.log("setActiveClip state:"+$rootScope.activeView);
       if($rootScope.activeView===0){
-        $scope.activeClip = $scope.userClips.indexOf(clip._id);
+        $scope.activeClip = $scope.userClips.indexOf(clip)
       }else{
-        $scope.activeClip = $scope.visibleClips.indexOf(clip._id);
-
+        $scope.activeClip = $scope.visibleClips.indexOf(clip);
       }
+      console.log("Active clip:"+$scope.activeClip);
     };
-
+    /*
+      Set the group to the active group.
+      Get new group clips.
+     */
     $scope.setActiveGroup = function(group){
       console.log("SET ACTIVE GROUP\n"+JSON.stringify(group));
-      $scope.activeGroup = $scope.userGroups.indexOf(group._id);
+      $scope.activeGroup = $scope.userGroups.indexOf(group);
       getGroupClips(group);
     };
-
+    /*
+       Toggles a given classname.
+       @param class_name (eg. '.myclass')
+     */
     $scope.toggleClass = function(class_name){
       $(class_name).toggle();
     };
 
-
+    /*
+      Initializes the state of the page.
+     */
     var init = function(){
 
       // Initialise view
@@ -131,7 +158,16 @@ angular.module('kahootsAppApp')
 
       console.log("USER CLIPS:\n" + $scope.userClips);
       console.log("GROUP CLIPS:\n" + $scope.visibleClips);
+
+      $scope.$on('$destroy', function () {
+        socket.unsyncUpdates('clip');
+      });
     };
+    /*
+       Gets a list of clip objects.
+       Sets list to userClips.
+       If list is empty fills with space-filler clip.
+     */
     var getUserClips= function() {
       // Get all my clips.
       clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
@@ -140,6 +176,12 @@ angular.module('kahootsAppApp')
         if ($scope.userClips.length === 0){ noClip($scope.userClips) };
       });
     };
+    /*
+       Gets a list of group objects.
+       Sets the list to userGroups.
+       If list is not empty, sets activeGroup to the first in the list.
+       If no groups, pushes 'space-filler' clip to visibleClips
+     */
     var getUserGroups = function(){
       // Get all my groups.
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
@@ -150,6 +192,12 @@ angular.module('kahootsAppApp')
         if($scope.userGroups.length===0){ noClip($scope.visibleClips)} ;
       });
     };
+    /*
+       For a given group, gets a list of clip objects.
+       Sets visibleClips to that list.
+       Sets activeClip to 0.
+       If list is empty, pushes 'space-filler' clip to visibleClips.
+     */
     var getGroupClips = function(group){
       groupservice.getClips($rootScope.user._id,
         $rootScope.oauth.access_token, group._id, function(clips){
@@ -157,150 +205,11 @@ angular.module('kahootsAppApp')
         $scope.activeClip = 0;
         if($scope.visibleClips.length===0) { noClip($scope.visibleClips) };
       });
-    }
-    /*var init = function(){
-      $('.myClips-view').toggle();
-      $('.my-clips').toggle();
-      $scope.toggleView();
-      $('.add-user').toggle();
-      $('.create-group').toggle();
-      $('.no-clip-container').toggle();
-
-      // Get all my clips.
-      clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
-        $scope.usersClips = clips;
-        socket.syncUpdates('clip', $scope.usersClips, function(){
-          if($scope.usersClips.length===0){noClip()}
-        });
-      });
-      // Get all my groups.
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
-        $scope.userGroups = groups;
-        // Set active group to 0
-        if(groups.length>0) { $scope.setActiveGroup(groups[0]) }
-      });
-
-
-
-      $scope.$on('$destroy', function () {
-        socket.unsyncUpdates('clip');
-      });
-   };
-
-    // Add new group
-    $scope.createNewGroup = function() {
-      console.log("Create new group\nName: "+$scope.newGroup.name);
-      // Add group to kahoots db
-      groupservice.addNewGroup($rootScope.user._id, $rootScope.oauth.access_token,
-        {'name': $scope.newGroup.name, 'description': $scope.newGroup.description}, function () {
-          // Reset new Group to blank.
-          $scope.newGroup.name = '';
-          $scope.newGroup.description = '';
-        });
-      // Hide form.
-      $('.create-group').toggle();
-      // Syncronize user.
-      socket.syncUpdates('user', $rootScope.user);
-      // Update user groups.
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token,
-        function (groups) {
-          $scope.userGroups = groups;
-        });
     };
-
-    // Add new note to clip you own.
-    $scope.addNote = function() {
-      console.log("Add new note: " + $scope.newNote);
-      if($scope.newNote ===''){return;}
-      // Add new note to clip in db
-      clipservice.addNewNote($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.usersClips[$scope.activeClip]._id,$scope.newNote);
-      $scope.newNote = '';
-      // Synchronize with clips
-      socket.syncUpdates('clip', $scope.usersClips);
-    };
-
-    // Set a new active clip.
-    $scope.updateActiveClip = function(clip){
-      console.log("Updating active clip to: " + clip._id);
-      // set Active clip to the one the user just clicked.
-      if($rootScope.activeView===1){
-        $scope.activeClip = $scope.usersClips.indexOf(clip);
-      }else {
-        $scope.activeClip = $scope.visibleClips.indexOf(clip);
-      }
-    };
-
-    $scope.shareClip = function(group){
-      console.log("Sharing:" +group);
-      // send to server to share
-      groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
-      group._id, $scope.visibleClips[$scope.activeClip]._id, function(){
-        // update all clips;
-        socket.syncUpdates('clip', $scope.usersClips);
-        //socket.syncUpdates('group', $scope.userGroups);
-
-      });
-    };
-
-    $scope.toggleCreateGroup=function(){
-      $('.create-group').toggle();
-    };
-
-    $scope.toggleView = function(){
-
-      if($rootScope.activeView === 0){
-        $('.comment-form2').show();
-        $('.share-btn').show();
-        // state 1 = my group clips
-        $rootScope.activeView = 1;
-        $('#my-view-btn').addClass('disabled');
-        $('#group-view-btn').removeClass('disabled');
-      }else{
-        // state 0 = my clips
-        $rootScope.activeView = 0;
-        // Need to update activeClip
-
-        $('#my-view-btn').removeClass('disabled');
-        $('#group-view-btn').addClass('disabled');
-      }
-      $('.myClips-view').toggle();
-      $('.groups-view').toggle();
-      $('.group-clips').toggle();
-      $('.my-clips').toggle();
-    };
-
-    $scope.setActiveGroup = function(group){
-      $scope.activeGroup = $scope.userGroups.indexOf[group._id];
-      $scope.activeClip = 0;
-      groupservice.getClips($rootScope.user._id,
-        $rootScope.oauth.access_token, group._id, function(clips){
-          $scope.visibleClips = clips;
-          if($scope.visibleClips.length===0){
-            noClip();
-          }else{
-            $('.commentForm2').show();
-          }
-          socket.syncUpdates('clip', $scope.visibleClips);
-        });
-    };
-
-    // Add fake clip to visibleClips
-    var noClip = function(){
-      var unClip = {
-        content: "../assets/images/noClipFound.jpeg",
-          name: "",
-        comments: ["No Notes"],
-        source: "",
-        author: "",
-        groups:[]
-      };
-      //Add fake clip
-      $scope.visibleClips.push(unClip);
-      $('.comment-form2').hide();
-      $('.share-btn').hide();
-    }*/
-// Add fake clip to visibleClips
+    /*
+       Add 'space-filler' clip to list.
+       @param list An array of clips.
+     */
     var noClip = function(list) {
       var unClip = {
         content: "../assets/images/noClipFound.jpeg",
@@ -311,7 +220,8 @@ angular.module('kahootsAppApp')
         groups: []
       };
       list.push(unClip);
-    }
+    };
+    
     $(document).ready(init());
   });
 
