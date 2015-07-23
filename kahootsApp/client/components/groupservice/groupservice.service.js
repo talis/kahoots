@@ -55,6 +55,13 @@ angular.module('kahootsAppApp')
       });
     };
 
+    instance.addComment = function(user, access_token, group_id, clip_id, comment, callback){
+      // POST api/groups/:group_id/clips/clip_id/users/:user_id/:username/comment
+      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
+      $http.post('api/groups/'+ group_id+"/clips/" + clip_id +  "/users/"+ user._id+"/"+ user.name +"/comment" +"?access_token="+access_token, comment).success(function(){
+        callback();
+      });
+    };
 
     return instance;
   });

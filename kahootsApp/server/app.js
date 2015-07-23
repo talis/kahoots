@@ -11,13 +11,13 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 var redis = require('redis');
-var babel = require('babel_client');
+var babel = require('babel-node-client');
 
 
 // Create a new babel client
 var babelClient = babel.createClient({
-  babel_host:"localhost",
-  babel_port:3000,
+  babel_host: config.babel.host,
+  babel_port: config.babel.port,
   enable_debug: true
 });
 
@@ -38,16 +38,7 @@ if(config.seedDB) { require('./config/seed'); }
 var app = express();
 
 // Configure the Persona client
-var persona = require('persona_client');
-try {
-  // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-  //var personaClient = persona.createClient({
-  //  persona_host: config.oauth.host,
-  //  persona_port: config.oauth.port,
-  //  persona_scheme: config.oauth.scheme,
-  //  persona_oauth_route: config.oauth.route,
-  //  enable_debug: true
-  //});
+
   var persona = require('persona_client');
   var personaClient = persona.createClient({
     persona_host: config.oauth.host,
@@ -60,17 +51,15 @@ try {
     enable_debug: false
     //logger: AppLogger
   });
-  // jscs:enable requireCamelCaseOrUpperCaseIdentifiers
-} catch (err) {
-  console.log("Error in app.js (PERSONA)"+err);
 
-}
+
 
 // Add PersonaClient to the req before passing it to controllers
 // If using express, use this middleware (https://github.com/talis/persona-node-client/)
 app.use(function (req, res, next) {
   req.redisClient = client;
   req.personaClient = personaClient;
+  req.babelClient = babelClient;
   next();
 });
 

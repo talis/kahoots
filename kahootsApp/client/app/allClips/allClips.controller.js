@@ -77,7 +77,16 @@ angular.module('kahootsAppApp')
        Add a comment to a shared clip.
      */
     // TODO: addComment
-    $scope.addComment = function(){};
+    $scope.addComment = function(){
+
+      if($scope.newComment ===''){return;}
+
+      groupservice.addComment($rootScope.user, $rootScope.oauth.access_token,
+        $scope.userGroups[$scope.activeGroup], $scope.visibleClips[$scope.activeClip], newComment, function(){
+
+      });
+      $scope.newComment='';
+    }
     /*
       share the active clip with the chosen group.
      */

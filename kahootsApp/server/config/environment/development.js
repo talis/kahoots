@@ -20,5 +20,9 @@ module.exports = {
       db: process.env.PERSONA_OAUTH_TOKENCACHE_DB || 0
     }
   },
+  babel: {
+    host: process.env.BABEL_HOST || 'http://babel',
+    port: process.env.BABEL_PORT || 3000
+  },
   seedDB: true
 }

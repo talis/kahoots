@@ -5,6 +5,48 @@ var Group = require('./group.model');
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
+// POST api/groups/:group_id/clips/clip_id/users/:user_id/:username/comment
+exports.addComment = function(req,res){
+  req.personaClient.validateToken(req, res, function () {
+    var annotationData = {
+      hasBody: {
+        format: 'text/plain',
+        type: 'Text',
+        chars: req.body.comment ? req.body.comment : ''
+      },
+      hasTarget: {'group': req.params.group_id, 'clip':req.params.clip_id},
+      annotatedBy: req.body.userId,
+      motivatedBy: 'comment'
+    };
+    req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
+      console.log("BABEL RESPONSE");
+      console.log(JSON.stringify(results));
+      if (err) {
+        return handleError(res, err);
+      } else {
+        return res.json(200, results);
+      }
+    });
+  }, req.params.user_id);
+};
+// GET api/groups/:group_id/clips/clip_id/users/user_id
+exports.getComments = function(req, res){
+  req.personaClient.validateToken(req, res, function () {
+    var target = {
+      hasTarget:{
+        group: req.params.group_id,
+        clip: req.params.clip_id
+      }
+    };
+    req.babelClient.getAnnotation(req.query.access_token, target, function(err, comments){
+      if (err) {
+        return handleError(res, err);
+      } else {
+        return res.json(200, comments);
+      }
+    });
+  }, req.params.user_id);
+};
 
 
 // POST api/groups/:group_id/users/:user_id/:id
