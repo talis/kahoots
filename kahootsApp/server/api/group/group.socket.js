@@ -1,26 +1,24 @@
-
- /**
+/**
  * Broadcast updates to client when the model changes
  */
 
 'use strict';
 
-var clip = require('./clip.model');
+var group = require('./group.model');
 
 exports.register = function(socket) {
-
-  clip.schema.post('save', function (doc) {
+  group.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  clip.schema.post('remove', function (doc) {
+  group.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('clip:save', doc);
+  socket.emit('group:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('clip:remove', doc);
+  socket.emit('group:remove', doc);
 }

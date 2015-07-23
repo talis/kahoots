@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .service('clipservice', function ($http) {
+  .service('clipservice', function ($http, socket) {
     var instance = function(){};
 
     instance.getMyClips = function(user_id, access_token, callback){

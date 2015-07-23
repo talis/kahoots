@@ -15,12 +15,13 @@ angular.module('kahootsAppApp')
     $scope.visibleClips = [];
     $scope.activeClip = 0;
     $scope.activeGroup = 0;
-    $rootScope.activeView = 0;
+    $scope.activeView = 0;
 
     /*
        Toggles view from my-view to group-view
      */
     $scope.toggleView = function(){
+
       $scope.activeClip = 0;
       $('.no-groups').hide();
       $('.group-view').toggle();
@@ -50,7 +51,8 @@ angular.module('kahootsAppApp')
         $scope.userClips[$scope.activeClip]._id,$scope.newNote);
       $scope.newNote = '';
       // Synchronize with clips
-      socket.syncUpdates('clip', $scope.userClips);
+      //socket.syncUpdates('clip', $scope.userClips);
+      // clip updates
     };
     /*
        Add a comment to a shared clip.
@@ -66,18 +68,19 @@ angular.module('kahootsAppApp')
       if($rootScope.activeView===1) {
         groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
           group._id, $scope.visibleClips[$scope.activeClip]._id, function () {
-            socket.syncUpdates('clip', $scope.userClips);
+            // socket.syncUpdates('clip', $scope.userClips);
             // TODO :socket.syncUpdates('group', $scope.userGroups);
             getUserGroups();
           });
       }
 
-      if($rootScope.activeView===0) {
+      if($scope.activeView===0) {
         groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
           group._id, $scope.userClips[$scope.activeClip]._id, function () {
             socket.syncUpdates('clip', $scope.userClips);
             // TODO :socket.syncUpdates('group', $scope.userGroups);
             getUserGroups();
+
           });
       }
 
@@ -102,6 +105,9 @@ angular.module('kahootsAppApp')
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token,
         function (groups) {
           $scope.userGroups = groups;
+
+
+
         });
     };
     /*
@@ -115,8 +121,8 @@ angular.module('kahootsAppApp')
      */
     $scope.setActiveClip = function(clip){
       console.log("Active clip:"+$scope.activeClip);
-      console.log("setActiveClip state:"+$rootScope.activeView);
-      if($rootScope.activeView===0){
+      console.log("setActiveClip state:"+$scope.activeView);
+      if($scope.activeView===0){
         $scope.activeClip = $scope.userClips.indexOf(clip)
       }else{
         $scope.activeClip = $scope.visibleClips.indexOf(clip);
@@ -156,11 +162,22 @@ angular.module('kahootsAppApp')
       getUserClips();
       getUserGroups();
 
-      console.log("USER CLIPS:\n" + $scope.userClips);
-      console.log("GROUP CLIPS:\n" + $scope.visibleClips);
+      //console.log("USER CLIPS:\n" + $scope.userClips);
+      //console.log("GROUP CLIPS:\n" + $scope.visibleClips);
+
+
+      socket.syncUpdates('clip', $scope.userClips);
+      socket.syncUpdates('clip', $scope.visibleClips);
+      socket.syncUpdates('group', $scope.userGroups);
+
+      //socket.syncUpdates('user', $rootScope.user);
+
 
       $scope.$on('$destroy', function () {
         socket.unsyncUpdates('clip');
+        socket.unsyncUpdates('user');
+        socket.unsyncUpdates('group');
+
       });
     };
     /*
@@ -172,8 +189,8 @@ angular.module('kahootsAppApp')
       // Get all my clips.
       clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
         $scope.userClips = clips;
-        socket.syncUpdates('clip', $scope.userClips, function (){});
-        if ($scope.userClips.length === 0){ noClip($scope.userClips) };
+        if ($scope.userClips.length === 0){ noClip($scope.userClips) }
+        socket.syncUpdates('group', $scope.userClips);
       });
     };
     /*
@@ -185,11 +202,22 @@ angular.module('kahootsAppApp')
     var getUserGroups = function(){
       // Get all my groups.
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+        // Set user groups
         $scope.userGroups = groups;
-        if($scope.userGroups.length>0){getGroupClips($scope.userGroups[0]);}
-        socket.syncUpdates('group', $scope.userGroups, function (){});
+        socket.syncUpdates('group', $scope.userGroups);
+        console.log("USER GROUPS\n"+JSON.stringify($scope.userGroups));
+
+        // If groups exist, get group clips.
+        if($scope.userGroups.length>0){
+          getGroupClips($scope.userGroups[0]);
+        }
+
+        //socket.syncUpdates('group', $scope.userGroups, function (){});
         // TODO: change this to a noGroups image
-        if($scope.userGroups.length===0){ noClip($scope.visibleClips)} ;
+        // If no groups exist
+        if($scope.userGroups.length===0){ noClip($scope.visibleClips)}
+
+        console.log("VISIBLE CLIPS \n" + JSON.stringify($scope.visibleClips));
       });
     };
     /*
@@ -199,11 +227,16 @@ angular.module('kahootsAppApp')
        If list is empty, pushes 'space-filler' clip to visibleClips.
      */
     var getGroupClips = function(group){
+      console.log("GET GROUP CLIPS: "+ group.name);
       groupservice.getClips($rootScope.user._id,
         $rootScope.oauth.access_token, group._id, function(clips){
-        $scope.visibleClips = clips;
-        $scope.activeClip = 0;
-        if($scope.visibleClips.length===0) { noClip($scope.visibleClips) };
+
+          $scope.visibleClips = clips;
+          socket.syncUpdates('clip', $scope.visibleClips);
+
+          $scope.activeClip = 0;
+        if($scope.visibleClips.length===0) { noClip($scope.visibleClips) }
+          console.log("VISIBLE CLIPS\n" + JSON.stringify($scope.visibleClips[0]));
       });
     };
     /*
@@ -221,7 +254,7 @@ angular.module('kahootsAppApp')
       };
       list.push(unClip);
     };
-    
+
     $(document).ready(init());
   });
 
