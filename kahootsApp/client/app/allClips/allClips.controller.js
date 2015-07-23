@@ -39,7 +39,11 @@ angular.module('kahootsAppApp')
       $('.my-clips').toggle();
       if($rootScope.activeView===0){
         // Change to group view
-        if($scope.userGroups.length===0){ $('.no-groups').show();}
+        if($scope.userGroups.length===0){
+          $('.no-groups').show();
+        }else{
+          $scope.setActiveGroup($scope.userGroups[$scope.activeGroup]);
+        }
         $('#my-view-btn').removeClass('disabled');
         $('#group-view-btn').addClass('disabled');
         $rootScope.activeView=1;
@@ -50,7 +54,7 @@ angular.module('kahootsAppApp')
         $rootScope.activeView=0;
       }
       console.log("***TOGGLE VIEW END***");
-      printStatus();
+      //printStatus();
 
     };
     /*
@@ -78,6 +82,7 @@ angular.module('kahootsAppApp')
       share the active clip with the chosen group.
      */
     $scope.shareClip = function(group) {
+      $('.good-share').toggle();
       console.log("***SHARE CLIP START***");
       // send to server to share
       if($rootScope.activeView===1) {
@@ -94,7 +99,7 @@ angular.module('kahootsAppApp')
       if($rootScope.activeView===0) {
         groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
           group._id, $scope.userClips[$scope.activeClip]._id, function () {
-            socket.syncUpdates('clip', $scope.userClips);
+            socket.syncUpdates('clip', $scope.userClips, true);
             // TODO :socket.syncUpdates('group', $scope.userGroups);
             getUserGroups();
 
@@ -122,6 +127,9 @@ angular.module('kahootsAppApp')
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token,
         function (groups) {
           $scope.userGroups = groups;
+          if(groups.length===1){
+            getGroupClips($scope.userGroups[0]);
+          }
           console.log("***ADD GROUP END***");
         });
     };
@@ -172,6 +180,7 @@ angular.module('kahootsAppApp')
     var init = function(){
       console.log("***INIT***");
       // Initialise view
+      $('.good-share').toggle();
       $('#my-view-btn').addClass('disabled');
       $('.group-view').toggle();
       $('.add-group').toggle();
@@ -186,11 +195,11 @@ angular.module('kahootsAppApp')
       //console.log("GROUP CLIPS:\n" + $scope.visibleClips);
 
 
-      socket.syncUpdates('clip', $scope.userClips, function(){
+      socket.syncUpdates('clip', $scope.userClips,false, function(){
         getUserClips();
       });
-      socket.syncUpdates('clip', $scope.visibleClips);
-      socket.syncUpdates('group', $scope.userGroups);
+      socket.syncUpdates('clip', $scope.visibleClips, true);
+      socket.syncUpdates('group', $scope.userGroups, false);
 
       //socket.syncUpdates('user', $rootScope.user);
 
@@ -231,7 +240,7 @@ angular.module('kahootsAppApp')
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
         // Set user groups
         $scope.userGroups = groups;
-        socket.syncUpdates('group', $scope.userGroups, function(){
+        socket.syncUpdates('group', $scope.userGroups, false, function(){
           //getUserGroups();
         });
         //console.log("USER GROUPS\n"+JSON.stringify($scope.userGroups));

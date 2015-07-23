@@ -27,8 +27,9 @@ angular.module('kahootsAppApp')
        * @param {String} modelName
        * @param {Array} array
        * @param {Function} cb
+       * @param {Boolean} onlyModifyExisting
        */
-      syncUpdates: function (modelName, array, cb) {
+      syncUpdates: function (modelName, array, onlyModifyExisting, cb) {
         console.log("SyncUpdates:"+modelName);
         cb = cb || angular.noop;
 
@@ -44,16 +45,26 @@ angular.module('kahootsAppApp')
 
           // replace oldItem if it exists
           // otherwise just add item to the collection
-          if (oldItem) {
-            array.splice(index, 1, item);
-            event = 'updated';
-            console.log("UPDATING");
-          } else {
-            array.push(item);
+          if(!onlyModifyExisting) {
+            if (oldItem) {
+              array.splice(index, 1, item);
+              event = 'updated';
+              console.log("UPDATING");
+            } else {
+              array.push(item);
+            }
+          }else{
+            if (oldItem) {
+              array.splice(index, 1, item);
+              event = 'updated';
+              console.log("UPDATING");
+            }
           }
 
           cb(event, item, array);
         });
+
+
 
         /**
          * Syncs removed items on 'model:remove'

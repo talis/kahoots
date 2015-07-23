@@ -11,7 +11,15 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 var redis = require('redis');
+var babel = require('babel_client');
 
+
+// Create a new babel client
+var babelClient = babel.createClient({
+  babel_host:"localhost",
+  babel_port:3000,
+  enable_debug: true
+});
 
 // Create new redis client
 var client = redis.createClient();

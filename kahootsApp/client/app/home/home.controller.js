@@ -7,4 +7,6 @@ angular.module('kahootsAppApp')
     $scope.loginWithTalis = function() {
       $location.path('/login').replace();
     }
+
+
   });
