@@ -166,7 +166,9 @@ angular.module('kahootsAppApp')
       //console.log("GROUP CLIPS:\n" + $scope.visibleClips);
 
 
-      socket.syncUpdates('clip', $scope.userClips);
+      socket.syncUpdates('clip', $scope.userClips, function(){
+        getUserClips();
+      });
       socket.syncUpdates('clip', $scope.visibleClips);
       socket.syncUpdates('group', $scope.userGroups);
 
@@ -190,7 +192,9 @@ angular.module('kahootsAppApp')
       clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
         $scope.userClips = clips;
         if ($scope.userClips.length === 0){ noClip($scope.userClips) }
-        socket.syncUpdates('group', $scope.userClips);
+        /*socket.syncUpdates('group', $scope.userClips, function(){
+          getUserClips();
+        });*/
       });
     };
     /*
