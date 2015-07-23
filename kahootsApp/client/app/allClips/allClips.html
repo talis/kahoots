@@ -52,6 +52,7 @@
               <ul class="dropdown-menu">
                 <li ng-repeat="group in userGroups track by $index"><a href="#" ng-click="shareClip(group)">{{group.name}}</a></li>
                 <li role="separator" class="divider"></li>
+                <li><a href="#">dropdown menu</a></li>
               </ul>
             </div>
           </div>
@@ -103,6 +104,7 @@
             <ul class="dropdown-menu">
               <li ng-repeat="group in userGroups track by $index"><a href="#" ng-click="shareClip(group)">{{group.name}}</a></li>
               <li role="separator" class="divider"></li>
+              <li><a href="#">dropdown menu</a></li>
             </ul>
            </div>
          </div>
@@ -197,7 +199,7 @@
     <h3>My Groups</h3>
     <ul class="nav nav-tabs">
       <li ng-repeat="group in userGroups track by $index">
-        <a href="#{{group}}" ng-click="setActiveGroup(group)">{{group.name}}</a>
+        <a href="#" ng-click="setActiveGroup(group)">{{group.name}}</a>
       <li/>
       <li><a href="#" ng-click="toggleClass('.add-user')"><b>+ User</b></a></li>
       <li><a href="#" ng-click="toggleClass('.add-group')"><b>+ Group</b></a></li>
@@ -205,13 +207,11 @@
     <div class="no-groups">
       <p>You have no groups yet!</p>
     </div>
-    <div class="tab-content">
-      <div id="myclips" class=""tab pane fade in active>
-        <h3>{{userGroups[activeGroup].name}}</h3>
-        <div class="clips" ng-repeat="clip in visibleClips">
-          <div class="col-md-2">
-            <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(clip)">
-          </div>
+    <div id="myclips" class="tab pane fade in active">
+      <h3>{{userGroups[activeGroup].name}}</h3>
+      <div class="clips" ng-repeat="clip in visibleClips">
+        <div class="col-md-2">
+          <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(clip)">
         </div>
       </div>
     </div>

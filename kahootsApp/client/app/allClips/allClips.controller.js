@@ -17,6 +17,15 @@ angular.module('kahootsAppApp')
     $scope.activeGroup = 0;
     $rootScope.activeView = 0;
 
+    var printStatus= function(){
+      console.log("\nSTATUS\n");
+      console.log("ACTIVE VIEW:\n" + $rootScope.activeView+"\n---");
+      console.log("USER CLIPS:\n" + $scope.userClips +"\n---");
+      console.log("USER GROUPS:\n" + $scope.userGroups +"\n---");
+      console.log("VISIBLE CLIPS:\n" + $scope.visibleClips +"\n---");
+      console.log("ACTIVE CLIP:\n" + $scope.activeClip +"\n---");
+      console.log("ACTIVE GROUP:\n" + $scope.activeGroup +"\n---");
+    }
     /*
        Toggles view from my-view to group-view
      */
@@ -41,6 +50,8 @@ angular.module('kahootsAppApp')
         $rootScope.activeView=0;
       }
       console.log("***TOGGLE VIEW END***");
+      printStatus();
+
     };
     /*
        Add a new note to a clip you own.
@@ -138,8 +149,13 @@ angular.module('kahootsAppApp')
      */
     $scope.setActiveGroup = function(group){
       console.log("***SET ACTIVE GROUP START***");
+      console.log("ACT GR:"+$scope.activeGroup);
+      $scope.activeGroup = $scope.userGroups.indexOf(group);
       getGroupClips(group, function(){
+
         console.log("***SET ACTIVE GROUP END***");
+        console.log("ACT GR:"+$scope.activeGroup);
+
       });
     };
     /*
@@ -246,27 +262,20 @@ angular.module('kahootsAppApp')
       console.log("***START GET GROUP CLIPS***");
       groupservice.getClips($rootScope.user._id,
         $rootScope.oauth.access_token, group._id, function(clips){
-          console.log("1");
           $scope.visibleClips = clips;
           //socket.syncUpdates('clip', $scope.visibleClips);
-          console.log("2");
 
           $scope.activeClip = 0;
-          console.log("3");
 
           if($scope.visibleClips.length===0) {
-            console.log("4");
             noClip($scope.visibleClips) ;
-            console.log("5");
           }
           //console.log("VISIBLE CLIPS\n" + JSON.stringify($scope.visibleClips[0]));
-          console.log("6");
 
-          $scope.activeGroup = $scope.userGroups.indexOf(group);
-          console.log("7");
 
-          cb;
-          console.log("8");
+
+
+          cb();
 
           console.log("***END GET GROUP CLIPS***");
         });
