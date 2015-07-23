@@ -7,6 +7,8 @@ angular.module('kahootsAppApp')
     var KAHOOTS_ENDPOINT = "http://localhost:9000";
     var authProvider = "google";
     var shortCode = "talis";
+    $rootScope.activeView;
+
 
     // Login. Get user info from Persona and set $rootScope.user.
     userservice.getLoginData(shortCode, function(err, user){
@@ -43,6 +45,7 @@ angular.module('kahootsAppApp')
         }
         var nextLocation = PERSONA_ENDPOINT + '/auth/providers/' + authProvider + '/login?redirectUri=' + encodeURIComponent(redirectUri) + '&nc=' + new Date().getTime();
         // set the window location
+        $rootScope.activeView = 0;
         window.location = nextLocation; // write nc param otherwise Safari and others will cache redirect
       }
     });

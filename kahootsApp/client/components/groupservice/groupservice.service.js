@@ -22,10 +22,22 @@ angular.module('kahootsAppApp')
     };
 
     instance.getClips = function(user_id,access_token, group_id,  callback){
-      $http.get('/api/groups/' + group_id + '/users/' + user_id+"/clips?access_token="+access_token, {headers:  {
-        'Authorization': 'Bearer ' + access_token }}).success(function(clips) {
-        callback(clips);
-      });
+      console.log("START GROUP SERVICE: GET CLIPS");
+      try {
+        $http.get('/api/groups/' + group_id + '/users/' + user_id + "/clips?access_token=" + access_token, {
+          headers: {
+            'Authorization': 'Bearer ' + access_token
+          }
+        }).success(function (clips) {
+          console.log("here 1");
+          callback(clips);
+          console.log("here 2");
+          console.log("END GROUP SERVICE: GET CLIPS");
+        });
+      }catch(err){
+        console.log("END GROUP SERVICE: GET CLIPS ***ERROR***")
+      };
+
     };
 
     instance.shareClip = function(user_id, access_token, group_id, clip_id, callback){
