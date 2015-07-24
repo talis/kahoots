@@ -141,8 +141,8 @@
         </ul>
         <h3>Chat</h3>
         <div class="comment-container">
-          <div class="comments" ng-repeat="comment in visibleClips[activeClip].comments track by $index">
-            {{comment}}
+          <div class="comments" ng-repeat="comment in comments.annotations track by $index">
+            {{comment.hasBody.chars}}
           </div>
         </div>
         <form class="comment-form" ng-submit="addComment()" name="commentForm">
@@ -183,7 +183,7 @@
     <form role="form">
       <div class="form-group">
         <label for="email">User email:</label>
-        <input ng-model="newUser.email" class="form-control" id="email">
+        <input ng-model="newUser" class="form-control" id="email">
       </div>
       <button type="submit" class="btn btn-default" ng-click="addUser()">Submit</button>
       <button type="cancel" class="btn btn-default" ng-click="toggleClass('.add-user')">Cancel</button>

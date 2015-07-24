@@ -3,6 +3,7 @@
 angular.module('kahootsAppApp')
   .controller('AllClipsCtrl', function ($scope, $rootScope, socket, clipservice, groupservice) {
     // Input variables
+    $scope.newUser = '';
     $scope.newComment = '';
     $scope.newNote = '';
     $scope.newGroup = {
@@ -13,6 +14,7 @@ angular.module('kahootsAppApp')
     $scope.userGroups = [];
     // State dependent
     $scope.visibleClips = [];
+    $scope.comments = [];
     $scope.activeClip = 0;
     $scope.activeGroup = 0;
     $rootScope.activeView = 0;
@@ -82,11 +84,12 @@ angular.module('kahootsAppApp')
       if($scope.newComment ===''){return;}
 
       groupservice.addComment($rootScope.user, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup], $scope.visibleClips[$scope.activeClip], newComment, function(){
-
+        $scope.userGroups[$scope.activeGroup]._id, $scope.visibleClips[$scope.activeClip]._id, $scope.newComment, function(){
+          getComments(function(){});
       });
       $scope.newComment='';
-    }
+
+    };
     /*
       share the active clip with the chosen group.
      */
@@ -137,7 +140,7 @@ angular.module('kahootsAppApp')
         function (groups) {
           $scope.userGroups = groups;
           if(groups.length===1){
-            getGroupClips($scope.userGroups[0]);
+            getGroupClips($scope.userGroups[0], function(){});
           }
           console.log("***ADD GROUP END***");
         });
@@ -146,7 +149,14 @@ angular.module('kahootsAppApp')
       Add user to active group.
      */
     // TODO: addUser
-    $scope.addUser = function(){};
+    $scope.addUser = function(){
+      $('.add-user').toggle();
+      if($scope.newUser === ''){return;}
+      //instance.shareGroup = function(user_id, access_token, other_user_id, group_id, callback)
+      groupservice.shareGroup($rootScope.user._id, $rootScope.oauth.access_token, $scope.newUser,
+        $scope.userGroups[$scope.activeGroup]._id,function(){});
+      $scope.newUser = '';
+    };
     /*
       Set the clip to the active clip.
       @param clip
@@ -276,7 +286,7 @@ angular.module('kahootsAppApp')
        Sets activeClip to 0.
        If list is empty, pushes 'space-filler' clip to visibleClips.
      */
-    var getGroupClips = function(group, cb){
+    var getGroupClips = function(group,cb){
       console.log("***START GET GROUP CLIPS***");
       groupservice.getClips($rootScope.user._id,
         $rootScope.oauth.access_token, group._id, function(clips){
@@ -289,15 +299,27 @@ angular.module('kahootsAppApp')
             noClip($scope.visibleClips) ;
           }
           //console.log("VISIBLE CLIPS\n" + JSON.stringify($scope.visibleClips[0]));
-
-
-
-
           cb();
-
           console.log("***END GET GROUP CLIPS***");
         });
     };
+    /*
+       For active group and clip, get all comments.
+       Sets comments to a list of babel annotation json.
+     */
+    var getComments = function(cb){
+      console.log("***START GET COMMENTS***");
+      groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
+        $scope.userGroups[$scope.activeGroup]._id,
+        $scope.visibleClips[$scope.activeClip]._id, function(comments){
+         $scope.comments = comments;
+          console.log("GET COMMENTS\n");
+          console.log(JSON.stringify(comments));
+          console.log("***END GET COMMENTS***");
+          cb();
+        });
+    };
+
     /*
        Add 'space-filler' clip to list.
        @param list An array of clips.

@@ -29,9 +29,7 @@ angular.module('kahootsAppApp')
             'Authorization': 'Bearer ' + access_token
           }
         }).success(function (clips) {
-          console.log("here 1");
           callback(clips);
-          console.log("here 2");
           console.log("END GROUP SERVICE: GET CLIPS");
         });
       }catch(err){
@@ -56,10 +54,22 @@ angular.module('kahootsAppApp')
     };
 
     instance.addComment = function(user, access_token, group_id, clip_id, comment, callback){
-      // POST api/groups/:group_id/clips/clip_id/users/:user_id/:username/comment
+      // POST api/groups/:group_id/clips/:clip_id/users/:user_id/comments
+      console.log("addComment");
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.post('api/groups/'+ group_id+"/clips/" + clip_id +  "/users/"+ user._id+"/"+ user.name +"/comment" +"?access_token="+access_token, comment).success(function(){
+      $http.post('api/groups/'+ group_id+"/clips/" + clip_id +  "/users/"+ user._id +"/comments" +"?access_token="+access_token, {comment:comment}).success(function(){
         callback();
+      });
+    };
+
+    instance.getComments = function(user_id, access_token, group_id, clip_id, callback){
+      //router.get('/:group_id/clips/:clip_id/users/:user_id/comments', controller.getComments);
+      $http.get('/api/groups/' + group_id + '/clips/' + clip_id + '/users/' + user_id + "/comments?access_token=" + access_token, {
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        }
+      }).success(function (comments) {
+        callback(comments);
       });
     };
 

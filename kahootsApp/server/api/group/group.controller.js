@@ -5,7 +5,17 @@ var Group = require('./group.model');
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
-// POST api/groups/:group_id/clips/clip_id/users/:user_id/:username/comment
+// GET api/groups/:group_id/:user_id
+exports.getGroup = function(req,res){
+  req.personaClient.validateToken(req, res, function () {
+    User.findById(req.params.group_id, function (err, group) {
+      if(err) { return handleError(res, err); }
+      if(!group) { return res.send(404); }
+      return res.json(group);
+    });
+  }, req.params.user_id);
+};
+// POST api/groups/:group_id/clips/clip_id/users/:user_id/comment
 exports.addComment = function(req,res){
   req.personaClient.validateToken(req, res, function () {
     var annotationData = {
@@ -14,13 +24,14 @@ exports.addComment = function(req,res){
         type: 'Text',
         chars: req.body.comment ? req.body.comment : ''
       },
-      hasTarget: {'group': req.params.group_id, 'clip':req.params.clip_id},
-      annotatedBy: req.body.userId,
+      hasTarget: {uri:[req.params.group_id, req.params.clip_id]},
+      annotatedBy: req.params.user_id,
+      annotatedAt: Date.now(),
       motivatedBy: 'comment'
     };
     req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
       console.log("BABEL RESPONSE");
-      console.log(JSON.stringify(results));
+      console.log(results);
       if (err) {
         return handleError(res, err);
       } else {
@@ -29,16 +40,14 @@ exports.addComment = function(req,res){
     });
   }, req.params.user_id);
 };
-// GET api/groups/:group_id/clips/clip_id/users/user_id
+// GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments
 exports.getComments = function(req, res){
   req.personaClient.validateToken(req, res, function () {
     var target = {
-      hasTarget:{
-        group: req.params.group_id,
-        clip: req.params.clip_id
-      }
+      uri:[req.params.group_id, req.params.clip_id]
     };
-    req.babelClient.getAnnotation(req.query.access_token, target, function(err, comments){
+
+    req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
       if (err) {
         return handleError(res, err);
       } else {
@@ -47,8 +56,6 @@ exports.getComments = function(req, res){
     });
   }, req.params.user_id);
 };
-
-
 // POST api/groups/:group_id/users/:user_id/:id
 // Add user to group and vice-versa.
 exports.addUser = function(req, res){
@@ -86,7 +93,6 @@ exports.addUser = function(req, res){
     });
   },my_user_id);
 };
-
 // POST api/groups/:group_id/clips/:clip_id/:id
 // Add clip to group and vice-versa.
 exports.addClip = function(req, res){
@@ -125,7 +131,6 @@ exports.addClip = function(req, res){
     });
   }, user_id);
 };
-
 // GET api/groups/:group_id/users/:user_id/clips
 // Get a list of all clips for a given group
 exports.getGroupClips = function(req, res){
@@ -146,7 +151,6 @@ exports.getGroupClips = function(req, res){
     }); // End get group by id
   }, req.params.user_id);
 };
-
 // GET api/groups/
 // Get list of all groups in db.
 exports.index = function(req, res) {
@@ -155,7 +159,6 @@ exports.index = function(req, res) {
     return res.json(200, groups);
   });
 };
-
 // GET api/groups/:user_id
 // Get all user's groups.
 exports.myGroups = function(req, res) {
@@ -177,7 +180,6 @@ exports.myGroups = function(req, res) {
     });
   }, req.params.id);
 };
-
 // POST api/groups/
 // Creates a new group in the DB, for a given json.
 exports.create = function(req, res) {
@@ -186,8 +188,6 @@ exports.create = function(req, res) {
     return res.json(201, group);
   });
 };
-
-
 //POST api/groups/:user_id
 // User can create a new Group.
 exports.newGroup = function(req,res){
@@ -213,7 +213,6 @@ exports.newGroup = function(req,res){
     });
   }, user_id);
 };
-
 // PUT api/groups/:id
 // Updates an existing group in the DB.
 exports.update = function(req, res) {
@@ -228,7 +227,6 @@ exports.update = function(req, res) {
     });
   });
 };
-
 // DELETE api/groups/:id
 // Deletes a group from the DB.
 exports.destroy = function(req, res) {
@@ -241,7 +239,6 @@ exports.destroy = function(req, res) {
     });
   });
 };
-
 // Handle error.
 function handleError(res, err) {
   return res.send(500, err);

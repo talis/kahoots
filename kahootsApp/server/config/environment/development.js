@@ -22,7 +22,7 @@ module.exports = {
   },
   babel: {
     host: process.env.BABEL_HOST || 'http://babel',
-    port: process.env.BABEL_PORT || 3000
+    port: process.env.BABEL_PORT || 3001
   },
   seedDB: true
 }
