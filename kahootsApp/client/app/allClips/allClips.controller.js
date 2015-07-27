@@ -295,7 +295,7 @@ angular.module('kahootsAppApp')
           //socket.syncUpdates('clip', $scope.visibleClips);
 
           $scope.activeClip = 0;
-
+          getComments(function(){});
           if($scope.visibleClips.length===0) {
             noClip($scope.visibleClips) ;
           }
