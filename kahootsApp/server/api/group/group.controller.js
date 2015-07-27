@@ -18,26 +18,35 @@ exports.getGroup = function(req,res){
 // POST api/groups/:group_id/clips/clip_id/users/:user_id/comment
 exports.addComment = function(req,res){
   req.personaClient.validateToken(req, res, function () {
-    var annotationData = {
-      hasBody: {
-        format: 'text/plain',
-        type: 'Text',
-        chars: req.body.comment ? req.body.comment : ''
-      },
-      hasTarget: {uri:[req.params.group_id, req.params.clip_id]},
-      annotatedBy: req.params.user_id,
-      annotatedAt: Date.now(),
-      motivatedBy: 'comment'
-    };
-    req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
-      console.log("BABEL RESPONSE");
-      console.log(results);
-      if (err) {
-        return handleError(res, err);
-      } else {
-        return res.json(200, results);
-      }
-    });
+    // Find user info.
+    User.findById(req.params.user_id, function (err, user) {
+      if (err) { return handleError(res, err);}
+      if (!user) {return res.send(404);}
+      var annotationData = {
+        hasBody: {
+          format: 'text/plain',
+          type: 'Text',
+          chars: req.body.comment ? req.body.comment : '',
+          details: {
+            first_name: user.first_name,
+            surname: user.surname,
+            email: user.email
+        },
+        hasTarget: {uri:[req.params.group_id, req.params.clip_id]},
+        annotatedBy: req.params.user_id,
+        annotatedAt: Date.now(),
+        motivatedBy: 'comment'
+      };
+      req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
+        console.log("BABEL RESPONSE");
+        console.log(results);
+        if (err) {
+          return handleError(res, err);
+        } else {
+          return res.json(200, results);
+        }
+      }); // end createAnnotation
+    }); // end User.findById
   }, req.params.user_id);
 };
 // GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments
@@ -51,6 +60,7 @@ exports.getComments = function(req, res){
       if (err) {
         return handleError(res, err);
       } else {
+
         return res.json(200, comments);
       }
     });
