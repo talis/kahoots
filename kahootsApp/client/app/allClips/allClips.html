@@ -142,7 +142,7 @@
         <h3>Chat</h3>
         <div class="comment-container">
           <div class="comments" ng-repeat="comment in comments.annotations track by $index">
-            {{comment.hasBody.chars}}
+            {{comment.hasBody.details.first_name}} : {{comment.hasBody.chars}}
           </div>
         </div>
         <form class="comment-form" ng-submit="addComment()" name="commentForm">

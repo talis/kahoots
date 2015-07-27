@@ -167,6 +167,7 @@ angular.module('kahootsAppApp')
         $scope.activeClip = $scope.userClips.indexOf(clip)
       }else{
         $scope.activeClip = $scope.visibleClips.indexOf(clip);
+        getComments(function(){});
       }
       console.log("***SET ACTIVE CLIP END***");
     };

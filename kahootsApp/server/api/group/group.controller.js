@@ -33,7 +33,7 @@ exports.addComment = function(req,res){
             email: user.email
           }
         },
-        hasTarget: {uri:[req.params.group_id, req.params.clip_id]},
+        hasTarget: {uri:[req.params.group_id, req.params.clip_id, req.params.group_id +"_"+ req.params.clip_id]},
         annotatedBy: req.params.user_id,
         annotatedAt: Date.now(),
         motivatedBy: 'comment'
@@ -54,7 +54,7 @@ exports.addComment = function(req,res){
 exports.getComments = function(req, res){
   req.personaClient.validateToken(req, res, function () {
     var target = {
-      uri:[req.params.group_id, req.params.clip_id]
+      "hasTarget.uri": req.params.group_id +"_"+ req.params.clip_id
     };
 
     req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
