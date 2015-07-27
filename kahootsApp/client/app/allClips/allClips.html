@@ -170,7 +170,7 @@
         <input ng_model="newGroup.description" class="form-control" id="description">
       </div>
       <button type="submit" class="btn btn-default" ng-click="addGroup()">Submit</button>
-      <button type="cancel" class="btn btn-default" onClick="toggleClass('add-group')">Cancel</button>
+      <button type="cancel" class="btn btn-default" ng-click="toggleClass('.add-group')">Cancel</button>
     </form>
   </div>
 </div>
@@ -226,6 +226,8 @@
           <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(clip)">
         </div>
       </div>
+      <!--Leave group button-->
+      <button id="leave-group-btn" type="button" class="btn btn-default" ng-click="leaveGroup(userGroups[activeGroup])">Leave group</button>
     </div>
   </div>
 </div>

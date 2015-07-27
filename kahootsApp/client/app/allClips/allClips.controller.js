@@ -43,7 +43,9 @@ angular.module('kahootsAppApp')
         // Change to group view
         if($scope.userGroups.length===0){
           $('.no-groups').show();
+          $('.group-view').hide();
         }else{
+          $('.group-view').show();
           $scope.setActiveGroup($scope.userGroups[$scope.activeGroup]);
         }
         $('#my-view-btn').removeClass('disabled');
@@ -78,7 +80,6 @@ angular.module('kahootsAppApp')
     /*
        Add a comment to a shared clip.
      */
-    // TODO: addComment
     $scope.addComment = function(){
 
       if($scope.newComment ===''){return;}
@@ -146,9 +147,27 @@ angular.module('kahootsAppApp')
         });
     };
     /*
+       Remove yourself from a group
+       @param group
+     */
+    $scope.leaveGroup = function(group){
+      $scope.activeGroup = 0;
+      if($scope.userGroups.length<2) {
+        //removing the last group
+        $scope.visibleClips = [];
+      }else if($scope.userGroups.indexOf(group)===0){
+        // removing first group, replace with second.
+        $scope.setActiveGroup($scope.userGroups[1]);
+      }
+      else {
+        $scope.setActiveGroup($scope.userGroups[0]);
+      }
+      groupservice.leaveGroup($rootScope.user._id, $rootScope.oauth.access_token,
+        group._id, function () {});
+    };
+    /*
       Add user to active group.
      */
-    // TODO: addUser
     $scope.addUser = function(){
       $('.add-user').toggle();
       if($scope.newUser === ''){return;}
@@ -219,7 +238,14 @@ angular.module('kahootsAppApp')
         getUserClips();
       });
       socket.syncUpdates('clip', $scope.visibleClips, true);
-      socket.syncUpdates('group', $scope.userGroups, false);
+      socket.syncUpdates('group', $scope.userGroups, false, function(){
+        if($scope.userGroups.length===0){
+          $('.group-view').hide();
+        }else{
+          $('.group-view').show();
+          getUserGroups();
+        }
+      });
 
       //socket.syncUpdates('user', $rootScope.user);
 
@@ -267,15 +293,14 @@ angular.module('kahootsAppApp')
 
         // If groups exist, get group clips.
         if($scope.userGroups.length>0){
+          $('#leave-group-btn').removeClass('disabled');
           getGroupClips($scope.userGroups[0], function(){
             //socket.syncUpdates('group', $scope.userGroups, function (){});
-            // TODO: change this to a noGroups image
-            // If no groups exist
-            if($scope.userGroups.length===0){ noClip($scope.visibleClips)}
-
             //console.log("VISIBLE CLIPS \n" + JSON.stringify($scope.visibleClips));
             console.log("***GET USER GROUPS END***");
           });
+        }else{
+          $('#leave-group-btn').addClass('disabled');
         }
 
 
@@ -288,6 +313,7 @@ angular.module('kahootsAppApp')
        If list is empty, pushes 'space-filler' clip to visibleClips.
      */
     var getGroupClips = function(group,cb){
+      $('#leave-group-btn').removeClass('disabled');
       console.log("***START GET GROUP CLIPS***");
       groupservice.getClips($rootScope.user._id,
         $rootScope.oauth.access_token, group._id, function(clips){
@@ -310,15 +336,17 @@ angular.module('kahootsAppApp')
      */
     var getComments = function(cb){
       console.log("***START GET COMMENTS***");
-      groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup]._id,
-        $scope.visibleClips[$scope.activeClip]._id, function(comments){
-         $scope.comments = comments;
-          console.log("GET COMMENTS\n");
-          console.log(JSON.stringify(comments));
-          console.log("***END GET COMMENTS***");
-          cb();
-        });
+      if($scope.userGroups.length!==0 && $scope.visibleClips.length!==0) {
+        groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
+          $scope.userGroups[$scope.activeGroup]._id,
+          $scope.visibleClips[$scope.activeClip]._id, function (comments) {
+            $scope.comments = comments;
+            console.log("GET COMMENTS\n");
+            console.log(JSON.stringify(comments));
+            console.log("***END GET COMMENTS***");
+            cb();
+          });
+      }
     };
 
     /*

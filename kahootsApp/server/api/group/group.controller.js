@@ -250,6 +250,44 @@ exports.destroy = function(req, res) {
     });
   });
 };
+// DELETE api/groups/:group_id/users
+// Removes a user from a group.
+exports.removeUser = function(req, res){
+  req.personaClient.validateToken(req, res, function () {
+    Group.findById(req.params.group_id, function(err, group){
+      if(err){return handleError(res, err)}
+      if(!group){return res.send(404)}
+      User.findById(req.params.user_id, function(err, user){
+        if(err){return handleError(res, err)}
+        if(!user){return res.send(404)}
+        // check user is in group.
+        var index1 = user.group.indexOf(group._id);
+        var index2 = group.users.indexOf(user._id);
+        if(index1 === -1){return res.send(404)}
+        if(index2 === -1){return res.send(404)}
+        // remove group from user's groups.
+        user.group.splice(index1, 1);
+        user.save(function (err) {
+          if (err) {return handleError(res, err);}
+          // remove user from group's users.
+          group.users.splice(index2, 1);
+          if(group.users.length===0){
+            // If group is now empty then delete.
+            group.remove(function(err) {
+              if(err) { return handleError(res, err); }
+              return res.send(204);
+            }); // end remove group.
+          }else {
+            group.save(function (err) {
+              if (err) {return handleError(res, err);}
+              return res.json(200);
+            }); // end save group.
+          }
+        }); // end save user.
+      }); // end find user by id.
+    }); // end find group by id.
+  }, req.params.user_id);
+};
 // Handle error.
 function handleError(res, err) {
   return res.send(500, err);
