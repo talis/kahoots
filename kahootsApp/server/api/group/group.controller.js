@@ -8,7 +8,7 @@ var Clip = require('../clip/clip.model');
 // GET api/groups/:group_id/:user_id
 exports.getGroup = function(req,res){
   req.personaClient.validateToken(req, res, function () {
-    User.findById(req.params.group_id, function (err, group) {
+    User.findById(req.params.user_id, function (err, group) {
       if(err) { return handleError(res, err); }
       if(!group) { return res.send(404); }
       return res.json(group);
@@ -31,6 +31,7 @@ exports.addComment = function(req,res){
             first_name: user.first_name,
             surname: user.surname,
             email: user.email
+          }
         },
         hasTarget: {uri:[req.params.group_id, req.params.clip_id]},
         annotatedBy: req.params.user_id,
