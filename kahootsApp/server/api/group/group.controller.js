@@ -42,6 +42,7 @@ exports.addComment = function(req,res){
         console.log("BABEL RESPONSE");
         console.log(results);
         if (err) {
+          console.log(err);
           return handleError(res, err);
         } else {
           return res.json(200, results);
