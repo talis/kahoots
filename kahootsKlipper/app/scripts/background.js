@@ -89,6 +89,8 @@ mybackground.screenshot = function(request) {
     formData.append("rect", JSON.stringify(request.rect));
     formData.append("source", request.source);
     formData.append("author", self.user.guid);
+    console.log(Date());
+    formData.append("dateAdded", Date());
     //formData.append("outerTs", innerTs);
     //formData.append("innerTs", outerTs);
 

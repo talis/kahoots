@@ -280,7 +280,7 @@ angular.module('kahootsAppApp')
       //console.log("GROUP CLIPS:\n" + $scope.visibleClips);
 
 
-      socket.syncUpdates('clip', $scope.userClips,false, function(){
+      socket.syncUpdates('clip', $scope.userClips, false, function(){
         getUserClips();
       });
       socket.syncUpdates('clip', $scope.visibleClips, true);
@@ -318,6 +318,7 @@ angular.module('kahootsAppApp')
       // Get all my clips.
       clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
         $scope.userClips = clips;
+        sortArray($scope.userClips);
       });
     };
     /*
@@ -389,6 +390,21 @@ angular.module('kahootsAppApp')
         groups: []
       };
       list.push(unClip);
+    };
+    /**
+     *
+     * @param array An array of clip objects.
+     */
+    var sortArray = function(array){
+      console.log("Sort array");
+      console.log(array);
+      array.sort(function(a, b) {
+        console.log(JSON.stringify(a))
+        console.log(a.dateAdded);
+        a = new Date(a.dateAdded);
+        b = new Date(b.dateAdded);
+        return a>b ? -1 : a<b ? 1 : 0;
+      });
     };
 
     $(document).ready(init());

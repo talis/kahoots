@@ -115,7 +115,7 @@ exports.addComment = function (req, res) {
 
 // DELETE api/clips/:id
 // Deletes a clip from the DB.
-  exports.destroy = function (req, res) {
+exports.destroy = function (req, res) {
     Clip.findById(req.params.id, function (err, clip) {
       if (err) {return handleError(res, err);}
       if (!clip) {return res.send(404);}
@@ -128,7 +128,7 @@ exports.addComment = function (req, res) {
 
   // DELETE api/clips/clip_id/users/:user_id
   // If user is author, delete clip and remove from all groups.
-  exports.destroyClip = function(req, res){
+exports.destroyClip = function(req, res){
     console.log("DESTROY CLIP");
     req.personaClient.validateToken(req, res, function () {
       Clip.findById(req.params.clip_id, function (err, clip) {
@@ -147,7 +147,7 @@ exports.addComment = function (req, res) {
   };
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
-  exports.upload = function (req, res) {
+exports.upload = function (req, res) {
     console.log("Uploading new clip");
     // Authorize sender
     req.personaClient.validateToken(req, res, function () {

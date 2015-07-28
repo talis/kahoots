@@ -18,13 +18,15 @@ Clip.find({}).remove(function() {
       name    : 'Watermelon',
       source  : "http://news.bbc.co.uk/1/hi/world/asia-pacific/1390088.stm",
       comments: ["yummy","square melons!"],
-      author  : "fdgNy6QWGmIAl7BRjEsFtA"
-  }, {
+      author  : "fdgNy6QWGmIAl7BRjEsFtA",
+      dateAdded : new Date("2015-07-28T14:37:48Z")
+    }, {
       content : 'http://www.animalslook.com/img/cute/meet-cute-pygmy-hippos/meet-cute-pygmy-hippos01.jpg',
       name    : 'hippo',
       source  : "http://www.animalslook.com/meet-cute-pygmy-hippos/?f=1",
       comments: ["wow", "yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo","yo" ],
-      author  : "fdgNy6QWGmIAl7BRjEsFtA"
+      author  : "fdgNy6QWGmIAl7BRjEsFtA",
+      dateAdded : new Date("2015-07-28T14:35:48Z")
 
     },
     {
@@ -32,14 +34,17 @@ Clip.find({}).remove(function() {
       name    : 'bunny',
       source  :"http://justcuteanimals.com/wp-content/uploads/2014/03/cute-animal-pictures-tiny-bay-rabbit.jpg",
       comments: ["cute"],
-      author  : "4cxG2Zqk3r4YemcqV10SGA"
+      author  : "4cxG2Zqk3r4YemcqV10SGA",
+      dateAdded : new Date("2015-06-28T14:35:48Z")
+
     },
     {
       content : 'http://cretique.com/wp-content/uploads/2015/06/wonderful-food-art-ideas-for-cute-meals3.jpg',
       name    : 'cat soup',
       source  : "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
       comments: ["woop"],
-      author  : "4cxG2Zqk3r4YemcqV10SGA"
+      author  : "4cxG2Zqk3r4YemcqV10SGA",
+      dateAdded : new Date("2014-07-28T14:35:48Z")
     }
   );
 });
