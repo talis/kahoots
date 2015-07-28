@@ -12,7 +12,7 @@ router.get('/:group_id/clips/:clip_id/users/:user_id/comments', controller.getCo
 router.post('/', controller.create);
 router.post('/:user_id', controller.newGroup);
 router.post('/:group_id/clips/:clip_id/users/:user_id/comments', controller.addComment);
-router.post('/:group_id/users/:other_user_id/:user_id', controller.addUser);
+router.post('/:group_id/users/:user_id/:email', controller.addUser);
 router.post('/:group_id/clips/:clip_id/:user_id', controller.addClip);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

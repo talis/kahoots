@@ -68,42 +68,40 @@ exports.getComments = function(req, res){
     });
   }, req.params.user_id);
 };
-// POST api/groups/:group_id/users/:user_id/:id
+// POST api/groups/:group_id/users/:user_id/:email
 // Add user to group and vice-versa.
 exports.addUser = function(req, res){
-  //var resp = res;
-  var user_id = req.params.other_user_id;
-  var group_id = req.params.group_id;
-  var my_user_id = req.params.user_id;
   req.personaClient.validateToken(req, res, function () {
     // Check group exists.
-    Group.findById(group_id, function (err, group) {
+    Group.findById(req.params.group_id, function (err, group) {
       if (err) {return handleError(res, err);}
       if (!group) {return res.send(404, "No group exists with id:" + group_id);}
       // Check requesting user is in group - authorized to add.
-      if (group.users.indexOf(my_user_id) === -1) {return (401, "Unauthorized to add user to group.")}
-      // Check user not already in group
-      if (group.users.indexOf(user_id) !== -1) {return (404, "User already added to group.")}
+      if (group.users.indexOf(req.params.user_id) === -1) {return (401, "Unauthorized to add user to group.")}
+
       // Check user exists
-      User.findById(user_id, function (err, user) {
+      User.find({'email':req.params.email},function(err, user){
+        var user = user[0];
         if (err) {return handleError(res, err);}
-        if (!user) {return res.send(404, "No user exists with id:" + user_id);}
+        if (!user) {return res.send(404, "No user exists with id:" + user._id);}
+        // Check user not already in group
+        if (group.users.indexOf(user._id) !== -1) {return (404, "User already added to group.")}
         // Check group not already in user.
-        if (user.group.indexOf(group_id) !== -1) {return (404, "Group already added to user.")}
+        if (user.group.indexOf(req.params.group_id) !== -1) {return (404, "Group already added to user.")}
         // Add user id to group
-        group.users.push(user_id);
+        group.users.push(user._id);
         group.save(function (err) {
           if (err) {return handleError(res, err);}
         });
         // Add group to user
-        user.group.push(group_id);
+        user.group.push(req.params.group_id);
         user.save(function (err) {
           if (err) {return handleError(res, err);}
         });
         return res.json(200, group);
       });
     });
-  },my_user_id);
+  },req.params.user_id);
 };
 // POST api/groups/:group_id/clips/:clip_id/:id
 // Add clip to group and vice-versa.
@@ -306,6 +304,7 @@ exports.removeClip = function(req,res){
   }, req.params.user_id);
 };
 
+// Removes clip from group
 var removeClipFromGroup = function(group_id, clip_id, cb){
   Group.findById(group_id, function(err, group){
     if(err){return cb(500)}

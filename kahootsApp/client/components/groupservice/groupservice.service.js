@@ -44,10 +44,10 @@ angular.module('kahootsAppApp')
       });
     };
 
-    instance.shareGroup = function(user_id, access_token, other_user_id, group_id, callback){
+    instance.shareGroup = function(user_id, access_token, email, group_id, callback){
       // POST api/groups/:group_id/users/:user_id/:id
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.post('api/groups/'+ group_id+  "/users/"+ other_user_id +"/"+ user_id +"?access_token="+access_token).success(function(){
+      $http.post('api/groups/'+ group_id+  "/users/"+ user_id +"/"+ email +"?access_token="+access_token).success(function(){
         callback();
       });
     };
