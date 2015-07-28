@@ -108,7 +108,7 @@
           <div class="col-md-4">
            <h2>Active Clip</h2>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
            <div class="btn-group" float="right">
             <button type="button" class="btn btn-default dropdown-toggle share-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Share <span class="caret"></span>
@@ -119,9 +119,14 @@
               <li><a href="#">dropdown menu</a></li>
             </ul>
            </div>
+          </div>
+          <!--Remove clip button-->
+          <div class = "col-md-2">
+            <button id="remove-clip-btn" type="button" class="btn btn-default" ng-click="removeClip()">Remove Clip</button>
+          </div>
+          <!--END Remove clip button-->
          </div>
-        </div>
-        <div class="col-md-8">
+         <div class="col-md-8">
           <div class="active-clip-container">
             <img class="img-thumbnail"  style="max-height:500px;max-width:500px" ng-src="{{visibleClips[activeClip].content}}">
             <h6><a ng-href="{{visibleClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>

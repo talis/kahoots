@@ -71,10 +71,18 @@ angular.module('kahootsAppApp')
         callback(comments);
       });
     };
-    //router.delete('/:group_id/users/:user_id', controller.removeUser);
+
     instance.leaveGroup = function(user_id, access_token, group_id, callback){
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
       $http.delete('api/groups/'+group_id+"/users/"+user_id+"?access_token="+access_token).success(function(result){
+        console.log(result);
+        callback(result);
+      });
+    };
+
+    instance.removeClip = function(user_id, access_token, group_id, clip_id, callback){
+      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
+      $http.delete('api/groups/'+group_id+"/clips/"+ clip_id +"/users/"+user_id +"?access_token="+access_token).success(function(result){
         console.log(result);
         callback(result);
       });

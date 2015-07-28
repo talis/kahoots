@@ -8,6 +8,8 @@
 //var Thing = require('../api/thing/thing.model');
 var Clip = require('../api/clip/clip.model');
 var Group = require('../api/group/group.model');
+var User = require('../api/user/user.model');
+
 
 
 Clip.find({}).remove(function() {
@@ -42,17 +44,8 @@ Clip.find({}).remove(function() {
   );
 });
 
-Group.find({}).remove(function() {
-  Group.create({
-      name: "Test group 1",
-      info: "This is test group 1",
-      users: ["4cxG2Zqk3r4YemcqV10SGA"]
-    }, {
-      name: "Test group 2",
-      info: "This is test group 2",
-      users: ['fdgNy6QWGmIAl7BRjEsFtA']
-    }
-  );
-});
+
+Group.remove({});
+User.remove({});
 
 
