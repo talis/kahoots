@@ -18,5 +18,14 @@ angular.module('kahootsAppApp')
         comment + "?access_token=" + access_token);
       callback();
     };
+
+    // Delete one of your own clips - and removes clips from groups too.
+    instance.deleteClip = function(user_id, access_token, clip_id, callback){
+      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
+      $http.delete('api/clips/'+clip_id+"/users/"+user_id +"?access_token="+access_token).success(function(result){
+        console.log(result);
+        callback(result);
+      });
+    };
     return instance;
   });

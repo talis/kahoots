@@ -127,7 +127,7 @@ angular.module('kahootsAppApp')
       Todo: Only if admin or person that shared clip in the first place.
      */
     $scope.removeClip = function(){
-      printStatus();
+      //printStatus();
       if($scope.visibleClips[$scope.activeClip]===undefined){return;}
       if($scope.userGroups[$scope.activeGroup]===undefined){return;}
       var index = $scope.activeClip;
@@ -135,6 +135,7 @@ angular.module('kahootsAppApp')
       if($scope.visibleClips.length===1){
         $scope.activeClip = 0;
         $scope.visibleClips = [];
+        noClip($scope.visibleClips);
       }else if($scope.visibleClips.indexOf($scope.activeClip)===0){
         $scope.setActiveClip($scope.visibleClips[1]);
       }else{
@@ -142,9 +143,30 @@ angular.module('kahootsAppApp')
       }
       groupservice.removeClip($rootScope.user._id, $rootScope.oauth.access_token,
         $scope.userGroups[$scope.activeGroup]._id, list[index]._id, function(){});
-      printStatus();
+      //printStatus();
 
     };
+    /*
+       Delete clip for good!
+     */
+    $scope.deleteClip = function(){
+      if($scope.userClips[$scope.activeClip]===undefined){return}
+      var deletedClip = $scope.userClips[$scope.activeClip];
+      if($scope.userClips.length===1){
+        $scope.activeClip = 0;
+        $scope.userClips = [];
+        noClip($scope.userClips);
+      }else if($scope.userClips.indexOf($scope.activeClip)===0){
+        $scope.setActiveClip($scope.userClips[1]);
+      }else{
+        $scope.setActiveClip($scope.userClips[0]);
+      }
+      //instance.deleteClip = function(user_id, access_token, clip_id, callback){
+      clipservice.deleteClip($rootScope.user._id, $rootScope.oauth.access_token,
+      deletedClip._id, function(){
+          getUserClips();
+        });
+    }
     /*
       Add a new group to the db.
       @param newGroup

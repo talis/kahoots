@@ -292,37 +292,47 @@ exports.removeUser = function(req, res){
 // DELETE api/groups/:group_id/clips/:clip_id/users/:user_id
 // Removes clip from group
 exports.removeClip = function(req,res){
-  console.log("*********************************Remove Clip");
   req.personaClient.validateToken(req, res, function () {
-    Group.findById(req.params.group_id, function(err, group){
+    User.findById(req.params.user_id, function(err, user){
       if(err){return handleError(res, err)}
-      if(!group){return res.send(404)}
-      Clip.findById(req.params.clip_id, function(err, clip){
-        if(err){return handleError(res, err)}
-        if(!clip){return res.send(404)}
-        User.findById(req.params.user_id, function(err, user){
-          if(err){return handleError(res, err)}
-          if(!user){return res.send(404)}
-          //check user in group
-          if(user.group.indexOf(group._id)===-1){return res.send(401)}
-          //check clip in group
-          if(group.clips.indexOf(clip._id)===-1){return res.send(404)}
-          //check group in clip
-          if(clip.groups.indexOf(group._id)===-1){return res.send(404)}
-          group.clips.splice(group.clips.indexOf(clip._id),1);
-          group.save(function (err) {
-            if (err) {return handleError(res, err);}
-            // remove user from group's users.
-            clip.groups.splice(clip.groups.indexOf(group._id),1);
-            clip.save(function (err) {
-                if (err) {return handleError(res, err);}
-                return res.json(200);
-            }); // end save clip.
-          }); // end save group.
-        }); // end find user by id.
-      }); // end find clip by id.
-    }); // end find group by id.
+      if(!user){return res.send(404)}
+      //check user in group
+      if(user.group.indexOf(req.params.group_id)===-1){return res.send(401)}
+
+      removeClipFromGroup(req.params.group_id, req.params.clip_id, function(status){
+        return res.send(status);
+      });
+    }); // end find user by id.
   }, req.params.user_id);
+};
+
+var removeClipFromGroup = function(group_id, clip_id, cb){
+  Group.findById(group_id, function(err, group){
+    if(err){return cb(500)}
+    if(!group){return cb(404)}
+    Clip.findById(clip_id, function(err, clip){
+      if(err){return cb(500)}
+      if(!clip){return cb(404)}
+      //check clip in group
+      if(group.clips.indexOf(clip._id)===-1){return cb(404)}
+      //check group in clip
+      if(clip.groups.indexOf(group._id)===-1){return cb(404)}
+      group.clips.splice(group.clips.indexOf(clip._id),1);
+      group.save(function (err) {
+        if (err) {return cb(500)}
+        // remove user from group's users.
+        clip.groups.splice(clip.groups.indexOf(group._id),1);
+        clip.save(function (err) {
+          if (err) {return cb(500)}
+          return cb(202);
+        }); // end save clip.
+      }); // end save group.
+    }); // end find clip by id.
+  }); // end find group by id.
+};
+
+exports.removeClipFromGroup= function(group_id, clip_id){
+  removeClipFromGroup(group_id, clip_id, function(){});
 };
 // Handle error.
 function handleError(res, err) {

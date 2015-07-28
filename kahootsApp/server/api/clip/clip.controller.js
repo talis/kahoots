@@ -21,7 +21,6 @@ exports.mine = function(req, res){
 
 };
 
-
 // GET api/clips/
 // Gets all clips in db.
 exports.index = function(req, res) {
@@ -76,8 +75,6 @@ exports.create = function(req, res) {
     }, req.params.user_id);
   };
 
-
-
 // POST api/clips/:clip_id/users/:user_id/groups/:group_id/comment
 // Add a new comment to the clip
 exports.addComment = function (req, res) {
@@ -119,21 +116,34 @@ exports.addComment = function (req, res) {
 // Deletes a clip from the DB.
   exports.destroy = function (req, res) {
     Clip.findById(req.params.id, function (err, clip) {
-      if (err) {
-        return handleError(res, err);
-      }
-      if (!clip) {
-        return res.send(404);
-      }
+      if (err) {return handleError(res, err);}
+      if (!clip) {return res.send(404);}
       clip.remove(function (err) {
-        if (err) {
-          return handleError(res, err);
-        }
+        if (err) {return handleError(res, err);}
         return res.send(204);
       });
     });
   };
 
+  // DELETE api/clips/clip_id/users/:user_id
+  // If user is author, delete clip and remove from all groups.
+  exports.destroyClip = function(req, res){
+    console.log("DESTROY CLIP");
+    req.personaClient.validateToken(req, res, function () {
+      Clip.findById(req.params.clip_id, function (err, clip) {
+        if (err) {return handleError(res, err);}
+        if (!clip) {return res.send(404);}
+        if(clip.author!==req.params.user_id){return res.send(401)}
+        for(var i=0; i<clip.groups.length; i++){
+          Group.removeClipFromGroup(clip.groups[i], clip._id);
+        }
+        clip.remove(function (err) {
+          if (err) {return handleError(res, err);}
+          return res.send(204);
+        });
+      });// End find clip by id
+    }, req.params.user_id);
+  };
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
   exports.upload = function (req, res) {
