@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+  <title>Kahoots Klip Viewer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<!--Welcome Message-->
+<div class="row">
+  <div class="welcome col-md-10 col-md-offset-1">
+    <h1>Hello, {{user.first_name}}!</h1>
+  </div>
+</div>
+<!--END Welcome Message-->
+
+<!--START share success-->
+<div class="row">
+  <div class="good-share col-md-10 col-md-offset-1 bg-success">
+    <div id="alert-share" class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Success!</strong> Clipped shared!
+    </div>
+  </div>
+</div>
+<!--END share success-->
+
+
+<!--My Clips View-->
+<div class="row">
+  <div class="my-clips-view col-md-10 col-md-offset-1 bg-warning">
+    <!--Active Clip Image-->
+    <div class="column">
+      <div class="col-md-8 bg-danger">
+        <div class="row">
+          <div class="col-md-4">
+            <h2>Active Clip</h2>
+          </div>
+          <div class="col-md-2">
+            <div class="btn-group" float="right">
+              <button type="button" class="btn btn-default dropdown-toggle share-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Share <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="group in userGroups track by $index"><a href="#" ng-click="shareClip(group)">{{group.name}}</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">dropdown menu</a></li>
+              </ul>
+            </div>
+          </div>
+          <!--Remove clip button-->
+          <div class = "col-md-2">
+            <button id="delete-clip-btn" type="button" class="btn btn-default" ng-click="deleteClip()">DELETE Clip</button>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="active-clip-container">
+            <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{userClips[activeClip].content}}">
+            <h6><a ng-href="{{userClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--END Active Clip Image-->
+    <!--Active Clip Comments-->
+    <div class="column">
+      <div class="col-md-4 bg-danger">
+        <h2>Notes</h2>
+        <div class="comment-container">
+          <div class="notes" ng-repeat="comment in userClips[activeClip].comments track by $index">
+            {{comment}}
+          </div>
+        </div>
+        <form class="note-form" ng-submit="addNote()" name="noteForm">
+          <textarea class="form-control" ng-model="newNote" rows="3" placeholder="Enter a new comment." required></textarea>
+          <input class="btn btn-primary" type="submit" ng-disabled="noteForm.$invalid" value="Post">
+        </form>
+      </div>
+    </div>
+    <!--END Active Clip Comments-->
+  </div>
+</div>
+<!--END My Clips View-->
+
+<!--All My Clips-->
+<div class="row">
+  <div class="my-clips col-md-10 col-md-offset-1 bg-warning">
+    <h3>My Clips</h3>
+    <div class="clips" ng-repeat="clip in userClips track by $index">
+      <div class="col-md-2">
+        <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip($index)">
+      </div>
+    </div>
+  </div>
+</div>
+<!--END All My Clips-->
+
+</body>
+
+
+<footer class="footer">
+  <div class="container">
+
+    <p>Angular Fullstack v2.0.13 |
+      <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+      <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+  </div>
+</footer>

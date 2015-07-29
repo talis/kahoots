@@ -8,7 +8,11 @@ angular.module('kahootsAppApp')
     },{
       'title': 'test',
       'link': '/allClips'
-    }];
+    },
+      {
+        'title': 'Home Page',
+        'link': '/homepage'
+      }];
 
     $scope.isCollapsed = true;
 

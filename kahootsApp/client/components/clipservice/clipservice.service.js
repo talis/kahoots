@@ -27,5 +27,36 @@ angular.module('kahootsAppApp')
         callback(result);
       });
     };
+
+    /**
+     * Add 'space-filler' clip to list.
+     * @param list An array of clips.
+     */
+    instance.noClip = function(list) {
+      var unClip = {
+        content: "../assets/images/noClipFound.jpeg",
+        name: "no-clip",
+        comments: ["No Notes"],
+        source: "",
+        author: "",
+        groups: []
+      };
+      list.push(unClip);
+    };
+    /**
+     * Sorts array of clip, newest first.
+     * @param array An array of clip objects.
+     */
+    instance. sortArray = function(array){
+      //console.log("Sort array");
+      //console.log(array);
+      array.sort(function(a, b) {
+        //console.log(JSON.stringify(a))
+        //console.log(a.dateAdded);
+        a = new Date(a.dateAdded);
+        b = new Date(b.dateAdded);
+        return a>b ? -1 : a<b ? 1 : 0;
+      });
+    };
     return instance;
   });
