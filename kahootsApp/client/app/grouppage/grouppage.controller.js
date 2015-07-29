@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('GrouppageCtrl', function ($scope, groupservice, clipservice, $rootScope) {
+  .controller('GrouppageCtrl', function ($scope, groupservice, clipservice, $rootScope, $location) {
     $scope.userGroups = [];
     $scope.groupClips = [];
     $scope.activeGroup = 0;
     $scope.activeClip = 0;
     $scope.newComment = '';
+
 
     /**
      * Setter for active group
@@ -158,6 +159,17 @@ angular.module('kahootsAppApp')
       $scope.setActiveClip(0);
       $scope.setState();
     };
+    /**
+     * Redirect user to add User Page
+     */
+    $scope.addUserPage = function(){
+      console.log("HERE");
+      // Todo: Add checks here.
+      groupservice.addUserPage($scope.userGroups[$scope.activeClip]);
+    };
+    $scope.newGroupPage = function(){
+      $location.path('/newGroup');
+    }
     /**
      * Initialise group page
      * Todo: Change this to save users previous activity

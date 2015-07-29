@@ -1,9 +1,15 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .service('groupservice', function ($http) {
-    var instance = function(){
-      console.log("new groupservice");
+  .service('groupservice', function ($http, $location) {
+    var instance = function(){};
+
+    instance.group = null;
+
+    instance.addUserPage = function(group){
+      console.log("Add User Page GO")
+      this.group = group;
+      $location.path('/addUser');
     };
 
     instance.getMyGroups = function(user_id, access_token, callback){

@@ -102,8 +102,8 @@
       <li ng-repeat="group in userGroups track by $index">
         <a href="#" ng-click="setActiveGroup(group)">{{group.name}}</a>
       <li/>
-      <li><a href="#" ng-click=""><b>+ User</b></a></li>
-      <li><a href="#" ng-click=""><b>+ Group</b></a></li>
+      <li><a href="#" ng-click="addUserPage()"><b>+ User</b></a></li>
+      <li><a href="#" ng-click="newGroupPage()"><b>+ Group</b></a></li>
     </ul>
     <div class="no-groups-msg">
       <p>You have no groups yet!</p>
