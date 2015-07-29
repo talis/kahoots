@@ -1,0 +1,134 @@
+<html lang="en">
+<head>
+  <title>Kahoots Klip Viewer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<!--Welcome Message-->
+<div class="row">
+  <div class="welcome col-md-10 col-md-offset-1">
+    <h1>Hello, {{user.first_name}}!</h1>
+  </div>
+</div>
+<!--END Welcome Message-->
+
+<!--START share success-->
+<div class="row">
+  <div class="good-share col-md-10 col-md-offset-1 bg-success">
+    <div id="alert-share" class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Success!</strong> Clipped shared!
+    </div>
+  </div>
+</div>
+<!--END share success-->
+
+<!--Group View-->
+<div class="row">
+  <div class="group-view col-md-10 col-md-offset-1 bg-warning">
+    <!--Active Clip Image-->
+    <div class="column">
+      <div class="col-md-8 bg-danger">
+        <div class="row">
+          <div class="col-md-4">
+            <h2>Active Clip</h2>
+          </div>
+          <div class="col-md-2">
+            <div class="btn-group" float="right">
+              <button type="button" class="btn btn-default dropdown-toggle share-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Share <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="group in userGroups track by $index"><a href="#" ng-click="shareClip(group)">{{group.name}}</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">dropdown menu</a></li>
+              </ul>
+            </div>
+          </div>
+          <!--Remove clip button-->
+          <div class = "col-md-2">
+            <button id="remove-clip-btn" type="button" class="btn btn-default" ng-click="removeClip()">Remove Clip</button>
+          </div>
+          <!--END Remove clip button-->
+        </div>
+        <div class="col-md-8">
+          <div class="active-clip-container">
+            <img class="img-thumbnail"  style="max-height:500px;max-width:500px" ng-src="{{groupClips[activeClip].content}}">
+            <h6><a ng-href="{{groupClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--END Active Clip Image-->
+    <!--Active Clip Comment-->
+    <div class="column">
+      <div class="clip-groups col-md-4 bg-success">
+        <h3>Clip's Groups</h3>
+        <ul class="nav nav-tabs">
+          <li ng-repeat="group in userGroups track by $index">
+            <a href="#{{group}}" ng-click="setActiveGroup(group);return;">{{group.name}}</a>
+          <li/>
+        </ul>
+        <h3>Chat</h3>
+        <div class="comment-container">
+          <div class="comments" ng-repeat="comment in comments.annotations track by $index">
+            <p>{{comment.hasBody.details.first_name}} : {{comment.hasBody.chars}}</p>
+          </div>
+        </div>
+        <form class="comment-form" ng-submit="addComment()" name="commentForm">
+          <textarea class="form-control" ng-model="newComment" rows="3" placeholder="Enter a new comment." required></textarea>
+          <input class="btn btn-primary" type="submit" ng-disabled="commentForm.$invalid" value="Post">
+        </form>
+      </div>
+    </div>
+    <!--END Active Clip Comment-->
+  </div>
+</div>
+<!--END Group View-->
+
+
+
+<!--All Group Clips-->
+<div class="row">
+  <div class="group-clips col-md-10 col-md-offset-1 bg-warning">
+    <h3>My Groups</h3>
+    <ul class="nav nav-tabs">
+      <li ng-repeat="group in userGroups track by $index">
+        <a href="#" ng-click="setActiveGroup(group)">{{group.name}}</a>
+      <li/>
+      <li><a href="#" ng-click=""><b>+ User</b></a></li>
+      <li><a href="#" ng-click=""><b>+ Group</b></a></li>
+    </ul>
+    <div class="no-groups-msg">
+      <p>You have no groups yet!</p>
+    </div>
+    <div id="myclips" class="tab pane fade in active">
+      <h3>{{userGroups[activeGroup].name}}</h3>
+      <div class="clips" ng-repeat="clip in groupClips">
+        <div class="col-md-2">
+          <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(groupClips.indexOf(clip))">
+        </div>
+      </div>
+      <!--Leave group button-->
+      <button id="leave-group-btn" type="button" class="btn btn-default" ng-click="leaveGroup(userGroups[activeGroup])">Leave group</button>
+    </div>
+  </div>
+</div>
+<!--END All Group Clips-->
+
+
+</body>
+<footer class="footer">
+  <div class="container">
+
+    <p>Angular Fullstack v2.0.13 |
+      <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+      <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+  </div>
+</footer>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('HomepageCtrl', function ($scope, $rootScope, clipservice, groupservice) {
+  .controller('HomepageCtrl', function ($scope, $rootScope, clipservice, groupservice, socket) {
     $scope.userGroups = [];
     $scope.userClips = [];
     $scope.activeClip = 0;
@@ -106,4 +106,22 @@ angular.module('kahootsAppApp')
 
 
     init();
+    socket.syncUpdates('clip', $scope.userClips, false, function(){
+      clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
+        $scope.setUserClips(clips);
+        $scope.setState();
+      });
+    });
+    socket.syncUpdates('group', $scope.userGroups, false, function(){
+      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+        $scope.userGroups=groups;
+        $scope.setState();
+      });
+    });
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('clip');
+      socket.unsyncUpdates('user');
+      socket.unsyncUpdates('group');
+    });
   });
