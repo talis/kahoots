@@ -37,7 +37,7 @@
 <!--START share success-->
 <div class="row">
   <div class="good-share col-md-10 col-md-offset-1 bg-success">
-    <div class="alert alert-success">
+    <div id="alert-share" class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Success!</strong> Clipped shared!
     </div>
@@ -151,7 +151,7 @@
         <h3>Chat</h3>
         <div class="comment-container">
           <div class="comments" ng-repeat="comment in comments.annotations track by $index">
-            {{comment.hasBody.details.first_name}} : {{comment.hasBody.chars}}
+            <p>{{comment.hasBody.details.first_name}} : {{comment.hasBody.chars}}</p>
           </div>
         </div>
         <form class="comment-form" ng-submit="addComment()" name="commentForm">

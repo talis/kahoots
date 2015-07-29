@@ -108,7 +108,6 @@ angular.module('kahootsAppApp')
      */
     $scope.shareClip = function(group) {
       if(group === undefined){return}
-      $('.good-share').hide();
       //console.log("***SHARE CLIP START***");
       // send to server to share
       // If a group clip use visible clips, else use userClips
@@ -120,6 +119,8 @@ angular.module('kahootsAppApp')
       if(shareFrom[$scope.activeClip]===undefined){return;}
       groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
         group._id, shareFrom[$scope.activeClip]._id, function(){});
+      $('#alert-share').show();
+
     };
     /*
       Remove clip from group.
@@ -265,13 +266,14 @@ angular.module('kahootsAppApp')
     var init = function(){
       console.log("***INIT***");
       // Initialise view
-      $('.good-share').hide();
+      $('#alert-share').hide();
       $('#my-view-btn').addClass('disabled');
       $('.group-view').hide();
       $('.add-group').hide();
       $('.add-user').hide();
       $('.group-clips').hide();
       $('.no-groups').hide();
+
 
       getUserClips();
       getUserGroups();
@@ -288,7 +290,8 @@ angular.module('kahootsAppApp')
         if($scope.userGroups.length===0){
           $('.group-view').hide();
         }else{
-          $('.group-view').show();
+          if($scope.activeView===1){
+          $('.group-view').show();}
           getUserGroups();
           getGroupClips($scope.userGroups[$scope.activeGroup]);
         }

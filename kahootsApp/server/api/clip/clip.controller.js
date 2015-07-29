@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var Clip = require('./clip.model');
 var Group = require('../group/group.model');
-var GroupController = require('../group/group.controller');
+var GroupManager = require('../../components/shared/groupClip').GroupManager;
 var User = require('../user/user.model');
 
 var im = require('imagemagick');
@@ -136,7 +136,7 @@ exports.destroyClip = function(req, res){
         if (!clip) {return res.send(404);}
         if(clip.author!==req.params.user_id){return res.send(401)}
         for(var i=0; i<clip.groups.length; i++){
-          GroupController.removeClipFromGroup(clip.groups[i], clip._id);
+          GroupManager.removeClipFromGroup(clip.groups[i], clip._id);
         }
         clip.remove(function (err) {
           if (err) {return handleError(res, err);}

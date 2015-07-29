@@ -30,7 +30,7 @@ Clip.find({}).remove(function() {
 
     },
     {
-      content : 'http://www.cutestatus.com/wp-content/uploads/2015/06/cute-status-whatsapp-status-cool-status-nice-status.jpg',
+      content : 'http://funnyanimalphoto.com/wp-content/uploads/2013/11/dog_funny_face.jpg?bd03d3',
       name    : 'bunny',
       source  :"http://justcuteanimals.com/wp-content/uploads/2014/03/cute-animal-pictures-tiny-bay-rabbit.jpg",
       comments: ["cute"],
@@ -39,7 +39,7 @@ Clip.find({}).remove(function() {
 
     },
     {
-      content : 'http://cretique.com/wp-content/uploads/2015/06/wonderful-food-art-ideas-for-cute-meals3.jpg',
+      content : 'http://cretique.com/wp-content/uploads/2015/06/wonderful-food-art-ideas-for-cute-meals1.jpg',
       name    : 'cat soup',
       source  : "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
       comments: ["woop"],
