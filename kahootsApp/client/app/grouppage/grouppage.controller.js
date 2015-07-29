@@ -140,7 +140,7 @@ angular.module('kahootsAppApp')
     /**
      * Leave active group
      */
-    $scope.leaveGroup = function(){
+    $scope.leaveGroup = function(group){
       if($scope.userGroups.length===1) {
         $scope.setUserGroups([]);
         //removing the last group

@@ -48,8 +48,7 @@ angular.module('kahootsAppApp')
      * @param array An array of clip objects.
      */
     instance. sortArray = function(array){
-      //console.log("Sort array");
-      //console.log(array);
+      if(array===undefined || array.length <2){return}
       array.sort(function(a, b) {
         //console.log(JSON.stringify(a))
         //console.log(a.dateAdded);

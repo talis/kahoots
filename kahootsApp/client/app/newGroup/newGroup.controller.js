@@ -14,6 +14,7 @@ angular.module('kahootsAppApp')
 
       $scope.newGroup.name = '';
       $scope.newGroup.description = '';
+      $scope.goBack();
 
     };
     $scope.goBack = function(){
