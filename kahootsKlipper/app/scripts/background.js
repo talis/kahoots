@@ -124,7 +124,7 @@ mybackground.logout = function(){
           self.user.name = null;
           self.user.guid = null;
           self.oauth = null;
-          alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
+          //alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
         }
       }
     };
@@ -208,8 +208,12 @@ mybackground.login = function(){
       chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         // when the url === LOGIN_COMPLETE_URL login is complete. close tab.
         if(thistabId===tabId && changeInfo.url.substring(0, LOGIN_COMPLETE_URL.length)===LOGIN_COMPLETE_URL){
-          self.getLoginData(function(){}, false);
-          chrome.tabs.remove(tabId);
+          alert("LOGIN COMPLETE");
+          chrome.tabs.remove(thistabId, function(){
+            alert("Removed tab " + thistabId);
+          });
+          self.getLoginData(function(){
+          }, false);
         }
       });
     });
