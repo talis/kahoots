@@ -12,14 +12,14 @@ function signin_clickHandler(e) {
   chrome.extension.sendMessage({directive: "login"}, function(response) {
 
   });
-  this.close();
+  window.close();
 }
 //Handles click events for sign in button.
 function logout_clickHandler(e) {
   chrome.extension.sendMessage({directive: "logout"}, function(response) {
 
   });
-  this.close();
+  window.close();
 }
 
 document.addEventListener('DOMContentLoaded', function () {

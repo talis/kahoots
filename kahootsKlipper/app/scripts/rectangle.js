@@ -36,6 +36,42 @@ myCanvas.initCanvas = function() {
   this.setListeners();
 };
 
+myCanvas.rect.resize = function(x,y, corner){
+  var pointer = {
+    x:x,
+    y:y
+  }
+  var newX = this.x;
+  var newY = this.y;
+  var newWidth = this.width;
+  var newHeight = this.height;
+  switch (corner) {
+    case 1:
+      // top left corner
+      newX = pointer.x;
+      newY = pointer.y;
+      newWidth = this.width - (pointer.x - this.x);
+      newHeight = this.height - (pointer.y - this.y);
+      break;
+    case 2:
+      // top right corner
+      newWidth = this.width + (pointer.x - this.x);
+      newHeight = this.height - (pointer.y - this.y);
+      break;
+    case 3:
+      // bottom left corner
+      newWidth = this.width - (pointer.x - this.x);
+      newHeight = this.height + (pointer.y - this.y);
+      break;
+    case 4:
+      // bottom right corner
+      newWidth = this.width + (pointer.x - this.x);
+      newHeight = this.height + (pointer.y - this.y);
+      break;
+    default:return;
+  }
+}
+
 myCanvas.removeCanvas = function(){
 
   if(this.canvas!==null){
@@ -102,6 +138,7 @@ myCanvas.setListeners = function(){
     // Drags out a image of a rectangle.
   this.canvas.onmousemove = function (e) {
     var pointer = getCursorPosition(e, this);
+
     // re-fill canvas
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.fillRect(0, 0, this.width, this.height);
