@@ -6,8 +6,11 @@ var url = window.location.href;
 
 function getCursorPosition(e, canvas) {
   return {
-    x: e.pageX - canvas.canvasPos.left,
-    y: e.pageY - canvas.canvasPos.top
+    /*x: e.pageX - canvas.canvasPos.left,
+    y: e.pageY - canvas.canvasPos.top*/
+    x: e.pageX - parseInt(canvas.style.left.substring(0, canvas.style.left.length)),
+    y: e.pageY - parseInt(canvas.style.top.substring(0, canvas.style.top.length))
+
   };
 }
 var myCanvas = {
@@ -37,6 +40,9 @@ myCanvas.removeCanvas = function(){
 
   if(this.canvas!==null){
     document.body.removeChild(this.canvas);
+    window.removeEventListener('scroll', function(){
+      console.log("Removed scroll listener");
+    });
     this.canvas=null;
     console.log( " Removed canvas");
   }
@@ -45,6 +51,21 @@ myCanvas.removeCanvas = function(){
 myCanvas.setListeners = function(){
     // Initialise the top left co-ords of the rectangle.
   var self = this;
+
+  window.addEventListener('resize', function(){
+    console.log("Resize");
+    self.canvas.height = self.canvas.offsetHeight;
+    self.canvas.width = self.canvas.offsetWidth;
+
+    /* self.removeCanvas();
+     chrome.extension.sendMessage({directive: "klipper"}, function (response) {});*/
+  });
+  window.addEventListener('scroll', function(e){
+    if(self.canvas !==null) {
+      self.canvas.style.left = window.pageXOffset+"px";
+      self.canvas.style.top = window.pageYOffset+"px";
+    }
+  });
 
   document.addEventListener('keydown', function(e){
     if(e.keyCode===88){
@@ -108,4 +129,3 @@ myCanvas.setListeners = function(){
 };
 
 myCanvas.initCanvas();
-
