@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('GrouppageCtrl', function ($scope, groupservice, clipservice, $rootScope, $location) {
+  .controller('GrouppageCtrl', function ($scope, groupservice, clipservice, $rootScope, $location, socket) {
     $scope.userGroups = [];
     $scope.groupClips = [];
     $scope.activeGroup = 0;
@@ -75,7 +75,10 @@ angular.module('kahootsAppApp')
       if($scope.userGroups.length===0){
         $('.group-view').hide();
         $('.no-groups-msg').show();
-      }else if($scope.groupClips.length===0 || $scope.groupClips[0].name==='no-clip') {
+      }else if($scope.groupClips.length===0) {
+        $('.group-view').hide();
+        $('.no-groups-msg').hide();
+      }else if($scope.groupClips[0].name==='no-clip'){
         $('.group-view').hide();
         $('.no-groups-msg').hide();
       }else{
@@ -87,23 +90,36 @@ angular.module('kahootsAppApp')
      * Remove active clip from active group.
      */
     $scope.removeClip = function(){
-      if($scope.groupClips[$scope.activeClip]===undefined){return;}
-      if($scope.userGroups[$scope.activeGroup]===undefined){return;}
+      if($scope.groupClips[$scope.activeClip]===undefined){
+        console.log('clip undefined');
+        return;}
+      if($scope.userGroups[$scope.activeGroup]===undefined){
+        console.log("Group undefined");
+        return;}
       // Not sure of order of everything, so saving these as constants.
-      var groups = $scope.userGroups;
+      var list = $scope.groupClips;
       var clip = $scope.activeClip;
 
       if($scope.groupClips.length===1){
+        console.log("Removing last clip");
         //Last clip
         $scope.setActiveClip(0);
         $scope.setGroupClips([]);
       }else if($scope.groupClips.indexOf($scope.activeClip)===0){
+        console.log("Removing first clip");
         $scope.setActiveClip(1);
       }else{
+        console.log("Removing not first or last clip");
         $scope.setActiveClip(0);
       }
       groupservice.removeClip($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup]._id, groups[clip]._id, function(){});
+        $scope.userGroups[$scope.activeGroup]._id, list[clip]._id, function(){
+
+          groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
+            $scope.userGroups[$scope.activeGroup]._id, function (clips) {
+              $scope.setGroupClips(clips);
+            });
+        });
       $scope.setState();
     };
     /**
@@ -124,7 +140,7 @@ angular.module('kahootsAppApp')
      */
     $scope.addComment = function(){
       if($scope.newComment ===''){return;}
-      if($scope.groupGroups[$scope.activeGroup]===undefined){return;}
+      if($scope.userGroups[$scope.activeGroup]===undefined){return;}
 
       groupservice.addComment($rootScope.user, $rootScope.oauth.access_token,
         $scope.userGroups[$scope.activeGroup]._id, $scope.groupClips[$scope.activeClip]._id,
@@ -187,7 +203,27 @@ angular.module('kahootsAppApp')
         }
       });
 
-    }
+    };
     init();
+    socket.syncUpdates('clip', $scope.groupClips, false, function(){
+      if($scope.userGroups !== undefined && $scope.userGroups.length!==0) {
+        groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
+          $scope.userGroups[$scope.activeGroup]._id, function (clips) {
+            $scope.setGroupClips(clips);
+          });
+      }
+    });
+    socket.syncUpdates('group', $scope.userGroups, false, function(){
+      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+        $scope.setUserGroups(groups);
+        $scope.setState();
+      });
+    });
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('clip');
+      socket.unsyncUpdates('user');
+      socket.unsyncUpdates('group');
+    });
 
   });

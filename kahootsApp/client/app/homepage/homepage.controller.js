@@ -37,6 +37,18 @@ angular.module('kahootsAppApp')
       $scope.setState();
     };
     /**
+     * Setter for userGroups
+     * @param groups
+     */
+    $scope.setUserGroups = function(groups){
+      if(groups===undefined || groups.length===0){
+        $scope.userGroups=[];
+      }else{
+        $scope.userGroups=groups;
+      }
+      $scope.setState();
+    };
+    /**
      * Setter for active clip
      * @param index Index of clip in userClips
      */
@@ -70,7 +82,7 @@ angular.module('kahootsAppApp')
       groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
         group._id, $scope.userClips[$scope.activeClip]._id, function(){});
 
-      $('#alert-share').show();
+      //$('#alert-share').show();
     };
     /**
      * Deletes active clip, and removes from all groups.
@@ -114,7 +126,7 @@ angular.module('kahootsAppApp')
     });
     socket.syncUpdates('group', $scope.userGroups, false, function(){
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
-        $scope.userGroups=groups;
+        $scope.setUserGroups(groups);
         $scope.setState();
       });
     });

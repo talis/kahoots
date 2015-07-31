@@ -72,7 +72,7 @@
         <h3>Clip's Groups</h3>
         <ul class="nav nav-tabs">
           <li ng-repeat="group in userGroups track by $index">
-            <a href="#{{group}}" ng-click="setActiveGroup(group);return;">{{group.name}}</a>
+            <a href="#{{group}}" ng-click="setActiveGroup($index);return;">{{group.name}}</a>
           <li/>
         </ul>
         <h3>Chat</h3>
@@ -100,7 +100,7 @@
     <h3>My Groups</h3>
     <ul class="nav nav-tabs">
       <li ng-repeat="group in userGroups track by $index">
-        <a href="#" ng-click="setActiveGroup(group)">{{group.name}}</a>
+        <a href="#" ng-click="setActiveGroup($index)">{{group.name}}</a>
       <li/>
       <li><a href="#" ng-click="addUserPage()"><b>+ User</b></a></li>
       <li><a href="#" ng-click="newGroupPage()"><b>+ Group</b></a></li>

@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Group = require('./group.model');
+var GroupManager = require('../../components/shared/groupClip').GroupManager;
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
@@ -290,17 +291,18 @@ exports.removeUser = function(req, res){
 // DELETE api/groups/:group_id/clips/:clip_id/users/:user_id
 // Removes clip from group
 exports.removeClip = function(req,res){
+  console.log("Group: Remove clip");
   req.personaClient.validateToken(req, res, function () {
     User.findById(req.params.user_id, function(err, user){
       if(err){return handleError(res, err)}
       if(!user){return res.send(404)}
       //check user in group
+      console.log("user exists");
       if(user.group.indexOf(req.params.group_id)===-1){return res.send(401)}
 
-      removeClipFromGroup(req.params.group_id, req.params.clip_id, function(status){
-        return res.send(status);
-      });
+      GroupManager.removeClipFromGroup(req.params.group_id, req.params.clip_id);
     }); // end find user by id.
+    return res.json(202);
   }, req.params.user_id);
 };
 

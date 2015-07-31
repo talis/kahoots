@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('should');
+var config = require('../../config/environment');
 var app = require('../../app');
 var request = require('supertest');
 
@@ -14,6 +15,7 @@ describe('GET /api/clips', function() {
       .end(function(err, res) {
         if (err) return done(err);
         res.body.should.be.instanceof(Array);
+
         done();
       });
   });

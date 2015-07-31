@@ -16,7 +16,6 @@ module.exports = function(app) {
   //app.use('/api/envs', require('./api/env'));
 
   app.use('/api/clips', require('./api/clip'));
-  //app.use('/api/things', require('./api/thing'));
 
 
   // All undefined asset or api routes should return a 404

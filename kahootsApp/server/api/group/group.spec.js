@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('should');
+var config = require('../../config/environment');
 var app = require('../../app');
 var request = require('supertest');
 
