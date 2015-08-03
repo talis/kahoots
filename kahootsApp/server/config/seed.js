@@ -14,6 +14,7 @@ var User = require('../api/user/user.model');
 
 Clip.find({}).remove(function() {
   Clip.create({
+      
       content : 'http://www.animalslook.com/img/cute/meet-cute-pygmy-hippos/meet-cute-pygmy-hippos01.jpg',
       name    : 'hippo',
       source  : "http://www.animalslook.com/meet-cute-pygmy-hippos/?f=1",

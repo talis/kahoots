@@ -6,6 +6,8 @@ var app = require('../../app');
 var request = require('supertest');
 
 var access_token = 'ff1b12948ef8524c066cb403c559a4c83df44c05';
+var user_id_1 = 'fdgNy6QWGmIAl7BRjEsFtA';
+var user_id_2 = '4cxG2Zqk3r4YemcqV10SGA';
 
 /*describe('GET /api/clips', function() {
 
@@ -26,10 +28,10 @@ var access_token = 'ff1b12948ef8524c066cb403c559a4c83df44c05';
 /**
  * GET api/clips/mine/:id Test1 - access token invalid
  */
-describe('GET api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA', function(){
+describe('GET api/clips/mine/' + user_id_1, function(){
   it('should respond with a 401 unauthorised status', function(done){
     request(app)
-      .get('/api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA')
+      .get('/api/clips/mine/' + user_id_1)
       .expect(401)
       .end(function(err, res){
         if (err!=null) throw err;
@@ -54,10 +56,10 @@ describe('GET api/clips/mine/1234?access_token='+access_token, function(){
 /**
  * GET api/clips/mine/:id Test3 - wrong access code for user
  */
-describe('GET api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA?access_token='+access_token, function(){
+describe('GET api/clips/mine/'+user_id_1+'?access_token='+access_token, function(){
   it('should respond with 401 unauthorized', function(done){
     request(app)
-      .get('/api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA?access_token='+access_token)
+      .get('/api/clips/mine/'+user_id_1+'?access_token='+access_token)
       .expect(401)
       .end(function(err, res){
         if (err!=null) throw err;
@@ -68,10 +70,10 @@ describe('GET api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA?access_token='+access_token,
 /**
  * GET api/clips/mine/:id Test4 - should return with clip bunny
  */
-describe('GET api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token, function(){
+describe('GET api/clips/mine/'+user_id_2+'?access_token='+access_token, function(){
   it('should respond with an array with single hippo clip', function(done){
     request(app)
-      .get('/api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token)
+      .get('/api/clips/mine/'+user_id_2+'?access_token='+access_token)
       .expect('Content-Type', /json/)
       .end(function(err, res){
         if (err) return done(err);
@@ -81,24 +83,13 @@ describe('GET api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token,
   })
 });
 /**
- * PUT api/clips/:clip_id/users/:user_id - adding comment
+ * PUT api/clips/:clip_id/users/:user_id - Access token expired
  */
-describe('GET /api/clips/res.body[0]._id/users/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token, function(){
-  it('should respond with an array with single hippo clip', function(done){
+// todo: Need to get clip_id from seeded db.
+/*describe('POST api/clips/@clip_id/users/:user_id/comments?access_token=1234', function(){
+  it('should respond with a 401, unauthorised', function(done){
+
     request(app)
-      .get('/api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token)
-      .end(function(err, res){
-        if (err) return done(err);
-        request(app)
-          .put('/api/clips/'+res.body[0]._id+'/users/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token)
-          .expect('Content-Type', /json/)
-          .end(function(err, res){
-            if (err) return done(err);
-            res.body[0].should.have.property('name', 'bunny');
-            done();
-          });
-      });
-
-
-  });
-});
+      .get('api/clips/')
+  })
+})*/

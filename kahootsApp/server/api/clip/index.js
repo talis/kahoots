@@ -12,7 +12,7 @@ router.get('/:id', controller.show);*/
 // GET api/clips/:clip_id/users/:user_id/comments
 router.get('/:clip_id/users/:user_id/comments', controller.getComments);
 router.get('/mine/:id', controller.mine);
-router.post('/:clip_id/users/:user_id/:comment', controller.addComment);
+router.post('/:clip_id/users/:user_id/comments', controller.addComment);
 //router.post('/', controller.create);
 router.post('/file-upload/:id', [ multer({ }), controller.upload]);
 //router.post('/:clip_id/users/:user_id', controller.update);

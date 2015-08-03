@@ -15,8 +15,7 @@ angular.module('kahootsAppApp')
     instance.addNewNote = function(user_id, access_token, clip_id, comment, callback) {
       console.log("Add new note");
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.post('api/clips/' + clip_id + "/users/" + user_id  + "/" +
-        comment + "?access_token=" + access_token, {comment:comment}).success(function(){
+      $http.post('api/clips/' + clip_id + "/users/" + user_id  + "/comments" + "?access_token=" + access_token, {comment:comment}).success(function(){
         callback();
       });
 
