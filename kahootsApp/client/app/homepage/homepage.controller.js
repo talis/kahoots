@@ -4,6 +4,7 @@ angular.module('kahootsAppApp')
   .controller('HomepageCtrl', function ($scope, $rootScope, clipservice, groupservice, socket) {
     $scope.userGroups = [];
     $scope.userClips = [];
+    $scope.userComments = [];
     $scope.activeClip = 0;
     $scope.newNote = '';
 
@@ -16,6 +17,7 @@ angular.module('kahootsAppApp')
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
         $scope.userGroups=groups;
       });
+
     };
 
     /**
@@ -33,6 +35,11 @@ angular.module('kahootsAppApp')
         //else display 'yes-clips'
         $scope.userClips = clipArray;
         clipservice.sortArray($scope.userClips);
+        clipservice.getNotes($rootScope.user._id, $rootScope.oauth.access_token, $scope.userClips[$scope.activeClip]._id, function (comments) {
+          $scope.userComments = comments.annotations;
+          //console.log(comments.annotations[0]);
+
+        });
       }
       $scope.setState();
     };
@@ -56,6 +63,12 @@ angular.module('kahootsAppApp')
       if($scope.userClips.length===0){$scope.activeClip=0; return;}
       if(index>=$scope.userClips.length){return;}
       $scope.activeClip = index;
+      // Get clip comments
+      clipservice.getNotes($rootScope.user._id, $rootScope.oauth.access_token, $scope.userClips[$scope.activeClip]._id, function (comments) {
+        $scope.userComments = comments.annotations;
+        //console.log(comments.annotations[0]);
+
+      });
     };
     /**
      * Setter for state
@@ -112,7 +125,12 @@ angular.module('kahootsAppApp')
 
       // Add new note to clip in db
       clipservice.addNewNote($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userClips[$scope.activeClip]._id,$scope.newNote, function(){});
+        $scope.userClips[$scope.activeClip]._id,$scope.newNote, function(){
+          clipservice.getNotes($rootScope.user._id, $rootScope.oauth.access_token, $scope.userClips[$scope.activeClip]._id, function (comments) {
+            $scope.userComments = comments.annotations;
+            //console.log(comments.annotations[0]);
+          });
+        });
       $scope.newNote = '';
     };
 

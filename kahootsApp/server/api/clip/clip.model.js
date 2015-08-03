@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 var ClipSchema = new Schema({
   content: String,
   name: String,
-  comments: [String],
+  comments: [{first_name:String, surname:String, comment:String}],
   source: String,
   author: String,
   groups:[String],

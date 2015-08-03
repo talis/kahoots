@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var GroupSchema = new Schema({
   name: String,
   info: String,
-  chat: [{author:String, date:Date, comment:String}],
+  chat: [Schema.Types.Mixed],
   users: [String],
   clips: [String]
 });

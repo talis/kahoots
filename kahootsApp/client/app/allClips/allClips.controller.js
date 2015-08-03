@@ -400,10 +400,10 @@ angular.module('kahootsAppApp')
      */
     var sortArray = function(array){
       console.log("Sort array");
-      console.log(array);
+      //console.log(array);
       array.sort(function(a, b) {
-        console.log(JSON.stringify(a))
-        console.log(a.dateAdded);
+        //console.log(JSON.stringify(a))
+        //console.log(a.dateAdded);
         a = new Date(a.dateAdded);
         b = new Date(b.dateAdded);
         return a>b ? -1 : a<b ? 1 : 0;

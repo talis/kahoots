@@ -14,13 +14,6 @@ var User = require('../api/user/user.model');
 
 Clip.find({}).remove(function() {
   Clip.create({
-      content : 'http://pogogi.com/sites/default/files/field/image/square-watermelon.jpg',
-      name    : 'Watermelon',
-      source  : "http://news.bbc.co.uk/1/hi/world/asia-pacific/1390088.stm",
-      comments: ["yummy","square melons!"],
-      author  : "fdgNy6QWGmIAl7BRjEsFtA",
-      dateAdded : new Date("2015-07-28T14:37:48Z")
-    }, {
       content : 'http://www.animalslook.com/img/cute/meet-cute-pygmy-hippos/meet-cute-pygmy-hippos01.jpg',
       name    : 'hippo',
       source  : "http://www.animalslook.com/meet-cute-pygmy-hippos/?f=1",
@@ -42,15 +35,34 @@ Clip.find({}).remove(function() {
       content : 'http://cretique.com/wp-content/uploads/2015/06/wonderful-food-art-ideas-for-cute-meals1.jpg',
       name    : 'cat soup',
       source  : "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
-      comments: ["woop"],
-      author  : "4cxG2Zqk3r4YemcqV10SGA",
+      comments: [],
+      author  : "fdgNy6QWGmIAl7BRjEsFtA",
       dateAdded : new Date("2014-07-28T14:35:48Z")
     }
   );
 });
 
 
-Group.remove({});
-User.remove({});
+Group.find({}).remove(function(){
+  Group.create({});
+});
+User.find({}).remove(function(){
+  User.create({
+    _id:'fdgNy6QWGmIAl7BRjEsFtA',
+    email: "test.tn@talis.com",
+    surname: 'TestAccount',
+    first_name: 'TN',
+    group:[]
+  },
+    {
+      "_id" : "4cxG2Zqk3r4YemcqV10SGA",
+      "email" : "lauren.lewis@talis.com",
+      "first_name" : "Lauren",
+      "group" : [],
+      "surname" : "Lewis"
+    }
+  );
+});
+
 
 

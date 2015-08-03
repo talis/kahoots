@@ -71,8 +71,8 @@
       <div class="col-md-4 bg-danger">
         <h2>Notes</h2>
         <div class="comment-container">
-          <div class="notes" ng-repeat="comment in userClips[activeClip].comments track by $index">
-            {{comment}}
+          <div class="notes" ng-repeat="comment in userComments track by $index">
+            <p>{{comment.hasBody.details.first_name}}:{{comment.hasBody.chars}} </p>
           </div>
         </div>
         <form class="note-form" ng-submit="addNote()" name="noteForm">

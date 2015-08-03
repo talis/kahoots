@@ -13,10 +13,26 @@ angular.module('kahootsAppApp')
 
     // Only for own clip.
     instance.addNewNote = function(user_id, access_token, clip_id, comment, callback) {
+      console.log("Add new note");
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.post('api/clips/' + clip_id + "/users/" + user_id + "/groups/none/" +
-        comment + "?access_token=" + access_token);
-      callback();
+      $http.post('api/clips/' + clip_id + "/users/" + user_id  + "/" +
+        comment + "?access_token=" + access_token, {comment:comment}).success(function(){
+        callback();
+      });
+
+    };
+
+    instance.getNotes = function(user_id, access_token, clip_id, callback) {
+      console.log("GET Notes");
+      //router.get('/:group_id/clips/:clip_id/users/:user_id/comments', controller.getComments);
+      $http.get('/api/clips/' + clip_id + '/users/' + user_id + "/comments?access_token=" + access_token, {
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        }
+      }).success(function (comments) {
+        console.log("GOT Notes");
+        callback(comments);
+      });
     };
 
     // Delete one of your own clips - and removes clips from groups too.

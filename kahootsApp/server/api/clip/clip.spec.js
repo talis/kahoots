@@ -5,7 +5,9 @@ var config = require('../../config/environment');
 var app = require('../../app');
 var request = require('supertest');
 
-describe('GET /api/clips', function() {
+var access_token = 'ff1b12948ef8524c066cb403c559a4c83df44c05';
+
+/*describe('GET /api/clips', function() {
 
   it('should respond with JSON array', function(done) {
     request(app)
@@ -18,5 +20,85 @@ describe('GET /api/clips', function() {
 
         done();
       });
+  });
+});*/
+
+/**
+ * GET api/clips/mine/:id Test1 - access token invalid
+ */
+describe('GET api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA', function(){
+  it('should respond with a 401 unauthorised status', function(done){
+    request(app)
+      .get('/api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA')
+      .expect(401)
+      .end(function(err, res){
+        if (err!=null) throw err;
+        done();
+      })
+  })
+});
+/**
+ * GET api/clips/mine/:id Test2 - unknown user id, 404
+ */
+describe('GET api/clips/mine/1234?access_token='+access_token, function(){
+  it('should respond with a 404 user not found', function(done){
+    request(app)
+      .get('/api/clips/mine/1234?access_token='+access_token)
+      .expect(404)
+      .end(function(err, res){
+        if (err!=null) throw err;
+        done();
+      })
+  })
+});
+/**
+ * GET api/clips/mine/:id Test3 - wrong access code for user
+ */
+describe('GET api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA?access_token='+access_token, function(){
+  it('should respond with 401 unauthorized', function(done){
+    request(app)
+      .get('/api/clips/mine/fdgNy6QWGmIAl7BRjEsFtA?access_token='+access_token)
+      .expect(401)
+      .end(function(err, res){
+        if (err!=null) throw err;
+        done();
+      })
+  })
+});
+/**
+ * GET api/clips/mine/:id Test4 - should return with clip bunny
+ */
+describe('GET api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token, function(){
+  it('should respond with an array with single hippo clip', function(done){
+    request(app)
+      .get('/api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token)
+      .expect('Content-Type', /json/)
+      .end(function(err, res){
+        if (err) return done(err);
+        res.body[0].should.have.property('name', 'bunny');
+        done();
+      })
+  })
+});
+/**
+ * PUT api/clips/:clip_id/users/:user_id - adding comment
+ */
+describe('GET /api/clips/res.body[0]._id/users/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token, function(){
+  it('should respond with an array with single hippo clip', function(done){
+    request(app)
+      .get('/api/clips/mine/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token)
+      .end(function(err, res){
+        if (err) return done(err);
+        request(app)
+          .put('/api/clips/'+res.body[0]._id+'/users/4cxG2Zqk3r4YemcqV10SGA?access_token='+access_token)
+          .expect('Content-Type', /json/)
+          .end(function(err, res){
+            if (err) return done(err);
+            res.body[0].should.have.property('name', 'bunny');
+            done();
+          });
+      });
+
+
   });
 });
