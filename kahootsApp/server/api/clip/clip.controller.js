@@ -9,19 +9,15 @@ var request = require('request');
 var im = require('imagemagick');
 var fs = require('fs');
 
-// GET api/clips/mine/:id
+// GET api/clips/:id
 // Gets all clips for given user_id
-exports.mine = function(req, res){
+exports.userClips = function(req, res){
   req.personaClient.validateToken(req, res, function () {
-    User.findById(req.params.id, function(err, user){
-      if(err) { return handleError(res, err); }
-      if(!user) { return res.send(404); }
-      Clip.find({'author': user._id}, function (err, clip) {
+      Clip.find({'author': req.params.id}, function (err, clip) {
         if(err) { return handleError(res, err); }
         if(!clip) { return res.send(404); }
         return res.json(200, clip);
       });
-    });
   },req.params.id);
 
 };
@@ -94,7 +90,7 @@ exports.addComment = function (req, res) {
         if (!user) {return res.send(404);}
 
         // If user is author can comment.
-        if( clip.author !== user._id){return res.send(401)}
+        if( clip.author !== user._id){return res.send(401,"not author of clip")}
         var annotationData = {
           hasBody: {
             format: 'text/plain',
@@ -129,15 +125,10 @@ exports.addComment = function (req, res) {
 // GET api/clips/:clip_id/users/:user_id/comments
 exports.getComments = function(req, res){
   req.personaClient.validateToken(req, res, function () {
-    var target = {
-      "hasTarget.uri": req.params.clip_id
-    };
+    var target = {"hasTarget.uri": req.params.clip_id};
 
     req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
-      if (err) {
-        return handleError(res, err);
-      } else {
-
+      if (err) {return handleError(res, err);} else {
         return res.json(200, comments);
       }
     });
@@ -178,34 +169,31 @@ exports.destroyClip = function(req, res){
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
 exports.upload = function (req, res) {
-    console.log("Uploading new clip");
+   // console.log("Uploading new clip");
     // Authorize sender
     req.personaClient.validateToken(req, res, function () {
-      console.log("Authorized user");
-
       var rect = JSON.parse(req.body.rect);
       var data = (req.body.content).replace(/^data:image\/\w+;base64,/, "");
       var buf = new Buffer(data, 'base64');
-
       var filename = guid() +".png";
 
       // write img to temp file
       fs.writeFile("temp.png", buf , function(err) {
         if(err) {return handleError(res, err);}
-        console.log("Temp png created");
+        //console.log("Temp png created");
 
         //crop img
         var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
         im.convert(args, function(err, stdout){
           console.log("Clipped");
-          // Testing DEPOT
-          //var request = require('request');
+
+          // Post image to depot
           var formData = {
             filename: filename,
             contentType: 'image/png',
             file: fs.createReadStream("./client/assets/uploads/" + filename)
           };
-          console.log(formData);
+          //console.log(formData);
           var options = {
             url:'https://staging-files.talis.com/files.json?access_token='+req.query.access_token,
             formData:formData,
@@ -216,15 +204,16 @@ exports.upload = function (req, res) {
                 if(err){
                   return console.error('upload failed:'+err);
                 }
-                console.log('Upload successful! Server responded with', body);
+                console.log('Upload successful! Server responded with', body._id);
               });
+          // Testing get from depot
           request.get({url:'https://staging-files.talis.com/files/55bb86514d3825da07000000.json?access_token='+req.query.access_token,
             headers:{accept:'application/json'}}, function(err, httpResponse, body){
             if(err){
               return console.error('Get depot file error',err);
             }
             console.log('Download: Server responded with:'+body);
-          })
+          });
           // Finished testing DEPOT
 
           if(err){

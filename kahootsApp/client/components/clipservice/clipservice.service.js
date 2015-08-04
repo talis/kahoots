@@ -5,7 +5,7 @@ angular.module('kahootsAppApp')
     var instance = function(){};
 
     instance.getMyClips = function(user_id, access_token, callback){
-      $http.get('/api/clips/mine/' + user_id+"?access_token="+access_token, {headers:  {
+      $http.get('/api/clips/' + user_id+"?access_token="+access_token, {headers:  {
         'Authorization': 'Bearer ' + access_token }}).success(function(clips) {
         callback(clips);
       });
