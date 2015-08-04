@@ -107,8 +107,8 @@ exports.addComment = function (req, res) {
           motivatedBy: 'comment'
         };
         req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
-          console.log("BABEL RESPONSE");
-          console.log(results);
+          //console.log("BABEL RESPONSE");
+          //console.log(results);
           if (err) {
             console.log(err);
             return handleError(res, err);
@@ -148,7 +148,7 @@ exports.getComments = function(req, res){
   // DELETE api/clips/clip_id/users/:user_id
   // If user is author, delete clip and remove from all groups.
 exports.destroyClip = function(req, res){
-    console.log("DESTROY CLIP");
+    //console.log("DESTROY CLIP");
     req.personaClient.validateToken(req, res, function () {
       Clip.findById(req.params.clip_id, function (err, clip) {
         if (err) {return handleError(res, err);}

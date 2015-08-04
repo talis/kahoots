@@ -20,6 +20,7 @@ var fakeclip = "55ba24f46a50e6033add8569";
 var group3 = "55b690e7ac571fb05cef1a23";
 var group2 = "55b690e7ac571fb05cef1a22";
 var group1 = "55b690e7ac571fb05cef1a21";
+var group4 = "55b690e7ac571fb05cef1a24";
 var fakegroup = "55b690e7ac571fb05cef1a29";
 
 
@@ -199,7 +200,7 @@ describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?a
 /**
  * GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments - expired token
  */
-describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+expired_token, function(){
+describe('GET /api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+expired_token, function(){
   it('should respond with 401 unauthorized', function(done){
     request(app)
       .get('/api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+expired_token)
@@ -213,7 +214,7 @@ describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?a
 /**
  * GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments - fake group
  */
-describe('POST /api/groups/'+fakegroup+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token, function(){
+describe('GET /api/groups/'+fakegroup+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token, function(){
   it('should respond with empty list', function(done){
     request(app)
       .get('/api/groups/'+fakegroup+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token)
@@ -227,7 +228,7 @@ describe('POST /api/groups/'+fakegroup+'/clips/'+clip1+'/users/'+user1+'/comment
 /**
  * GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments - user not in group
  */
-describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token, function(){
+describe('GET /api/groups/'+group3+'/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token, function(){
   it('should respond with 401 user not group so is unauthorized', function(done){
     request(app)
       .get('/api/groups/'+group3+'/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token)
@@ -241,7 +242,7 @@ describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user2+'/comments?a
 /**
  * GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments - good
  */
-describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token, function(){
+describe('GET/api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token, function(){
   it('should respond with array of annotations', function(done){
     request(app)
       .get('/api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token)
@@ -256,7 +257,7 @@ describe('POST /api/groups/'+group3+'/clips/'+clip1+'/users/'+user1+'/comments?a
 /**
  * GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments - fake clip
  */
-describe('POST /api/groups/'+group3+'/clips/'+fakeclip+'/users/'+user1+'/comments?access_token='+access_token, function(){
+describe('GET /api/groups/'+group3+'/clips/'+fakeclip+'/users/'+user1+'/comments?access_token='+access_token, function(){
   it('should respond with an empty array', function(done){
     request(app)
       .get('/api/groups/'+group3+'/clips/'+fakeclip+'/users/'+user1+'/comments?access_token='+access_token)
@@ -264,6 +265,91 @@ describe('POST /api/groups/'+group3+'/clips/'+fakeclip+'/users/'+user1+'/comment
       .end(function(err, res) {
         if (err) return done(err);
         res.body.annotations.should.be.length(0);
+        done();
+      });
+  });
+});
+
+/**
+ *  POST api/groups/:group_id/users/:user_id/:email - expired token
+ */
+describe('POST /api/groups/'+group4+'/users/'+user1+'/lauren.lewis@talis.com?access_token='+expired_token, function(){
+  it('should respond with 401 unauthorized', function(done){
+    request(app)
+      .post('/api/groups/'+group4+'/users/'+user1+'/lauren.lewis@talis.com?access_token='+expired_token)
+      .expect(401)
+      .end(function(err, res) {
+        if (err != null) throw err;
+        done();
+      });
+  });
+});
+/**
+ *  POST api/groups/:group_id/users/:user_id/:email - fake group 404
+ */
+describe('POST /api/groups/'+fakegroup+'/users/'+user1+'/lauren.lewis@talis.com?access_token='+access_token, function(){
+  it('should respond with 404 group not found', function(done){
+    request(app)
+      .post('/api/groups/'+fakegroup+'/users/'+user1+'/lauren.lewis@talis.com?access_token='+access_token)
+      .expect(404)
+      .end(function(err, res) {
+        if (err != null) throw err;
+        done();
+      });
+  });
+});
+/**
+ *  POST api/groups/:group_id/users/:user_id/:email - user not in group
+ */
+describe('POST /api/groups/'+group4+'/users/'+user2+'/lauren.lewis@talis.com?access_token='+access_token, function(){
+  it('should respond with 401 user not in group, not authorized to add new user', function(done){
+    request(app)
+      .post('/api/groups/'+group4+'/users/'+user2+'/lauren.lewis@talis.com?access_token='+access_token)
+      .expect(401)
+      .end(function(err, res) {
+        if (err != null) throw err;
+        done();
+      });
+  });
+});
+/**
+ *  POST api/groups/:group_id/users/:user_id/:email - email does not belong to kahoots user
+ */
+describe('POST /api/groups/'+group4+'/users/'+user1+'/alan@talis.com?access_token='+access_token, function(){
+  it('should respond with 404 email not found', function(done){
+    request(app)
+      .post('/api/groups/'+group4+'/users/'+user1+'/alan@talis.com?access_token='+access_token)
+      .expect(404)
+      .end(function(err, res) {
+        if (err != null) throw err;
+        done();
+      });
+  });
+});
+/**
+ *  POST api/groups/:group_id/users/:user_id/:email - user already in group
+ */
+describe('POST /api/groups/'+group4+'/users/'+user1+'/tn.test@talis.com?access_token='+access_token, function(){
+  it('should respond with 400 user already in group', function(done){
+    request(app)
+      .post('/api/groups/'+group4+'/users/'+user1+'/test.tn@talis.com?access_token='+access_token)
+      .expect(400)
+      .end(function(err, res) {
+        if (err != null) throw err;
+        done();
+      });
+  });
+});
+/**
+ *  POST api/groups/:group_id/users/:user_id/:email - good
+ */
+describe('POST /api/groups/'+group4+'/users/'+user1+'/lauren.lewis@talis.com?access_token='+access_token, function(){
+  it('should respond with group ', function(done){
+    request(app)
+      .post('/api/groups/'+group4+'/users/'+user1+'/lauren.lewis@talis.com?access_token='+access_token)
+      .expect(200)
+      .end(function(err, res) {
+        if (err) return done(err);
         done();
       });
   });

@@ -107,6 +107,13 @@ Group.find({}).remove(function(){
         "fdgNy6QWGmIAl7BRjEsFtA"
       ],
       "chat" : [ ]
+    },{
+      "_id" : "55b690e7ac571fb05cef1a24",
+      "name" : "Test group 4",
+      "info" : "This is test group 4",
+      "clips" : [ ],
+      "users" : [ "fdgNy6QWGmIAl7BRjEsFtA" ],
+      "chat" : [ ]
     }
 
 
@@ -118,7 +125,7 @@ User.find({}).remove(function(){
     email: "test.tn@talis.com",
     surname: 'TestAccount',
     first_name: 'TN',
-    group:["55b690e7ac571fb05cef1a23","55b690e7ac571fb05cef1a22"]
+    group:["55b690e7ac571fb05cef1a23","55b690e7ac571fb05cef1a22","55b690e7ac571fb05cef1a24"]
   },
     {
       "_id" : "4cxG2Zqk3r4YemcqV10SGA",
