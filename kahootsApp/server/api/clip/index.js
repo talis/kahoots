@@ -17,6 +17,6 @@ router.post('/:clip_id/users/:user_id/comments', controller.addComment);
 router.post('/file-upload/:id', [ multer({ }), controller.upload]);
 //router.post('/:clip_id/users/:user_id', controller.update);
 router.delete('/:clip_id/users/:user_id', controller.destroyClip);
-router.delete('/:id', controller.destroy);
+//router.delete('/:id', controller.destroy);
 
 module.exports = router;

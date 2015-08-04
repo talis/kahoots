@@ -39,6 +39,34 @@ Clip.find({}).remove(function() {
       comments: [],
       author  : "fdgNy6QWGmIAl7BRjEsFtA",
       dateAdded : new Date("2014-07-28T14:35:48Z")
+    },
+    {
+      _id     : "55ba24f46a50e6033add8564",
+      content : 'http://favim.com/orig/201106/13/anthony-robbins-anthony-robbis-cat-cats-crazy-cute-Favim.com-74080.jpg',
+      name    : 'kitten',
+      source  : "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
+      comments: [],
+      author  : "fdgNy6QWGmIAl7BRjEsFtA",
+      dateAdded : new Date("2011-07-28T14:35:48Z")
+    },
+    {
+      _id     : "55ba24f46a50e6033add8565",
+      content : 'http://s2.favim.com/orig/32/blue-cookie-crazy-cute-elmo-Favim.com-254735.jpg',
+      name    : 'cookie',
+      source  : "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
+      comments: [],
+      author  : "fdgNy6QWGmIAl7BRjEsFtA",
+      dateAdded : new Date("2011-10-28T14:35:48Z"),
+      groups  : ['55b690e7ac571fb05cef1a21']
+    },
+    {
+      _id     : "55ba24f46a50e6033add8566",
+      content : 'http://funhuh.com/wp-content/uploads/2014/06/01975_098-576x479.jpg',
+      name    : 'otter',
+      source  : "http://cretique.com/wonderful-food-art-ideas-for-cute-meals/",
+      comments: [],
+      author  : "fdgNy6QWGmIAl7BRjEsFtA",
+      dateAdded : new Date("2011-01-28T14:35:48Z")
     }
   );
 });
@@ -49,7 +77,7 @@ Group.find({}).remove(function(){
       "_id" : "55b690e7ac571fb05cef1a23",
       "name" : "Test group 3",
       "info" : "This is test group 3",
-      "clips" : [ "55ba24f46a50e6033add8566"],
+      "clips" : [],
       "users" : [
         "fdgNy6QWGmIAl7BRjEsFtA"
       ],
@@ -58,9 +86,9 @@ Group.find({}).remove(function(){
       "_id" : "55b690e7ac571fb05cef1a21",
       "name" : "Test group 1",
       "info" : "This is test group 1",
-      "clips" : [ "55ba24f46a50e6033add8566","55ba24f46a50e6033add8565"],
+      "clips" : [ '55ba24f46a50e6033add8565'],
       "users" : [
-        "4cxG2Zqk3r4YemcqV10SGA"
+        "4cxG2Zqk3r4YemcqV10SGA","fdgNy6QWGmIAl7BRjEsFtA"
       ],
       "chat" : [ ],
     },{

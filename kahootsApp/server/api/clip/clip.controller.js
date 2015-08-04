@@ -19,7 +19,6 @@ exports.userClips = function(req, res){
         return res.json(200, clip);
       });
   },req.params.id);
-
 };
 
 /*// GET api/clips/
@@ -117,7 +116,6 @@ exports.addComment = function (req, res) {
             return res.json(200, results);
           }
         }); // end createAnnotation
-
       }); // end find user by id
     }); // end find clip by id
   }, req.params.user_id);
@@ -136,7 +134,7 @@ exports.getComments = function(req, res){
 };
 // DELETE api/clips/:id
 // Deletes a clip from the DB.
-exports.destroy = function (req, res) {
+/*exports.destroy = function (req, res) {
     Clip.findById(req.params.id, function (err, clip) {
       if (err) {return handleError(res, err);}
       if (!clip) {return res.send(404);}
@@ -145,7 +143,7 @@ exports.destroy = function (req, res) {
         return res.send(204);
       });
     });
-  };
+  };*/
 
   // DELETE api/clips/clip_id/users/:user_id
   // If user is author, delete clip and remove from all groups.
@@ -169,13 +167,17 @@ exports.destroyClip = function(req, res){
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
 exports.upload = function (req, res) {
-   // console.log("Uploading new clip");
+   //console.log("Uploading new clip");
     // Authorize sender
     req.personaClient.validateToken(req, res, function () {
+      if(req.body.rect === undefined){return res.send(400)}
+      if(req.body.content === undefined){return res.send(400)}
+      if(req.body.author === undefined){return res.send(400)}
+
+
       var rect = JSON.parse(req.body.rect);
       var data = (req.body.content).replace(/^data:image\/\w+;base64,/, "");
       var buf = new Buffer(data, 'base64');
-      var filename = guid() +".png";
 
       // write img to temp file
       fs.writeFile("temp.png", buf , function(err) {
@@ -183,49 +185,35 @@ exports.upload = function (req, res) {
         //console.log("Temp png created");
 
         //crop img
-        var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "./client/assets/uploads/"+filename];
-        im.convert(args, function(err, stdout){
-          console.log("Clipped");
+        var args = ["temp.png", "-crop", rect.width+"x"+rect.height+"+"+rect.x+"+"+rect.y, "tempClipped.png"];
+        im.convert(args, function(err){
+          if(err) {return handleError(res, err);}
+          //console.log("Clipped");
 
           // Post image to depot
           var formData = {
-            filename: filename,
+            filename: "hi",
             contentType: 'image/png',
-            file: fs.createReadStream("./client/assets/uploads/" + filename)
+            file: fs.createReadStream("tempClipped.png")
           };
-          //console.log(formData);
           var options = {
             url:'https://staging-files.talis.com/files.json?access_token='+req.query.access_token,
             formData:formData,
             headers:{accept:'application/json'}
           }
-          request.post(options,
-              function(err, httpResponse, body){
-                if(err){
-                  return console.error('upload failed:'+err);
-                }
-                console.log('Upload successful! Server responded with', body._id);
-              });
-          // Testing get from depot
-          request.get({url:'https://staging-files.talis.com/files/55bb86514d3825da07000000.json?access_token='+req.query.access_token,
-            headers:{accept:'application/json'}}, function(err, httpResponse, body){
-            if(err){
-              return console.error('Get depot file error',err);
-            }
-            console.log('Download: Server responded with:'+body);
-          });
-          // Finished testing DEPOT
+          request.post(options, function(err, httpResponse, body) {
+            if (err){return handleError(res, err);}
+            //console.log('Upload successful! Server responded with', JSON.parse(body).versions.original.uri);
+            req.body.content = JSON.parse(body).versions.original.uri + "&access_token=";
 
-          if(err){
-            console.log("error here");
-            return handleError(res, err);}
-          // set content to a file that the img will be saved to.
-          req.body.content = "assets/uploads/"+filename;
-          // create new clip in db.
-          exports.create(req,res, function(){
-            console.log("Created new clip");
-            if(err) {return handleError(res, err);}
-          }); // Finish creating clip in db.
+            // create new clip in db.
+            exports.create(req, res, function () {
+              if (err) {
+                return handleError(res, err);
+              }
+              return res.send(201);
+            }); // Finish creating clip in db.
+          }); // Finish posting to depot
         }); // Finish cropping img.
       }); // Finish writing img to temp file.
 
@@ -252,3 +240,14 @@ function guid() {
   }
   return _p8() + _p8(true) + _p8(true) + _p8();
 }
+// Testing get from depot
+
+/*request.get({url:'https://staging-files.talis.com/files/55bb86514d3825da07000000.json?access_token='+req.query.access_token,
+ headers:{accept:'application/json'}}, function(err, httpResponse, body){
+ if(err){
+ return console.error('Get depot file error',err);
+ }
+ console.log('Download: Server responded with:'+body);
+ });*/
+
+// Finished testing DEPOT

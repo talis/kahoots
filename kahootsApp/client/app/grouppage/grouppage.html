@@ -59,7 +59,7 @@
         </div>
         <div class="col-md-8">
           <div class="active-clip-container">
-            <img class="img-thumbnail"  style="max-height:500px;max-width:500px" ng-src="{{groupClips[activeClip].content}}">
+            <img class="img-thumbnail"  style="max-height:500px;max-width:500px" ng-src="{{groupClips[activeClip].content}}{{oauth.access_token}}">
             <h6><a ng-href="{{groupClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
           </div>
         </div>
@@ -112,7 +112,7 @@
       <h3>{{userGroups[activeGroup].name}}</h3>
       <div class="clips" ng-repeat="clip in groupClips">
         <div class="col-md-2">
-          <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip(groupClips.indexOf(clip))">
+          <img class="img-thumbnail" ng-src="{{clip.content}}{{oauth.access_token}}" ng-click="setActiveClip(groupClips.indexOf(clip))">
         </div>
       </div>
       <!--Leave group button-->

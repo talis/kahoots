@@ -18,6 +18,7 @@ angular.module('kahootsAppApp')
     $scope.activeClip = 0;
     $scope.activeGroup = 0;
     $rootScope.activeView = 0;
+    $scope.oauth.access_token = $rootScope.oauth.access_token;
 
 
     /**

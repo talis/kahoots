@@ -59,7 +59,7 @@
         </div>
         <div class="col-md-8">
           <div class="active-clip-container">
-            <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{userClips[activeClip].content}}">
+            <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{userClips[activeClip].content}}{{oauth.access_token}}">
             <h6><a ng-href="{{userClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
           </div>
         </div>
@@ -92,7 +92,7 @@
     <h3>My Clips</h3>
     <div class="clips" ng-repeat="clip in userClips track by $index">
       <div class="col-md-2">
-        <img class="img-thumbnail" ng-src="{{clip.content}}" ng-click="setActiveClip($index)">
+        <img class="img-thumbnail" ng-src="{{clip.content}}{{oauth.access_token}}" ng-click="setActiveClip($index)">
       </div>
     </div>
   </div>
