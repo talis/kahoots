@@ -5,7 +5,7 @@ var config = require('../../config/environment');
 var app = require('../../app');
 var request = require('supertest');
 
-var access_token = 'a9ebedbcd2c8bce89b929b84cc48c28340959529';
+var access_token = config.access_token;
 var expired_token = '8755ee72c3468777ff628a9e0f0bf20d31281b33';
 var user1 = 'fdgNy6QWGmIAl7BRjEsFtA';
 var user2 = '4cxG2Zqk3r4YemcqV10SGA';
@@ -71,13 +71,13 @@ describe('GET api/clips/'+user1+'?access_token='+access_token, function(){
  * GET api/clips/:id Test4 - should return with an array of 1 clips
  */
 describe('GET api/clips/'+user2+'?access_token='+access_token, function(){
-  it('should respond with an array length 1', function(done){
+  it('should respond with an array with clip1 ', function(done){
     request(app)
       .get('/api/clips/'+user2+'?access_token='+access_token)
       .expect('Content-Type', /json/)
       .end(function(err, res){
         if (err) return done(err);
-        res.body[0].should.have.property('name','dogface');
+        res.body[0].should.have.property('_id',clip1);
         done();
       })
   })
@@ -133,10 +133,10 @@ describe('POST api/clips/'+clip1+'/users/'+fakeuser+'/comments?access_token='+ac
 /**
  * POST api/clips/clip_id/users/user_id/comments {comment:comment} - user id doesn't match author
  */
-describe('POST api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token,function(){
+describe('POST api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token,function(){
   it('should respond with 401 user_id not author of clip', function(done){
     request(app)
-      .post('/api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token)
+      .post('/api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token)
       .type('form')
       .send( {comment:"hello"})
       .expect(401)
@@ -149,10 +149,10 @@ describe('POST api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+acces
 /**
  * POST api/clips/clip_id/users/user_id/comments {comment:comment} - check hasTarget correct
  */
-describe('POST api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token,function(){
+describe('POST api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token,function(){
   it('should respond with babel result hasTarget.uri[0]=clip_id', function(done){
     request(app)
-      .post('/api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token)
+      .post('/api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token)
       .type('form')
       .send( {comment:"hello"})
       .expect('Content-Type', /json/)
@@ -166,10 +166,10 @@ describe('POST api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+acces
 /**
  * POST api/clips/clip_id/users/user_id/comments {comment:comment} - check comment is correct
  */
-describe('POST api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token,function(){
+describe('POST api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token,function(){
   it('should respond with babel result hasBody.chars="hello', function(done){
     request(app)
-      .post('/api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token)
+      .post('/api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token)
       .type('form')
       .send( {comment:"hello"})
       .expect('Content-Type', /json/)
@@ -183,16 +183,16 @@ describe('POST api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+acces
 /**
 * POST api/clips/clip_id/users/user_id/comments {comment:comment} - check firstname is saved
 */
-describe('POST api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token,function(){
+describe('POST api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token,function(){
   it('should respond with babel result hasBody.details.first_name = TN', function(done){
     request(app)
-      .post('/api/clips/'+clip1+'/users/'+user1+'/comments?access_token='+access_token)
+      .post('/api/clips/'+clip1+'/users/'+user2+'/comments?access_token='+access_token)
       .type('form')
       .send( {comment:"hello"})
       .expect('Content-Type', /json/)
       .end(function(err, res) {
         if (err) return done(err);
-        res.body.hasBody.details.first_name.should.equal("TN");
+        res.body.hasBody.details.first_name.should.equal("Lauren");
         done();
       });
   });
@@ -227,7 +227,7 @@ describe('GET api/clips/'+fakeclip+'/users/'+user2+'/comments?access_token='+acc
   });
 });
 /**
- *  GET api/clips/:clip_id/users/:user_id/comments - fakeclip empty array
+ *  GET api/clips/:clip_id/users/:user_id/comments - good
  */
 describe('GET api/clips/'+clip2+'/users/'+user2+'/comments?access_token='+access_token,function(){
   it('should respond with comment in array', function(done){
@@ -298,11 +298,11 @@ describe('DELETE api/clips/'+clip2+'/users/'+user2+'?access_token='+expired_toke
 /**
  * DELETE api/clips/:clip_id/users/:user_id - user not owner of clip 401
  */
-describe('DELETE api/clips/'+clip1+'/users/'+user2+'?access_token='+access_token,function(){
+describe('DELETE api/clips/'+clip1+'/users/'+user1+'?access_token='+access_token,function(){
   //this.timeout(15000);
   it('should respond with 401 user not owner of clip', function(done){
     request(app)
-      .delete('/api/clips/'+clip1+'/users/'+user2+'?access_token='+access_token)
+      .delete('/api/clips/'+clip1+'/users/'+user1+'?access_token='+access_token)
       .expect(401)
       .end(function(err, res) {
         if (err != null) throw err;
@@ -317,7 +317,7 @@ describe('DELETE api/clips/'+clip4+'/users/'+user1+'?access_token='+access_token
   //this.timeout(15000);
   it('should respond with array of clip without clip 4', function(done){
     request(app)
-      .delete('/api/clips/'+clip1+'/users/'+user1+'?access_token='+access_token)
+      .delete('/api/clips/'+clip4+'/users/'+user1+'?access_token='+access_token)
       .end(function(err, res) {
         if (err) return done(err);
         request(app)

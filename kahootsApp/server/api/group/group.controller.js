@@ -6,7 +6,7 @@ var GroupManager = require('../../components/shared/groupClip').GroupManager;
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
-// GET api/groups/:group_id/:user_id
+/*// GET api/groups/:group_id/users/:user_id
 exports.getGroup = function(req,res){
   req.personaClient.validateToken(req, res, function () {
     User.findById(req.params.user_id, function (err, group) {
@@ -15,57 +15,80 @@ exports.getGroup = function(req,res){
       return res.json(group);
     });
   }, req.params.user_id);
-};
+};*/
 // POST api/groups/:group_id/clips/clip_id/users/:user_id/comment
 exports.addComment = function(req,res){
   req.personaClient.validateToken(req, res, function () {
-    // Find user info.
-    User.findById(req.params.user_id, function (err, user) {
-      if (err) { return handleError(res, err);}
-      if (!user) {return res.send(404);}
-      var annotationData = {
-        hasBody: {
-          format: 'text/plain',
-          type: 'Text',
-          chars: req.body.comment ? req.body.comment : '',
-          details: {
-            first_name: user.first_name,
-            surname: user.surname,
-            email: user.email
+    if(req.body.comment === undefined){return res.send(400)}
+    Group.findById(req.params.group_id, function (err, group) {
+      if (err) {return handleError(res, err);}
+      if (!group) {return res.send(404, 'Group does not exist');}
+      Clip.findById(req.params.clip_id, function (err, clip) {
+        if (err) {return handleError(res, err);}
+        if (!clip) {return res.send(404, 'Clip does not exist');}
+        // Find user info.
+      User.findById(req.params.user_id, function (err, user) {
+        if (err) {return handleError(res, err);}
+        if (!user) {return res.send(404, 'User does not exist');}
+        // check user is in group
+        if(group.users.indexOf(user._id)===-1){return res.send(401)}
+        var annotationData = {
+          hasBody: {
+            format: 'text/plain',
+            type: 'Text',
+            chars: req.body.comment ? req.body.comment : '',
+            details: {
+              first_name: user.first_name,
+              surname: user.surname,
+              email: user.email
+            }
+          },
+          hasTarget: {uri: [req.params.group_id, req.params.clip_id, req.params.group_id + "_" + req.params.clip_id]},
+          annotatedBy: req.params.user_id,
+          annotatedAt: Date.now(),
+          motivatedBy: 'comment'
+        };
+        req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
+          console.log("BABEL RESPONSE");
+          console.log(results);
+          if (err) {
+            console.log(err);
+            return handleError(res, err);
+          } else {
+            return res.json(200, results);
           }
-        },
-        hasTarget: {uri:[req.params.group_id, req.params.clip_id, req.params.group_id +"_"+ req.params.clip_id]},
-        annotatedBy: req.params.user_id,
-        annotatedAt: Date.now(),
-        motivatedBy: 'comment'
-      };
-      req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
-        console.log("BABEL RESPONSE");
-        console.log(results);
-        if (err) {
-          console.log(err);
-          return handleError(res, err);
-        } else {
-          return res.json(200, results);
-        }
-      }); // end createAnnotation
-    }); // end User.findById
+        }); // end createAnnotation
+      }); // end User.findById
+    }); // end Group.findById
+  }); // end clip.findByID
   }, req.params.user_id);
 };
 // GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments
 exports.getComments = function(req, res){
   req.personaClient.validateToken(req, res, function () {
-    var target = {
-      "hasTarget.uri": req.params.group_id +"_"+ req.params.clip_id
-    };
-
-    req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
+    console.log("valid token");
+    Group.findById(req.params.group_id, function (err, group) {
       if (err) {
         return handleError(res, err);
-      } else {
-
-        return res.json(200, comments);
       }
+      if (!group) {
+        console.log("no group exists");
+        return res.send(404, "No group exists");
+      }
+      console.log("Got group");
+      //check user is in group
+      if (group.users.indexOf(req.params.user_id) === -1) {
+        res.send(401)
+      }
+      var target = {
+        "hasTarget.uri": req.params.group_id + "_" + req.params.clip_id
+      };
+
+      req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
+        if (err) {return handleError(res, err);} else {
+          return res.json(200, comments);
+        }
+      });
     });
   }, req.params.user_id);
 };
@@ -82,13 +105,13 @@ exports.addUser = function(req, res){
 
       // Check user exists
       User.find({'email':req.params.email},function(err, user){
+        if(user.length===0){return res.send(404)}
         var user = user[0];
         if (err) {return handleError(res, err);}
-        if (!user) {return res.send(404, "No user exists with id:" + user._id);}
         // Check user not already in group
-        if (group.users.indexOf(user._id) !== -1) {return (404, "User already added to group.")}
+        if (group.users.indexOf(user._id) !== -1) {return (400, "User already added to group.")}
         // Check group not already in user.
-        if (user.group.indexOf(req.params.group_id) !== -1) {return (404, "Group already added to user.")}
+        if (user.group.indexOf(req.params.group_id) !== -1) {return (400, "Group already added to user.")}
         // Add user id to group
         group.users.push(user._id);
         group.save(function (err) {
