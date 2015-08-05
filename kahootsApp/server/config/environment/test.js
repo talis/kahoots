@@ -8,8 +8,8 @@ module.exports = {
     uri: 'mongodb://localhost/kahootsapp-test'
   },
   oauth: {
-    host: process.env.PERSONA_HOST || 'localhost',
-    port: process.env.PERSONA_PORT || 9000,
+    host: process.env.PERSONA_HOST || 'users.talis.com',
+    port: process.env.PERSONA_PORT || 80,
     scheme: process.env.PERSONA_SCHEME || 'http',
     route: process.env.PERSONA_ROUTE || '/oauth/tokens/',
     client: process.env.PERSONA_OAUTH_CLIENT || 'primate',

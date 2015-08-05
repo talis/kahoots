@@ -9,7 +9,7 @@ var nock = require('nock');
 var http = require('http');
 
 
-var access_token = '1234';
+var access_token = '8755ee72c3468777ff628a9e0f0bf20d31281b33';
 var expired_token = '8755ee72c3468777ff628a9e0f0bf20d31281b33';
 var user1 = 'fdgNy6QWGmIAl7BRjEsFtA';
 var user2 = '4cxG2Zqk3r4YemcqV10SGA';
@@ -25,26 +25,36 @@ var group3 = "55b690e7ac571fb05cef1a23";
 var group2 = "55b690e7ac571fb05cef1a22";
 var group1 = "55b690e7ac571fb05cef1a21";
 var fakegroup = "55b690e7ac571fb05cef1a29";
+var api = null;
 
 describe('api/clips', function(){
   /**
    * GET api/clips:id
    */
-  describe('GET api/clips/' + user1 + '?access_code=' + access_token, function () {
+  describe('GET api/clips/' + user1 + '?access_code=' + access_token + ' - expired token' , function () {
 
-    var api = nock('http://localhost:9000')
-      .head("/oauth/tokens")
-      .reply(401);
+
 
     it('should respond with a 401 - access code invalid', function (done) {
+      api = nock('https://users.talis.com')
+        .head("/oauth/tokens")
+        .reply(401, function(){
+          console.log("Hello from nock!")
+        });
+
       request(app)
         .get('/api/clips/' + user1 + '?access_code=' + access_token)
         .expect(401)
         .end(function (err, res) {
-          if (err ) done(err);
+          if (err) done(err);
           done();
         });
     });
+  });
+  describe('GET api/clips/' + user1 + '?access_code=' + access_token + ' - valid token' , function () {
+
+
+
 
 // Can't do this test because both persona accounts used for testing have 'su' scope
   /*/!**
@@ -62,7 +72,9 @@ describe('api/clips', function(){
    })
    });*/
 
-    it('should respond with a non empty array', function (done) {
+    it('!!!!!!!!!!!!!!should respond with a non empty array', function (done) {
+
+
       request(app)
         .get('/api/clips/' + user1 + '?access_token=' + access_token)
         .expect('Content-Type', /json/)
@@ -71,14 +83,14 @@ describe('api/clips', function(){
           res.body.should.not.have.length(0);
           done();
         })
-    })
+    });
 
     it('should respond with an array with clip1 ', function (done) {
       request(app)
         .get('/api/clips/' + user2 + '?access_token=' + access_token)
         .expect('Content-Type', /json/)
         .end(function (err, res) {
-          if (err) return done(err);
+          if (err) {return done(err);}
           res.body[0].should.have.property('_id', clip1);
           done();
         })

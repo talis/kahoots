@@ -12,8 +12,12 @@ var fs = require('fs');
 // GET api/clips/:id
 // Gets all clips for given user_id
 exports.userClips = function(req, res){
-  req.personaClient.validateToken(req, res, function () {
-      Clip.find({'author': req.params.id}, function (err, clip) {
+  console.log('Gets all clips for user');
+  req.personaClient.validateToken(req, res, function (err) {
+    if(err){return handleError(res, err)}
+    console.log('valid user');
+
+    Clip.find({'author': req.params.id}, function (err, clip) {
         if(err) { return handleError(res, err); }
         if(!clip) { return res.send(404); }
         return res.json(200, clip);
