@@ -10,7 +10,7 @@ var ClipSchema = new Schema({
   comments: [{first_name:String, surname:String, comment:String}],
   source: String,
   author: String,
-  groups:[String],
+  groups: [String],
   dateAdded: Date
 });
 

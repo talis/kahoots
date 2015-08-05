@@ -163,7 +163,7 @@ exports.addClip = function(req, res){
         clip.groups.push(req.params.group_id);
         clip.save(function (err) {
           if (err) {return handleError(res, err);}
-          return res.send(201);
+          return res.send(201, group);
         });
       });
     });
@@ -301,6 +301,7 @@ exports.removeUser = function(req, res){
         var index2 = group.users.indexOf(user._id);
         if(index1 === -1){return res.send(400)}
         if(index2 === -1){return res.send(400)}
+        console.log('user in group');
 
         // remove group from user's groups.
         user.group.splice(index1, 1);
@@ -318,7 +319,7 @@ exports.removeUser = function(req, res){
           }else {
             group.save(function (err) {
               if (err) {return handleError(res, err);}
-              return res.json(200);
+              return res.json(200,group);
             }); // end save group.
           }
         }); // end save user.
@@ -333,14 +334,17 @@ exports.removeClip = function(req,res){
   req.personaClient.validateToken(req, res, function () {
     User.findById(req.params.user_id, function(err, user){
       if(err){return handleError(res, err)}
-      if(!user){return res.send(404)}
+      if(!user){
+        console.log("no user");
+        return res.send(404)}
       //check user in group
-      //console.log("user exists");
+      console.log("user exists");
       if(user.group.indexOf(req.params.group_id)===-1){return res.send(401)}
-
-      GroupManager.removeClipFromGroup(req.params.group_id, req.params.clip_id);
+      console.log('user in group OK');
+      GroupManager.removeClipFromGroup(req.params.group_id, req.params.clip_id, function(status){
+        return res.send(status);
+      });
     }); // end find user by id.
-    return res.json(202);
   }, req.params.user_id);
 };
 

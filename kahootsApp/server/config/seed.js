@@ -21,7 +21,8 @@ Clip.find({}).remove(function() {
       source  : "http://s390.photobucket.com/user/R12ky12/media/cute-stupid-thing.jpg.html",
       comments: [],
       groups  : [
-        "55b690e7ac571fb05cef1a23"
+        "55b690e7ac571fb05cef1a23",
+        "55b690e7ac571fb05cef1a26"
       ],
       author  : "4cxG2Zqk3r4YemcqV10SGA",
       dateAdded : new Date("2014-06-28T14:35:48Z")
@@ -82,7 +83,9 @@ Group.find({}).remove(function(){
       "name" : "Test group 3",
       "info" : "This is test group 3",
       "clips" : [
-        "55ba24f46a50e6033add8561"
+        "55ba24f46a50e6033add8561",
+        "55ba24f46a50e6033add8563",
+        "55ba24f46a50e6033add8565"
       ],
       "users" : [
         "fdgNy6QWGmIAl7BRjEsFtA"
@@ -114,6 +117,23 @@ Group.find({}).remove(function(){
       "clips" : [ ],
       "users" : [ "fdgNy6QWGmIAl7BRjEsFtA" ],
       "chat" : [ ]
+    },{
+      "_id" : "55b690e7ac571fb05cef1a25",
+      "name" : "Test group 5",
+      "info" : "This is test group 5",
+      "clips" : [ ],
+      "users" : [ "fdgNy6QWGmIAl7BRjEsFtA" ],
+      "chat" : [ ]
+    },{
+      "_id" : "55b690e7ac571fb05cef1a26",
+      "name" : "Test group 6",
+      "info" : "This is test group 6",
+      "clips" : [ "55ba24f46a50e6033add8561" ],
+      "users" : [
+        "fdgNy6QWGmIAl7BRjEsFtA",
+        "4cxG2Zqk3r4YemcqV10SGA"
+      ],
+      "chat" : [ ]
     }
 
 
@@ -125,13 +145,13 @@ User.find({}).remove(function(){
     email: "test.tn@talis.com",
     surname: 'TestAccount',
     first_name: 'TN',
-    group:["55b690e7ac571fb05cef1a23","55b690e7ac571fb05cef1a22","55b690e7ac571fb05cef1a24"]
+    group:["55b690e7ac571fb05cef1a26","55b690e7ac571fb05cef1a23","55b690e7ac571fb05cef1a22","55b690e7ac571fb05cef1a24","55b690e7ac571fb05cef1a25"]
   },
     {
       "_id" : "4cxG2Zqk3r4YemcqV10SGA",
       "email" : "lauren.lewis@talis.com",
       "first_name" : "Lauren",
-      "group" : ["55b690e7ac571fb05cef1a22","55b690e7ac571fb05cef1a22"],
+      "group" : ["55b690e7ac571fb05cef1a26","55b690e7ac571fb05cef1a22","55b690e7ac571fb05cef1a22"],
       "surname" : "Lewis"
     }
   );

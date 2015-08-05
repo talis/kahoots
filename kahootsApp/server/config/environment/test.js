@@ -3,7 +3,7 @@
 // Development specific configuration
 // ==================================
 module.exports = {
-  access_token : '68a06e0d96b63acbb656209a0d164c0a22ea2f91',
+  access_token : '488fb9d48a269ea2a8fb5e466495d5090c1b6a08',
   // MongoDB connection options
   mongo: {
     uri: 'mongodb://localhost/kahootsapp-test'
