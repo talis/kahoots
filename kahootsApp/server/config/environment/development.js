@@ -18,7 +18,8 @@ module.exports = {
       host: process.env.PERSONA_OAUTH_TOKENCACHE_HOST || 'localhost',
       port: process.env.PERSONA_OAUTH_TOKENCACHE_PORT || 6379,
       db: process.env.PERSONA_OAUTH_TOKENCACHE_DB || 0
-    }
+    },
+    debug:true
   },
   babel: {
     host: process.env.BABEL_HOST || 'http://babel',

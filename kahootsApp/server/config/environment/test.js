@@ -3,14 +3,13 @@
 // Development specific configuration
 // ==================================
 module.exports = {
-  access_token : '488fb9d48a269ea2a8fb5e466495d5090c1b6a08',
   // MongoDB connection options
   mongo: {
     uri: 'mongodb://localhost/kahootsapp-test'
   },
   oauth: {
-    host: process.env.PERSONA_HOST || 'users.talis.com',
-    port: process.env.PERSONA_PORT || 80,
+    host: process.env.PERSONA_HOST || 'localhost',
+    port: process.env.PERSONA_PORT || 9000,
     scheme: process.env.PERSONA_SCHEME || 'http',
     route: process.env.PERSONA_ROUTE || '/oauth/tokens/',
     client: process.env.PERSONA_OAUTH_CLIENT || 'primate',
