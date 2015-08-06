@@ -18,6 +18,7 @@ exports.getGroup = function(req,res){
 };*/
 // POST api/groups/:group_id/clips/clip_id/users/:user_id/comment
 exports.addComment = function(req,res){
+  console.log("add comment");
   req.personaClient.validateToken(req, res, function () {
     if(req.body.comment === undefined){return res.send(400)}
     Group.findById(req.params.group_id, function (err, group) {
@@ -61,7 +62,7 @@ exports.addComment = function(req,res){
       }); // end User.findById
     }); // end Group.findById
   }); // end clip.findByID
-  }, req.params.user_id);
+  });
 };
 // GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments
 exports.getComments = function(req, res){

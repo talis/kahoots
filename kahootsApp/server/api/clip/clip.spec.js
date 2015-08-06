@@ -2,15 +2,13 @@
 
 var should = require('should');
 var config = require('../../config/environment');
-var _getOAuthToken = require('../../components/shared/utils')._getOAuthToken;
 var app = require('../../app');
 var request = require('supertest');
 var nock = require('nock');
-var http = require('http');
 
 
-var access_token = '8755ee72c3468777ff628a9e0f0bf20d31281b33';
-var expired_token = '8755ee72c3468777ff628a9e0f0bf20d31281b33';
+var access_token = '7464139d9a6ac462187c77819de0c426a3bfba7b';
+var expired_token = '7464139d9a6ac462187c77819de0c426a3bfba7a';
 var user1 = 'fdgNy6QWGmIAl7BRjEsFtA';
 var user2 = '4cxG2Zqk3r4YemcqV10SGA';
 var fakeuser = '4cxG2Zqk3r4YemcqV10SGZ';
@@ -25,18 +23,23 @@ var group3 = "55b690e7ac571fb05cef1a23";
 var group2 = "55b690e7ac571fb05cef1a22";
 var group1 = "55b690e7ac571fb05cef1a21";
 var fakegroup = "55b690e7ac571fb05cef1a29";
-var api = null;
 
+nock.enableNetConnect(/(127.0.0.1)/);
+/*nock(config.oauth.scheme + '://' + config.oauth.host + ':' + config.oauth.port)
+  .head(config.oauth.route + access_token)
+  .reply(204);*/
+/*nock(config.oauth.scheme + '://' + config.oauth.host + ':' + config.oauth.port)
+  .head(config.oauth.route + expired_token)
+  .reply(401);*/
 /*
+
+
 describe('api/clips', function () {
   /!**
    * GET api/clips:id
    *!/
   describe('GET api/clips/' + user1 + '?access_code=' + access_token + ' - expired token', function () {
     it('THIS should respond with a 401 - access code invalid', function (done) {
-     /!*var api = nock('http://localhost:9000')
-       .get('/api/clips/fdgNy6QWGmIAl7BRjEsFtA?access_code=8755ee72c3468777ff628a9e0f0bf20d31281b33')
-       .reply(200,{});*!/
 
       request(app)
         .get('/api/clips/' + user1 + '?access_code=' + access_token)

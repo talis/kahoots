@@ -25,4 +25,4 @@ module.exports = {
     port: process.env.BABEL_PORT || 3001
   },
   seedDB: true
-}
+};
