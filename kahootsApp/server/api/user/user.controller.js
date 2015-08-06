@@ -18,7 +18,7 @@ exports.search = function(req, res){
 
 };
 
-/*
+
 // GET api/users/
 // Get list of users
 exports.index = function(req, res) {
@@ -27,7 +27,7 @@ exports.index = function(req, res) {
     return res.json(200, users);
   });
 };
-*/
+
 
 /*// GET api/users/:id
 // Get a single user

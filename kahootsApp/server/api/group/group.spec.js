@@ -28,12 +28,13 @@ var group6 = "55b690e7ac571fb05cef1a26";
 var fakegroup = "55b690e7ac571fb05cef1a29";
 var persona = require('persona_client');
 
+/*
 describe('api/groups', function(){
 
-    /**
+    /!**
      * POST api/groups/:group_id/clips/:clip_id/users/:user_id/comments
      * Post a new comment to a group clip.
-     */
+     *!/
     describe('POST /api/groups/' + group3 + '/clips/' + clip1 + '/users/' + user1 + '/comments?access_token=' + expired_token, function () {
       it('should respond with 401 unauthorized', function (done) {
           request(app)
@@ -145,9 +146,9 @@ describe('api/groups', function(){
     });
 
 
-    /**
+    /!**
      * GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments
-     */
+     *!/
     describe('GET /api/groups/' + group3 + '/clips/' + clip1 + '/users/' + user1 + '/comments?access_token=' + expired_token, function () {
       it('should respond with 401 unauthorized', function (done) {
         request(app)
@@ -198,9 +199,9 @@ describe('api/groups', function(){
       });
     });
 
-    /**
+    /!**
      *  POST api/groups/:group_id/users/:user_id/:email
-     */
+     *!/
     describe('POST /api/groups/' + group4 + '/users/' + user1 + '/lauren.lewis@talis.com?access_token=' + expired_token, function () {
       it('should respond with 401 unauthorized', function (done) {
         request(app)
@@ -260,9 +261,9 @@ describe('api/groups', function(){
       });
     });
 
-    /**
+    /!**
      * POST /api/groups/:group_id/clips/:clip_id/:user_id - token expired
-     */
+     *!/
     describe('POST /api/groups/' + group4 + '/clips/' + clip1 + '/' + user2 + '?access_token=' + expired_token, function () {
       it('should respond with 401 unauthorized', function (done) {
         request(app)
@@ -322,9 +323,9 @@ describe('api/groups', function(){
       });
     });
 
-    /**
+    /!**
      * GET /api/groups/:group_id/users/:user_id/clips - expired token
-     */
+     *!/
     describe('GET /api/groups/' + group3 + '/users/' + user1 + '/clips?access_token=' + expired_token, function () {
       it('should respond with 401 unauthorized', function (done) {
         request(app)
@@ -394,9 +395,9 @@ describe('api/groups', function(){
       });
     });
 
-    /**
+    /!**
      *  POST api/groups/:user_id - body does not have property name
-     */
+     *!/
     describe('POST /api/groups/' + user1 + '?access_token=' + access_token, function () {
       it('should respond 400 body does not have correct properties', function (done) {
         request(app)
@@ -455,9 +456,9 @@ describe('api/groups', function(){
       });
     });
 
-    /**
+    /!**
      * DELETE api/groups/:group_id/users/:user_id - fake group
-     */
+     *!/
     describe('DELETE /api/groups/' + fakegroup + '/users/' + user1 + '?access_token=' + access_token, function () {
       it('should respond 404 group does not exist', function (done) {
         request(app)
@@ -507,9 +508,9 @@ describe('api/groups', function(){
           });
       });
     });
-    /**
+    /!**
      * DELETE api/groups/:group_id/clips/:clip_id/users/:user_id
-     */
+     *!/
     describe('DELETE /api/groups/' + group3 + '/clips/' + clip1 + '/users/' + fakeuser + '?access_token=' + access_token, function () {
       it('should respond 404 user does not exist', function (done) {
         request(app)
@@ -552,7 +553,7 @@ describe('api/groups', function(){
     });
 
 });
-    /*
+    /!*
      * DELETE api/groups/:group_id/clips/:clip_id/users/:user_id - good request
      describe('DELETE /api/groups/'+group3+'/clips/'+clip5+'/users/'+ user1 +'?access_token='+access_token, function(){
      it('should respond group without clip in group', function(done){
@@ -567,5 +568,6 @@ describe('api/groups', function(){
      done();
      });
      });
-     });*/
+     });*!/
 
+*/
