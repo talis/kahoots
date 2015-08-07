@@ -72,18 +72,24 @@ angular.module('kahootsAppApp')
      * Sets view of page.
      */
     $scope.setState = function(){
+      $('#addUser-btn').removeClass('disabled');
       if($scope.userGroups.length===0){
+        $('#addUser-btn').addClass('disabled');
         $('.group-view').hide();
         $('.no-groups-msg').show();
+        $('#myclips').hide();
       }else if($scope.groupClips.length===0) {
         $('.group-view').hide();
         $('.no-groups-msg').hide();
+        $('#myclips').show();
       }else if($scope.groupClips[0].name==='no-clip'){
         $('.group-view').hide();
         $('.no-groups-msg').hide();
+        $('#myclips').show();
       }else{
-          $('.group-view').show();
-          $('.no-groups-msg').hide();
+        $('.group-view').show();
+        $('.no-groups-msg').hide();
+        $('#myclips').show();
       }
     };
     /**
@@ -157,6 +163,8 @@ angular.module('kahootsAppApp')
      * Leave active group
      */
     $scope.leaveGroup = function(group){
+      if($scope.userGroups.length===0){return;}
+      var group_id = group._id;
       if($scope.userGroups.length===1) {
         $scope.setUserGroups([]);
         //removing the last group
@@ -164,15 +172,18 @@ angular.module('kahootsAppApp')
         $scope.setGroupClips([]);
       }else if($scope.userGroups.indexOf(group)===0){
         // removing first group, replace with second.
-        $scope.setActiveGroup(1);
+        $scope.setActiveGroup(0);
+        $scope.setActiveClip(0);
+
       } else {
         $scope.setActiveGroup(0);
+        $scope.setActiveClip(0);
+
       }
       groupservice.leaveGroup($rootScope.user._id, $rootScope.oauth.access_token,
-        group._id, function () {
+        group_id, function () {
           $scope.setState();
         });
-      $scope.setActiveClip(0);
       $scope.setState();
     };
     /**

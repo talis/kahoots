@@ -49,7 +49,7 @@ angular.module('kahootsAppApp')
      */
     instance.noClip = function(list) {
       var unClip = {
-        content: "../assets/images/noClipFound.jpeg",
+        content: "https://staging-files.talis.com/files/55c47c564d38257030000000/presign?version=2015/08/07/55c47c564d38257030000000/original/doc&access_token=",
         name: "no-clip",
         comments: ["No Notes"],
         source: "",

@@ -212,6 +212,7 @@ exports.upload = function (req, res) {
             //console.log('Upload successful! Server responded with', JSON.parse(body).versions.original.uri);
             req.body.content = JSON.parse(body).versions.original.uri + "&access_token=";
 
+
             // create new clip in db.
             exports.create(req, res, function () {
               if (err) {
