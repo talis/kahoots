@@ -15,11 +15,10 @@ angular.module('kahootsAppApp')
         $scope.setUserClips(clips);
       });
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
-        $scope.userGroups=groups;
+        $scope.setUserGroups(groups);
       });
 
     };
-
     /**
      * Setter for userClips.
      * Also sets state of page.
@@ -90,10 +89,13 @@ angular.module('kahootsAppApp')
      */
     $scope.shareClip = function(group){
       if(group === undefined){return;}
+      console.log("Group is there :)");
       if($scope.userClips[$scope.activeClip]===undefined){return;}
-
+      console.log("Active clip good!");
       groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
-        group._id, $scope.userClips[$scope.activeClip]._id, function(){});
+        group._id, $scope.userClips[$scope.activeClip]._id, function(){
+          console.log("SHARED");
+        });
 
       //$('#alert-share').show();
     };
