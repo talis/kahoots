@@ -11,7 +11,8 @@ var ClipSchema = new Schema({
   source: String,
   author: String,
   groups: [String],
-  dateAdded: Date
+  dateAdded: Date,
+  archived: Boolean
 });
 
 module.exports = mongoose.model('Clip', ClipSchema);

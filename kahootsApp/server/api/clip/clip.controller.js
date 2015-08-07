@@ -17,7 +17,7 @@ exports.userClips = function(req, res){
     if(err){return handleError(res, err)}
     console.log('valid user');
 
-    Clip.find({'author': req.params.id}, function (err, clip) {
+    Clip.find({'author': req.params.id, 'archived':false}, function (err, clip) {
         if(err) { return handleError(res, err); }
         if(!clip) { return res.send(404); }
         return res.json(200, clip);
@@ -163,9 +163,14 @@ exports.destroyClip = function(req, res){
             if(status>=400){console.log("Error removing clip form group. Status: " + status)}
           });
         }
-        clip.remove(function (err) {
+        /*clip.remove(function (err) {
           if (err) {return handleError(res, err);}
           return res.send(204);
+        });*/
+        //Set clip.archived to true
+        clip.archived = true;
+        clip.save(function (err) {
+          if (err) {return handleError(res, err);}
         });
       });// End find clip by id
     }, req.params.user_id);
@@ -211,7 +216,8 @@ exports.upload = function (req, res) {
             if (err){return handleError(res, err);}
             //console.log('Upload successful! Server responded with', JSON.parse(body).versions.original.uri);
             req.body.content = JSON.parse(body).versions.original.uri + "&access_token=";
-
+            // Set archived to false
+            req.body.archived = false;
 
             // create new clip in db.
             exports.create(req, res, function () {

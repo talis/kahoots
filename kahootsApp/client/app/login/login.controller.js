@@ -24,7 +24,7 @@ angular.module('kahootsAppApp')
         userservice.getUser(user, $rootScope.oauth.access_token, function(user){
           $rootScope.user = user;
           // redirect to main
-          var next = '/allClips';
+          var next = '/homepage';
           $location.path(next).replace();
         });
 
