@@ -7,6 +7,7 @@ angular.module('kahootsAppApp')
     $scope.activeGroup = 0;
     $scope.activeClip = 0;
     $scope.newComment = '';
+    $scope.groupComments = [];
 
 
     /**
@@ -59,11 +60,7 @@ angular.module('kahootsAppApp')
          clipservice.sortArray($scope.groupClips);
          if($scope.userGroups[$scope.activeGroup]!==undefined &&
            $scope.groupClips[$scope.activeClip]!==undefined) {
-           groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
-             $scope.userGroups[$scope.activeGroup]._id,
-             $scope.groupClips[$scope.activeClip]._id, function (comments) {
-               $scope.comments = comments;
-             });
+           getComments();
          }
        }
       $scope.setState();
@@ -151,11 +148,7 @@ angular.module('kahootsAppApp')
       groupservice.addComment($rootScope.user, $rootScope.oauth.access_token,
         $scope.userGroups[$scope.activeGroup]._id, $scope.groupClips[$scope.activeClip]._id,
         $scope.newComment, function () {
-          groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
-            $scope.userGroups[$scope.activeGroup]._id,
-            $scope.groupClips[$scope.activeClip]._id, function (comments) {
-              $scope.comments = comments;
-            });
+          getComments();
         });
       $scope.newComment='';
     };
@@ -196,12 +189,24 @@ angular.module('kahootsAppApp')
     };
     $scope.newGroupPage = function(){
       $location.path('/newGroup');
-    }
+    };
+    var getComments = function(){
+      groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
+        $scope.userGroups[$scope.activeGroup]._id,
+        $scope.groupClips[$scope.activeClip]._id, function (comments) {
+          $scope.groupComments = comments;
+        });
+    };
     /**
      * Initialise group page
      * Todo: Change this to save users previous activity
      */
     var init = function(){
+        $('.comment-container').animate({
+          scrollTop: 500
+        });
+
+
       $('#alert-share').hide();
       $scope.setState();
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {

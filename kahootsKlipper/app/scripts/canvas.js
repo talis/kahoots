@@ -8,13 +8,13 @@ function createCanvas(style) {
 
   // TODO: check if canvas already exists
   var c = document.createElement('canvas');
-  var i = document.createElement('button');
+  /*var i = document.createElement('button');
   i.type ='button';
   i.id = 'send_button';
   i.innerText = 'Send to Kahoots!'
   for(var name in button_style){
     i.style[name] = button_style[name];
-  }
+  }*/
   c.id = 'canvas';
   for(var name in style){
     c.style[name] = style[name];
@@ -23,7 +23,7 @@ function createCanvas(style) {
   c.style.left = window.pageXOffset+"px";
 
   document.body.appendChild(c);
-  document.body.appendChild(i);
+  //.body.appendChild(i);
   // Need to set height after drawn
   c.height = c.offsetHeight;
   c.width = c.offsetWidth;

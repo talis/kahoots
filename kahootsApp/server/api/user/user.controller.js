@@ -3,6 +3,9 @@
 var _ = require('lodash');
 var User = require('./user.model');
 
+// GET api/users/:id/feeds
+// TODO: Get feed for user and user's groups.
+
 // GET api/users/:id
 // Get own user object.
 exports.search = function(req, res) {

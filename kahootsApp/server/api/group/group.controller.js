@@ -6,6 +6,8 @@ var GroupManager = require('../../components/shared/groupClip').GroupManager;
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
+
+
 /*// GET api/groups/:group_id/users/:user_id
 exports.getGroup = function(req,res){
   req.personaClient.validateToken(req, res, function () {
@@ -44,7 +46,7 @@ exports.addComment = function(req,res){
               email: user.email
             }
           },
-          hasTarget: {uri: [req.params.group_id, req.params.clip_id, req.params.group_id + "_" + req.params.clip_id]},
+          hasTarget: {uri: [req.params.group_id + "_" + req.params.clip_id, req.params.group_id]},
           annotatedBy: req.params.user_id,
           annotatedAt: Date.now(),
           motivatedBy: 'comment'

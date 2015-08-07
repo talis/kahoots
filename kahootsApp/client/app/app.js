@@ -5,7 +5,9 @@ angular.module('kahootsAppApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'btford.socket-io'
+  'btford.socket-io',
+  'luegg.directives',
+  "ngScrollTo"
 ])
   .config(function ($routeProvider, $locationProvider) {
 

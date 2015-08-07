@@ -3,6 +3,7 @@
   <title>Kahoots Klip Viewer</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
   <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script-->
 </head>
@@ -75,8 +76,8 @@
           <li/>
         </ul>
         <h3>Chat</h3>
-        <div class="comment-container">
-          <div class="comments" ng-repeat="comment in comments.annotations track by $index">
+        <div class="comment-container" scroll-to="{{groupComments.annotations.length-1}}" scroll-glue>
+          <div class="comments" id="{{$index}}" ng-repeat="comment in groupComments.annotations track by $index">
             <p>{{comment.hasBody.details.first_name}} : {{comment.hasBody.chars}}</p>
           </div>
         </div>
