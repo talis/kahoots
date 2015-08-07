@@ -42,4 +42,31 @@ var _getOAuthToken = function getOAuthToken(callback) {
   req.end();
 };
 
+var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy){
+
+  var annotationData = {
+    hasBody: {
+      format: 'text/plain',
+      type: 'Text',
+      chars: req.body.comment,
+      details: details
+    },
+    hasTarget: {uri:uri},
+    annotatedBy: req.params.user_id,
+    annotatedAt: Date.now(),
+    motivatedBy: motivatedBy
+  };
+  req.babelClient.createAnnotation( req.query.access_token, annotationData, function (err, results) {
+    //console.log("BABEL RESPONSE");
+    //console.log(results);
+    if (err) {
+      console.log(err);
+      return res.send(400, err);
+    } else {
+      return res.send(200, results);
+    }
+  }); // end createAnnotation
+};
+
 exports._getOAuthToken = _getOAuthToken;
+exports._createAnnotation = _createAnnotation;

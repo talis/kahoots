@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Clip = require('./clip.model');
 var Group = require('../group/group.model');
 var GroupManager = require('../../components/shared/groupClip').GroupManager;
+var _createAnnotation = require('../../components/shared/utils')._createAnnotation;
 var User = require('../user/user.model');
 var request = require('request');
 var im = require('imagemagick');
@@ -94,11 +95,20 @@ exports.addComment = function (req, res) {
 
         // If user is author can comment.
         if( clip.author !== user._id){return res.send(401,"not author of clip")}
-        var annotationData = {
+        // Create annotation
+        if(!req.body.comment){req.body.comment = '';}
+        var details= {
+          first_name: user.first_name,
+            surname: user.surname,
+            email: user.email
+        };
+        _createAnnotation(req, res, details,
+          [req.params.clip_id], 'comment');
+         /* var annotationData = {
           hasBody: {
             format: 'text/plain',
             type: 'Text',
-            chars: req.body.comment ? req.body.comment : '',
+            chars: req.body.comment ? req.body.comment  '',
             details: {
               first_name: user.first_name,
               surname: user.surname,
@@ -119,7 +129,7 @@ exports.addComment = function (req, res) {
           } else {
             return res.json(200, results);
           }
-        }); // end createAnnotation
+        }); // end createAnnotation*/
       }); // end find user by id
     }); // end find clip by id
   }, req.params.user_id);
@@ -224,7 +234,35 @@ exports.upload = function (req, res) {
               if (err) {
                 return handleError(res, err);
               }
-              return res.send(201);
+              // Create a new annotation to log upload
+              var annotationData = {
+                hasBody: {
+                  format: 'text/plain',
+                  type: 'Text',
+                  chars: 'New clip added!',
+                  details: {
+                    content_id: res._id,
+                    content:  req.body.content,
+                    first_name: user.first_name,
+                    surname: user.surname,
+                    email: user.email
+                  }
+                },
+                hasTarget: {uri:[req.params.user_id]},
+                annotatedBy: req.params.user_id,
+                annotatedAt: Date.now(),
+                motivatedBy: 'describing'
+              };
+              req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
+                //console.log("BABEL RESPONSE");
+                //console.log(results);
+                if (err) {
+                  console.log(err);
+                  return handleError(res, err);
+                }
+                return res.send(201);
+              });
+
             }); // Finish creating clip in db.
           }); // Finish posting to depot
         }); // Finish cropping img.
