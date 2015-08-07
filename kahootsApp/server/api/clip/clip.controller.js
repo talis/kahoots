@@ -159,7 +159,9 @@ exports.destroyClip = function(req, res){
         if (!clip) {return res.send(404);}
         if(clip.author!==req.params.user_id){return res.send(401)}
         for(var i=0; i<clip.groups.length; i++){
-          GroupManager.removeClipFromGroup(clip.groups[i], clip._id);
+          GroupManager.removeClipFromGroup(clip.groups[i], clip._id, function(status){
+            if(status>=400){console.log("Error removing clip form group. Status: " + status)}
+          });
         }
         clip.remove(function (err) {
           if (err) {return handleError(res, err);}
