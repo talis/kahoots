@@ -228,13 +228,23 @@ exports.upload = function (req, res) {
             req.body.content = JSON.parse(body).versions.original.uri + "&access_token=";
             // Set archived to false
             req.body.archived = false;
+           Clip.create(req.body, function(err, clip) {
+              if(err) { return handleError(res, err); }
 
             // create new clip in db.
-            exports.create(req, res, function () {
-              if (err) {
-                return handleError(res, err);
-              }
-              // Create a new annotation to log upload
+
+              // Create a new annotation describing clip created.
+             req.body.comment = "Added a new clip!";
+             // TODO change this in index.js
+             req.params.user_id = req.params.id;
+              var details= {
+                content_id: clip._id,
+                content:  clip.content
+              };
+              _createAnnotation(req, res, details,
+                [req.params.user_id], 'describing');
+              /*// Create a new annotation to log upload
+              req.chars = "New clip Added!"
               var annotationData = {
                 hasBody: {
                   format: 'text/plain',
@@ -261,7 +271,7 @@ exports.upload = function (req, res) {
                   return handleError(res, err);
                 }
                 return res.send(201);
-              });
+              });*/
 
             }); // Finish creating clip in db.
           }); // Finish posting to depot
