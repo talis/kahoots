@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Group = require('./group.model');
 var GroupManager = require('../../components/shared/groupClip').GroupManager;
+var _createAnnotation = require('../../components/shared/utils')._createAnnotation;
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
@@ -35,7 +36,16 @@ exports.addComment = function(req,res){
         if (!user) {return res.send(404, 'User does not exist');}
         // check user is in group
         if(group.users.indexOf(user._id)===-1){return res.send(401)}
-        var annotationData = {
+        // create annotation
+        if(!req.body.comment){req.body.comment = '';}
+        var details= {
+          first_name: user.first_name,
+          surname: user.surname,
+          email: user.email
+        };
+        _createAnnotation(req, res, details,
+          [req.params.group_id + "_" + req.params.clip_id, req.params.group_id], 'comment');
+        /*var annotationData = {
           hasBody: {
             format: 'text/plain',
             type: 'Text',
@@ -58,9 +68,9 @@ exports.addComment = function(req,res){
             console.log(err);
             return handleError(res, err);
           } else {
-            return res.json(200, results);
-          }
-        }); // end createAnnotation
+            return res.json(200, results);*/
+         /* }
+        }); // end createAnnotation*/
       }); // end User.findById
     }); // end Group.findById
   }); // end clip.findByID
@@ -166,7 +176,14 @@ exports.addClip = function(req, res){
         clip.groups.push(req.params.group_id);
         clip.save(function (err) {
           if (err) {return handleError(res, err);}
-          return res.send(201, group);
+          // create an annotation describing the event.
+          req.body.comment = "This clip was shared.";
+          var details= {
+            content_id: clip._id,
+            content:  clip.content
+          };
+          _createAnnotation(req, res, details,
+            [group._id], 'describing');
         });
       });
     });
@@ -333,7 +350,7 @@ exports.removeUser = function(req, res){
 // DELETE api/groups/:group_id/clips/:clip_id/users/:user_id
 // Removes clip from group
 exports.removeClip = function(req,res){
-  //console.log("Group: Remove clip");
+  console.log("Group: Remove clip");
   req.personaClient.validateToken(req, res, function () {
     User.findById(req.params.user_id, function(err, user){
       if(err){return handleError(res, err)}
@@ -344,7 +361,9 @@ exports.removeClip = function(req,res){
       console.log("user exists");
       if(user.group.indexOf(req.params.group_id)===-1){return res.send(401)}
       console.log('user in group OK');
-      GroupManager.removeClipFromGroup(req.params.group_id, req.params.clip_id, function(status){
+      GroupManager.removeClipFromGroup(req,res, function(status){
+        // create an annotation describing the event.
+
         return res.send(status);
       });
     }); // end find user by id.

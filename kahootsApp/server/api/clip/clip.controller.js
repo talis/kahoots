@@ -169,7 +169,9 @@ exports.destroyClip = function(req, res){
         if (!clip) {return res.send(404);}
         if(clip.author!==req.params.user_id){return res.send(401)}
         for(var i=0; i<clip.groups.length; i++){
-          GroupManager.removeClipFromGroup(clip.groups[i], clip._id, function(status){
+          console.log("Deleting from group:"+ JSON.stringify(clip.groups[i]));
+          req.params.group_id = clip.groups[i];
+          GroupManager.removeClipFromGroup(req,res, function(status){
             if(status>=400){console.log("Error removing clip form group. Status: " + status)}
           });
         }
@@ -181,6 +183,13 @@ exports.destroyClip = function(req, res){
         clip.archived = true;
         clip.save(function (err) {
           if (err) {return handleError(res, err);}
+          req.body.comment = "Deleted clip";
+          var details= {
+            content_id: clip._id,
+            content:  clip.content
+          };
+          _createAnnotation(req, res, details,
+            [req.params.user_id], 'describing');
         });
       });// End find clip by id
     }, req.params.user_id);
