@@ -396,9 +396,33 @@ var removeClipFromGroup = function(group_id, clip_id, cb){
   }); // end find group by id.
 };
 
+
+
 exports.removeClipFromGroup= function(group_id, clip_id){
   removeClipFromGroup(group_id, clip_id, function(){});
 };*/
+
+// GET api/groups/:group_id/feeds
+// Get the groups feed activity.
+exports.feed = function(req, res){
+  console.log('group feeds');
+  req.personaClient.validateToken(req, res, function () {
+    console.log('valid');
+    Group.findById(req.params.group_id, function(err, group){
+      if(err){return handleError(res, err)}
+      if(!group){ return res.send(404, "Group not found")}
+      var target = {"hasTarget.uri": req.params.group_id};
+      req.babelClient.getAnnotations(req.query.access_token, target, function(err, feeds){
+        if (err) {return handleError(res, err);} else {
+          //console.log("FEEDS\n");
+          //console.log(JSON.stringify(feeds));
+          return res.json(200, feeds);
+        }
+      });
+
+    });
+  });
+};
 // Handle error.
 function handleError(res, err) {
   return res.send(500, err);

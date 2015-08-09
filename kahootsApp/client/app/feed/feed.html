@@ -19,7 +19,11 @@
 <!--END Welcome Message-->
 
 <!--Feed-->
-
+<div class="feed-container">
+  <div class="feed" ng-repeat="comment in feed track by $index | orderBy: 'annotatedAt'">
+    <p>{{comment.annotatedAt}} </p>
+  </div>
+</div>
 <!--END Feed-->
 
 <!--END Add new Group-->

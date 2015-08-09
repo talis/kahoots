@@ -19,5 +19,7 @@ router.post('/:group_id/clips/:clip_id/:user_id', controller.addClip);
 router.delete('/:group_id/clips/:clip_id/users/:user_id', controller.removeClip);
 router.delete('/:group_id/users/:user_id', controller.removeUser);
 //router.delete('/:id', controller.destroy);
+router.get('/:group_id/feeds', controller.feed);
+
 
 module.exports = router;

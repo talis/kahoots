@@ -47,6 +47,13 @@ angular.module('kahootsAppApp')
       });
     };
 
+    instance.getFeeds = function(user_id, access_token, callback){
+      console.log("userService - getFeeds");
+      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
+      $http.get('api/users/' + user_id + "/feeds?access_token=" + access_token).success(function (feed) {
+        callback(feed);
+      });
+    };
 
     return instance;
   });

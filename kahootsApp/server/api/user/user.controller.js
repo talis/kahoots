@@ -100,7 +100,27 @@ exports.destroy = function(req, res) {
   });
 };*/
 
+// GET api/users/:user_id/feeds
+// Get the users activity and users groups feed activity.
+exports.feed = function(req, res){
+  console.log('update');
+  req.personaClient.validateToken(req, res, function () {
+    console.log('valid');
+    User.findById(req.params.user_id, function(err, user){
+      if(err){return handleError(res, err)}
+      if(!user){ return res.send(404, "User not found")}
+        var target = {"hasTarget.uri": user._id};
+        req.babelClient.getAnnotations(req.query.access_token, target, function(err, feeds){
+          if (err) {return handleError(res, err);} else {
+            //console.log("FEEDS\n");
+            //console.log(JSON.stringify(feeds));
+            return res.json(200, feeds);
+          }
+        });
 
+    });
+  });
+};
 
 // Handle errors
 function handleError(res, err) {

@@ -5,6 +5,8 @@ angular.module('kahootsAppApp')
     $routeProvider
       .when('/feed', {
         templateUrl: 'app/feed/feed.html',
-        controller: 'FeedCtrl'
+        controller: 'FeedCtrl',
+        loginRequired: true
+
       });
   });

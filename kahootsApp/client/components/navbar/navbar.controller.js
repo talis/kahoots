@@ -14,6 +14,9 @@ angular.module('kahootsAppApp')
     },{
       'title': 'Groups',
       'link': '/grouppage'
+    },{
+      'title': 'Feed',
+      'link': '/feed'
     }];
 
     $scope.isCollapsed = true;

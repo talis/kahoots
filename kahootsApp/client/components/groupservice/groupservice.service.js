@@ -94,5 +94,13 @@ angular.module('kahootsAppApp')
       });
     };
 
+    instance.getFeeds = function(group_id, access_token, callback){
+      console.log("groupService - getFeeds");
+      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
+      $http.get('api/groups/' + group_id + "/feeds?access_token=" + access_token).success(function (feed) {
+        callback(feed);
+      });
+    };
+
     return instance;
   });

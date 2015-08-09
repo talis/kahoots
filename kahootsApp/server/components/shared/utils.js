@@ -69,5 +69,7 @@ var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy)
   }); // end createAnnotation
 };
 
+
+
 exports._getOAuthToken = _getOAuthToken;
 exports._createAnnotation = _createAnnotation;

@@ -103,7 +103,7 @@ exports.addComment = function (req, res) {
             email: user.email
         };
         _createAnnotation(req, res, details,
-          [req.params.clip_id], 'comment');
+          [req.params.clip_id, req.params.user_id], 'comment');
          /* var annotationData = {
           hasBody: {
             format: 'text/plain',
