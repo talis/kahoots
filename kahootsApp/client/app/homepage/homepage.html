@@ -6,104 +6,81 @@
   <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script-->
 </head>
-<body>
+
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<!--Welcome Message-->
-<div class="row">
-  <div class="welcome col-md-10 col-md-offset-1">
-    <h1>Hello, {{user.first_name}}!</h1>
-  </div>
-</div>
-<!--END Welcome Message-->
 
-<!--START share success-->
-<div class="row">
-  <div class="good-share col-md-10 col-md-offset-1 bg-success">
-    <div id="alert-share" class="alert alert-success fade in">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Success!</strong> Clipped shared!
+
+<div class="col-md-10 col-md-offset-1">
+<!--Page Title-->
+  <div class="row">
+    <div class="title col-md-10">
+      <h1>My Clips</h1>
+      <!--Welcome Message-->
+      <h6>Signed in as {{user.first_name}}</h6>
     </div>
   </div>
-</div>
-<!--END share success-->
+<!--END Title-->
+
 
 
 <!--My Clips View-->
-<div class="row">
-  <div class="my-clips-view col-md-10 col-md-offset-1 bg-warning">
-    <!--Active Clip Image-->
-    <div class="column">
-      <div class="col-md-8 bg-danger">
-        <div class="row">
-          <div class="col-md-4">
-            <h2>Active Clip</h2>
-          </div>
-          <div class="col-md-2">
-            <div class="btn-group" float="right">
-              <button type="button" class="btn btn-default dropdown-toggle share-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Share <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li ng-repeat="group in userGroups track by $index">
-                  <a href="#" ng-click="shareClip(group)">{{group.name}}</a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">dropdown menu</a></li>
-              </ul>
-            </div>
-          </div>
-          <!--Remove clip button-->
-          <div class = "col-md-2">
-            <button id="delete-clip-btn" type="button" class="btn btn-default" ng-click="deleteClip()">DELETE Clip</button>
-          </div>
-        </div>
-        <div class="col-md-8">
-          <div class="active-clip-container">
-            <img class="img-thumbnail" style="max-height:500px;max-width:500px" ng-src="{{userClips[activeClip].content}}{{oauth.access_token}}">
-            <h6><a ng-href="{{userClips[activeClip].source}}"><i class="fa fa-space-shuttle"></i>Source of clip.</a></h6>
-          </div>
+  <div class ="panel panel-default my-clips-view col-md-10">
+    <!--Buttons-->
+    <!--Active Clip-->
+    <div class="row">
+      <!--Active Clip Image-->
+      <div class="col-md-8">
+        <div class="well" style="margin:10px">
+          <img class="img-thumbnail"  ng-src="{{userClips[activeClip].content}}{{oauth.access_token}}">
         </div>
       </div>
-    </div>
-    <!--END Active Clip Image-->
-    <!--Active Clip Comments-->
-    <div class="column">
-      <div class="col-md-4 bg-danger">
-        <h2>Notes</h2>
-        <div class="comment-container">
-          <div class="notes" ng-repeat="comment in userComments track by $index">
-            <p>{{comment.hasBody.details.first_name}}:{{comment.hasBody.chars}} </p>
+      <!--Active Clip Comments-->
+      <div class="col-md-4">
+        <h2>Your Notes</h2>
+        <div class="comment-container panel panel-default">
+          <div class="notes" style="margin:10px" ng-repeat="comment in userComments track by $index">
+            <p><b>{{comment.hasBody.details.first_name}}</b> : {{comment.hasBody.chars}} </p>
           </div>
         </div>
         <form class="note-form" ng-submit="addNote()" name="noteForm">
-          <textarea class="form-control" ng-model="newNote" rows="3" placeholder="Enter a new comment." required></textarea>
-          <input class="btn btn-primary" type="submit" ng-disabled="noteForm.$invalid" value="Post">
+          <textarea class="form-control" style="margin:10px" ng-model="newNote" rows="3" placeholder="Enter a new comment." required></textarea>
+          <input class="btn btn-primary pull-right" type="submit" ng-disabled="noteForm.$invalid" value="Post">
         </form>
       </div>
     </div>
-    <!--END Active Clip Comments-->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="btn group">
+          <a ng-href="{{userClips[activeClip].source}}" class="btn btn-default" type="button" data-toggle="tooltip" title="URL" >
+            <em class="glyphicon glyphicon-link"></em>
+          </a>
+          <button class="btn btn-default" type="button" ng-click="share()" data-toggle="tooltip" title="Share" >
+            <em class="glyphicon glyphicon-share"></em>
+          </button>
+          <button class="btn btn-default" type="button" ng-click="deleteClip()" data-toggle="tooltip" title="Delete" >
+            <em class="glyphicon glyphicon-remove"></em>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--clip grid-->
+  <div class="my-clips col-md-10 panel panel-default">
+    <h3></h3>
+    <div class="">
+      <div class="clips" ng-repeat="clip in userClips track by $index">
+        <img class="img-thumbnail col-md-2" ng-src="{{clip.content}}{{oauth.access_token}}" style="margin:10px" ng-click="setActiveClip($index)">
+      </div>
+    </div>
   </div>
 </div>
 <!--END My Clips View-->
 
-<!--All My Clips-->
-<div class="row">
-  <div class="my-clips col-md-10 col-md-offset-1 bg-warning">
-    <h3>My Clips</h3>
-    <div class="clips" ng-repeat="clip in userClips track by $index">
-      <div class="col-md-2">
-        <img class="img-thumbnail" ng-src="{{clip.content}}{{oauth.access_token}}" ng-click="setActiveClip($index)">
-      </div>
-    </div>
-  </div>
-</div>
-<!--END All My Clips-->
-
-</body>
 
 
-<footer class="footer">
+
+<footer class="footer" style="border-top: none">
   <div class="container">
 
     <p>Angular Fullstack v2.0.13 |
@@ -111,3 +88,5 @@
       <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
   </div>
 </footer>
+</body>
+</html>
