@@ -6,7 +6,7 @@
   <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script-->
 </head>
-
+<body>
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 
@@ -17,7 +17,7 @@
     <div class="title col-md-10">
       <h1>My Clips</h1>
       <!--Welcome Message-->
-      <h6>Signed in as {{user.first_name}}</h6>
+      <h6>Signed in as {{user.email}}</h6>
     </div>
   </div>
 <!--END Title-->
@@ -26,7 +26,7 @@
 
 <!--My Clips View-->
   <div class ="panel panel-default my-clips-view col-md-10">
-    <!--Buttons-->
+
     <!--Active Clip-->
     <div class="row">
       <!--Active Clip Image-->
@@ -49,6 +49,7 @@
         </form>
       </div>
     </div>
+    <!--Buttons-->
     <div class="row">
       <div class="col-md-8">
         <div class="btn group">
@@ -59,7 +60,7 @@
             <em class="glyphicon glyphicon-share"></em>
           </button>
           <button class="btn btn-default" type="button" ng-click="deleteClip()" data-toggle="tooltip" title="Delete" >
-            <em class="glyphicon glyphicon-remove"></em>
+            <em class="glyphicon glyphicon-trash"></em>
           </button>
         </div>
       </div>
