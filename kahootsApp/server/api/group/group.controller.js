@@ -39,12 +39,14 @@ exports.addComment = function(req,res){
         // create annotation
         if(!req.body.comment){req.body.comment = '';}
         var details= {
+          content_id: clip._id,
+          content: clip.content,
           first_name: user.first_name,
           surname: user.surname,
           email: user.email
         };
         _createAnnotation(req, res, details,
-          [req.params.group_id + "_" + req.params.clip_id, req.params.group_id], 'comment');
+          [req.params.group_id + "_" + req.params.clip_id, req.params.group_id], 'commenting');
         clip.save();
         /*var annotationData = {
           hasBody: {
@@ -152,42 +154,74 @@ exports.addUser = function(req, res){
 exports.addClip = function(req, res){
 
   req.personaClient.validateToken(req, res, function () {
-    console.log("User valid");
-    // Check clip exists
-    Clip.findById(req.params.clip_id, function(err, clip){
-      if(err){return handleError(res, err)}
-      if(!clip){return res.send(404, "Clip does not exist")}
-      // Check user is author.
-      //if(clip.author !== req.params.user_id){return res.send(401, "User not authorized to share clip ")}
-      // Check group not in clip already
-      if(clip.groups.indexOf(req.params.group_id)!==-1){return res.send(400, "Clip already in group")}
-      // Check group exists
-      Group.findById(req.params.group_id, function(err, group) {
-        if (err) {return handleError(res, err)}
-        if (!group) {return res.send(404, "Group does not exist")}
-        // Check user is in group and authorised to share with group.
-        console.log("Is user in group?");
-        if(group.users.indexOf(req.params.user_id)=== -1){return res.send(401, "User not in group")}
-        console.log("YES");
-        // Check Clip not in group.
-        if(group.clips.indexOf(req.params.clip_id)!== -1){return res.send(404, "Clip already in group" )}
-        // Everything ok, add clip to group
-        group.clips.push(req.params.clip_id);
-        group.save(function (err) {
-          if (err) {return handleError(res, err);}
-        });
-        // Add group to clip
-        clip.groups.push(req.params.group_id);
-        clip.save(function (err) {
-          if (err) {return handleError(res, err);}
-          // create an annotation describing the event.
-          req.body.comment = "This clip was shared.";
-          var details= {
-            content_id: clip._id,
-            content:  clip.content
-          };
-          _createAnnotation(req, res, details,
-            [group._id], 'describing');
+    var Clip = require('../../api/clip/clip.model');
+    User.findById(req.params.user_id, function(err, user) {
+      if (err) {
+        return handleError(res, err);
+      }
+      if (!user) {
+        return res.send(404);
+      }
+      console.log("User valid");
+      // Check clip exists
+      Clip.findById(req.params.clip_id, function (err, clip) {
+        if (err) {
+          return handleError(res, err)
+        }
+        if (!clip) {
+          return res.send(404, "Clip does not exist")
+        }
+        // Check user is author.
+        //if(clip.author !== req.params.user_id){return res.send(401, "User not authorized to share clip ")}
+        // Check group not in clip already
+        if (clip.groups.indexOf(req.params.group_id) !== -1) {
+          return res.send(400, "Clip already in group")
+        }
+        // Check group exists
+        Group.findById(req.params.group_id, function (err, group) {
+          if (err) {
+            return handleError(res, err)
+          }
+          if (!group) {
+            return res.send(404, "Group does not exist")
+          }
+          // Check user is in group and authorised to share with group.
+          console.log("Is user in group?");
+          if (group.users.indexOf(req.params.user_id) === -1) {
+            return res.send(401, "User not in group")
+          }
+          console.log("YES");
+          // Check Clip not in group.
+          if (group.clips.indexOf(req.params.clip_id) !== -1) {
+            return res.send(404, "Clip already in group")
+          }
+          // Everything ok, add clip to group
+          group.clips.push(req.params.clip_id);
+          group.save(function (err) {
+            if (err) {
+              return handleError(res, err);
+            }
+          });
+          // Add group to clip
+          clip.groups.push(req.params.group_id);
+          clip.save(function (err) {
+            if (err) {
+              return handleError(res, err);
+            }
+            // create an annotation describing the event.
+            req.body.comment = "shared a clip with the group " + group.name;
+            var details = {
+              content_id: clip._id,
+              content: clip.content,
+              first_name: user.first_name,
+              surname: user.surname,
+              email: user.email,
+              type: 'describing'
+            };
+
+            _createAnnotation(req, res, details,
+              [group._id], 'describing');
+          });
         });
       });
     });
@@ -415,7 +449,7 @@ exports.feed = function(req, res){
     Group.findById(req.params.group_id, function(err, group){
       if(err){return handleError(res, err)}
       if(!group){ return res.send(404, "Group not found")}
-      var target = {"hasTarget.uri": req.params.group_id};
+      var target = {"hasTarget.uri": req.params.group_id, "limit":999};
       req.babelClient.getAnnotations(req.query.access_token, target, function(err, feeds){
         if (err) {return handleError(res, err);} else {
           //console.log("FEEDS\n");

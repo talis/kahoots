@@ -27,6 +27,16 @@ function createCanvas(style) {
   // Need to set height after drawn
   c.height = c.offsetHeight;
   c.width = c.offsetWidth;
+
+  var boxText = document.createElement("div");
+  boxText.id = "klipperMsg";
+  boxText.style.cssText = "zIndex:1002 ;position:'absolute';width: 100px ;border: 1px solid black; margin-top: 8px; background: white; padding: 5px";
+  boxText.style.top = window.pageYOffset+50+"px";
+  boxText.style.left = window.pageXOffset+50+"px";
+  boxText.style.position = 'absolute';
+  boxText.style.zIndex = '1001';
+  boxText.innerHTML = "Click 'x' to exit.";
+  document.body.appendChild(boxText);
 }
 
 var button_style = {

@@ -3,7 +3,7 @@
  */
 
 var url = window.location.href;
-
+var color = "#FF00BF";
 function getCursorPosition(e, canvas) {
   return {
     /*x: e.pageX - canvas.canvasPos.left,
@@ -15,26 +15,30 @@ function getCursorPosition(e, canvas) {
 }
 var myCanvas = {
   dragging:false,
+  started:false,
   rect :{
     y:0,
     x:0,
     width:0,
     height:0
  },
-  canvas:null
+  canvas:null,
+  TextBox:null
 };
 
 myCanvas.initCanvas = function() {
-
+  myCanvas.TextBox = document.getElementById('klipperMsg');
   var canvas = document.getElementById('canvas');
   canvas.canvasPos = canvas.getBoundingClientRect();
   canvas.ctx = canvas.getContext('2d');
   canvas.ctx.globalAlpha = 0.2;
-  canvas.ctx.fillStyle = "#666699";
+  canvas.ctx.fillStyle = color;
   canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
   this.canvas = canvas;
   this.setListeners();
+
 };
+
 
 myCanvas.rect.resize = function(x,y, corner){
   var pointer = {
@@ -76,6 +80,7 @@ myCanvas.removeCanvas = function(){
 
   if(this.canvas!==null){
     document.body.removeChild(this.canvas);
+    document.body.removeChild(this.TextBox);
     window.removeEventListener('scroll', function(){
       console.log("Removed scroll listener");
     });
@@ -108,19 +113,28 @@ myCanvas.setListeners = function(){
       myCanvas.removeCanvas();
     }
   });
+
+  this.TextBox.onmousedown = function(e){
+    document.body.removeChild(self.TextBox);
+  };
+
   this.canvas.onmousedown = function (e) {
-      var startPos = getCursorPosition(e, this);
-      self.rect.x = startPos.x;
-      self.rect.y = startPos.y;
-      self.dragging = true;
+    var startPos = getCursorPosition(e, this);
+    self.rect.x = startPos.x;
+    self.rect.y = startPos.y;
+    self.dragging = true;
+
   };
 
     /* Finished drawing bounding box, telling background to screenshot.
      Clear the rectangle before the screen shot */
   this.canvas.onmouseup = function (e) {
+
       this.ctx.clearRect(0, 0, this.width, this.height);
       self.dragging = false;
-      if(!confirm("Do you want to send this clip to Kahoots App?")){return;}
+      if (!confirm("Do you want to send this clip to Kahoots App?")) {
+        return;
+      }
       // Remove the canvas from body.
       myCanvas.removeCanvas();
       // Message to background.
@@ -137,11 +151,11 @@ myCanvas.setListeners = function(){
 
     // Drags out a image of a rectangle.
   this.canvas.onmousemove = function (e) {
-    var pointer = getCursorPosition(e, this);
+      var pointer = getCursorPosition(e, this);
 
-    // re-fill canvas
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.fillRect(0, 0, this.width, this.height);
+      // re-fill canvas
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.ctx.fillRect(0, 0, this.width, this.height);
       if (!self.dragging) {
         this.ctx.fillStyle = "#000000";
         this.ctx.globalAlpha = 1;
@@ -151,18 +165,19 @@ myCanvas.setListeners = function(){
         this.ctx.stroke();
         this.ctx.beginPath();
         this.ctx.moveTo(0, pointer.y);
-        this.ctx.lineTo(this.width ,pointer.y);
+        this.ctx.lineTo(this.width, pointer.y);
         this.ctx.stroke();
-        this.ctx.fillStyle = "#666699";
+        this.ctx.fillStyle = color;
         this.ctx.globalAlpha = 0.2;
-      }else {
+      } else {
         self.rect.width = (pointer.x - self.rect.x);
         self.rect.height = (pointer.y - self.rect.y);
 
         // draw new rectangle
         this.ctx.clearRect(self.rect.x, self.rect.y, self.rect.width, self.rect.height);
       }
-  };
+    };
+
 };
 
 myCanvas.initCanvas();

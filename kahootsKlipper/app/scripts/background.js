@@ -158,7 +158,7 @@ mybackground.getLoginData = function(callback, continueToLogin){
             self.user.isLoggedIn = true;
             callback(self.user.name);
           } else {
-            alert('No data received for user, despite 200 \n');
+            //alert('No data received for user, despite 200 \n');
             //callback(username);
           }
         }else if(this.status === 401){
@@ -175,7 +175,7 @@ mybackground.getLoginData = function(callback, continueToLogin){
           }
         }else{
           // some other status. Error occured.
-          alert('ERROR:\nStatus: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
+          //alert('ERROR:\nStatus: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
         }
       }
     };
@@ -207,9 +207,7 @@ mybackground.login = function(){
       chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         // when the url === LOGIN_COMPLETE_URL login is complete. close tab.
         if(thistabId===tabId && changeInfo.url.substring(0, LOGIN_COMPLETE_URL.length)===LOGIN_COMPLETE_URL){
-          alert("LOGIN COMPLETE");
           chrome.tabs.remove(thistabId, function(){
-            alert("Removed tab " + thistabId);
           });
           self.getLoginData(function(){
           }, false);

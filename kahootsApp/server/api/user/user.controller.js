@@ -109,11 +109,13 @@ exports.feed = function(req, res){
     User.findById(req.params.user_id, function(err, user){
       if(err){return handleError(res, err)}
       if(!user){ return res.send(404, "User not found")}
-        var target = {"hasTarget.uri": user._id};
+        var target = {"hasTarget.uri": user._id, "limit":999};
         req.babelClient.getAnnotations(req.query.access_token, target, function(err, feeds){
-          if (err) {return handleError(res, err);} else {
-            //console.log("FEEDS\n");
-            //console.log(JSON.stringify(feeds));
+          if (err) {
+            console.log("Feed error! ",err)
+            return handleError(res, err);} else {
+            console.log("FEEDS\n");
+            console.log(JSON.stringify(feeds));
             return res.json(200, feeds);
           }
         });

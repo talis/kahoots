@@ -11,24 +11,36 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <!--Welcome Message-->
-<div class="row">
-  <div class="welcome col-md-10 col-md-offset-1">
-    <h1>Hello, {{user.first_name}}!</h1>
+<div class="welcome col-md-10 col-md-offset-1">
+  <!--Page title-->
+  <div class="row">
+    <div class="title col-md-10">
+      <h1 style="text-transform:capitalize">Activity feed</h1>
+      <!--Welcome Message-->
+      <h6>Signed in as {{user.email}}</h6>
+    </div>
   </div>
-</div>
-<!--END Welcome Message-->
+  <!--END Welcome Message-->
 
 <!--Feed-->
-<div class="feed-container">
-  <div class="feed" ng-repeat="comment in feed track by $index | orderBy: 'annotatedAt'">
-    <p>{{comment.annotatedAt}} </p>
+<div class="feed-container col-md-10 ">
+  <div class="feed " ng-repeat="comment in feed track by $index | orderBy: 'annotatedAt'">
+    <div class="row">
+      <div class="panel panel-default">
+        <img class="img-thumbnail col-md-1" ng-src="{{comment.hasBody.details.content}}{{oauth.access_token}}" style="margin:10px" ng-click="setActiveClip($index)">
+        <div class="col-md-8">
+          <br>
+        <b>{{comment.hasBody.details.first_name}} </b>{{comment.hasBody.chars}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <!--END Feed-->
-
+</div>
 <!--END Add new Group-->
 </body>
-<footer class="footer">
+<footer class="footer" style="border-top: none">
   <div class="container">
 
     <p>Angular Fullstack v2.0.13 |
@@ -36,3 +48,4 @@
       <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
   </div>
 </footer>
+

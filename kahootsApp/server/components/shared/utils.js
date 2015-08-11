@@ -53,8 +53,7 @@ var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy)
     },
     hasTarget: {uri:uri},
     annotatedBy: req.params.user_id,
-    annotatedAt: Date.now(),
-    motivatedBy: motivatedBy
+    annotatedAt: Date.now()
   };
   req.babelClient.createAnnotation( req.query.access_token, annotationData, function (err, results) {
     //console.log("BABEL RESPONSE");
