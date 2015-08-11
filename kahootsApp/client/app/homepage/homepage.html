@@ -3,8 +3,9 @@
   <title>Kahoots Klip Viewer</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script-->
+
+
+
 </head>
 <body>
 <div ng-include="'components/navbar/navbar.html'"></div>
@@ -53,7 +54,7 @@
     <div class="row">
       <div class="col-md-8">
         <div class="btn group">
-          <a ng-href="{{userClips[activeClip].source}}" class="btn btn-default" type="button" data-toggle="tooltip" title="URL" >
+          <a ng-href="{{userClips[activeClip].source}}" target="_blank"  class="btn btn-default" type="button" data-toggle="tooltip" title="URL" >
             <em class="glyphicon glyphicon-link"></em>
           </a>
           <button class="btn btn-default" type="button" ng-click="shareClip()" data-toggle="tooltip" title="Share" >

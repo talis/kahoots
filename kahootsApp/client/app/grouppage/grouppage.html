@@ -34,7 +34,7 @@
       </div>
       <!--Active clip/group comments-->
       <div class="col-md-4">
-        <h2>Your Notes</h2>
+        <h2>Group Comments</h2>
         <div class="comment-container panel panel-default">
           <div class="notes" style="margin:10px" ng-repeat="comment in groupComments.annotations track by $index" scroll-glue>
             <p><b>{{comment.hasBody.details.first_name}}</b> : {{comment.hasBody.chars}} </p>
@@ -50,7 +50,7 @@
     <div class="row">
       <div class="col-md-8">
         <div class="btn group">
-          <a ng-href="{{groupClips[activeClip].source}}" class="btn btn-default" type="button" data-toggle="tooltip" title="URL" >
+          <a ng-href="{{groupClips[activeClip].source}}" target="_blank" class="btn btn-default" type="button" data-toggle="tooltip" title="URL" >
             <em class="glyphicon glyphicon-link"></em>
           </a>
           <button class="btn btn-default" type="button" ng-click="shareClip()" data-toggle="tooltip" title="Share" >
@@ -74,10 +74,10 @@
 
       <ul class="nav nav-tabs">
       <li ng-repeat="group in userGroups track by $index">
-        <a href="#" ng-click="setActiveGroup($index)">{{group.name}}</a>
+        <a href="#" ng-click="setActiveGroup($index)" data-toggle="tooltip" title={{group.description}}>{{group.name}}</a>
       <li/>
-      <li id="addUser-btn"><a href="#"  ng-click="addUserPage()"><b>+ User</b></a></li>
-      <li><a href="#" ng-click="newGroupPage()"><b>+ Group</b></a></li>
+      <li id="addUser-btn"><a href="#"  ng-click="addUserPage()" data-toggle="tooltip" title="Add user to group"><b>+ User</b></a></li>
+      <li><a href="#" ng-click="newGroupPage()" data-toggle="tooltip" title="Create a new group"><b>+ Group</b></a></li>
     </ul>
     <div class="">
       <div class="clips" ng-repeat="clip in groupClips track by $index">

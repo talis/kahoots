@@ -34,6 +34,7 @@ angular.module('kahootsAppApp')
       if($scope.groupClips.length===0){$scope.activeClip=0; return;}
       if(index>=$scope.groupClips.length){return;}
       $scope.activeClip = index;
+      getComments();
     };
     /**
      * Set user groups
@@ -181,7 +182,7 @@ angular.module('kahootsAppApp')
     $scope.addUserPage = function(){
       console.log("HERE");
       // Todo: Add checks here.
-      groupservice.addUserPage($scope.userGroups[$scope.activeClip]);
+      groupservice.addUserPage($scope.userGroups[$scope.activeGroup]);
     };
     $scope.newGroupPage = function(){
       $location.path('/newGroup');
@@ -222,12 +223,14 @@ angular.module('kahootsAppApp')
         groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
           $scope.userGroups[$scope.activeGroup]._id, function (clips) {
             $scope.setGroupClips(clips);
+            getComments();
           });
       }
     });
     socket.syncUpdates('group', $scope.userGroups, false, function(){
       groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
         $scope.setUserGroups(groups);
+        getComments();
         $scope.setState();
       });
     });

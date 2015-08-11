@@ -104,6 +104,7 @@ exports.addComment = function (req, res) {
         };
         _createAnnotation(req, res, details,
           [req.params.clip_id, req.params.user_id], 'comment');
+        clip.save();
          /* var annotationData = {
           hasBody: {
             format: 'text/plain',

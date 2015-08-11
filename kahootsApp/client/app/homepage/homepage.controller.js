@@ -100,6 +100,9 @@ angular.module('kahootsAppApp')
      * Deletes active clip, and removes from all groups.
      */
     $scope.deleteClip = function(){
+
+      if(!window.confirm("Are you sure you want to delete clip?\nIt may have been shared with groups.")){return}
+
       if($scope.userClips[$scope.activeClip]===undefined){return}
       var deletedClip = $scope.userClips[$scope.activeClip];
 
