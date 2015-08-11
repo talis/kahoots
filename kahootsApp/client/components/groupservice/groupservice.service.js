@@ -57,6 +57,10 @@ angular.module('kahootsAppApp')
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
       $http.post('api/groups/'+ group_id+ "/clips/"+ clip_id+ "/" + user_id +"?access_token="+access_token).success(function(){
         callback();
+      }).error(function(err, res){
+        if(err.statusCode==400){
+          alert("This clip has already been shared with the group selected.");
+        }
       });
     };
 

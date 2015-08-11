@@ -32,7 +32,8 @@
         <img class="img-thumbnail col-md-6"  ng-src="{{clip.content}}{{oauth.access_token}}" style="margin:10px">
         <!--Group List-->
         <div class="list-group col-md-4" style="margin:10px">
-          <p>Choose a group:</p>
+          <p style="margin: 10px">Choose a group:</p>
+          <div id="no-groups" class="alert alert-info collapse" role="alert" style="margin:10px">This clip has already been shared with all your groups.</div>
           <a href="#" ng-click="selectGroup($index)" id={{$index}} class="list-group-item" ng-repeat="group in groups track by $index">{{group.name}}</a>
         </div>
       </div>
@@ -42,7 +43,7 @@
       <button type="cancel" class="btn btn-default" ng-click="goBack()">
         <em class="glyphicon glyphicon-arrow-left" data-toggle="tooltip" title="Go Back" ></em>
       </button>
-      <button type="submit" class="btn btn-default" ng-click="shareClip()">Submit</button>
+      <button id="share-btn" type="submit" class="btn btn-default" ng-click="shareClip()">Submit</button>
     </div>
   </div>
 <!--Add New User-->
