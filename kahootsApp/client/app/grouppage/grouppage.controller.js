@@ -94,6 +94,7 @@ angular.module('kahootsAppApp')
      * Remove active clip from active group.
      */
     $scope.removeClip = function(){
+      if(!window.confirm("Are you sure you want to remove this clip from the group " + $scope.userGroups[$scope.activeGroup].name + "?" )){return}
       if($scope.groupClips[$scope.activeClip]===undefined){
         console.log('clip undefined');
         return;}
@@ -153,6 +154,7 @@ angular.module('kahootsAppApp')
      * Leave active group
      */
     $scope.leaveGroup = function(group){
+      if(!window.confirm("Are you sure you want to leave the group " + group.name + "?" )){return}
       if($scope.userGroups.length===0){return;}
       var group_id = group._id;
       if($scope.userGroups.length===1) {
