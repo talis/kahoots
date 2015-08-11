@@ -151,12 +151,13 @@ exports.addUser = function(req, res){
 exports.addClip = function(req, res){
 
   req.personaClient.validateToken(req, res, function () {
+    console.log("User valid");
     // Check clip exists
     Clip.findById(req.params.clip_id, function(err, clip){
       if(err){return handleError(res, err)}
       if(!clip){return res.send(404, "Clip does not exist")}
       // Check user is author.
-      if(clip.author !== req.params.user_id){return res.send(401, "User not authorized to share clip ")}
+      //if(clip.author !== req.params.user_id){return res.send(401, "User not authorized to share clip ")}
       // Check group not in clip already
       if(clip.groups.indexOf(req.params.group_id)!==-1){return res.send(400, "Clip already in group")}
       // Check group exists
@@ -164,7 +165,9 @@ exports.addClip = function(req, res){
         if (err) {return handleError(res, err)}
         if (!group) {return res.send(404, "Group does not exist")}
         // Check user is in group and authorised to share with group.
+        console.log("Is user in group?");
         if(group.users.indexOf(req.params.user_id)=== -1){return res.send(401, "User not in group")}
+        console.log("YES");
         // Check Clip not in group.
         if(group.clips.indexOf(req.params.clip_id)!== -1){return res.send(404, "Clip already in group" )}
         // Everything ok, add clip to group

@@ -53,7 +53,7 @@
           <a ng-href="{{groupClips[activeClip].source}}" class="btn btn-default" type="button" data-toggle="tooltip" title="URL" >
             <em class="glyphicon glyphicon-link"></em>
           </a>
-          <button class="btn btn-default" type="button" ng-click="share()" data-toggle="tooltip" title="Share" >
+          <button class="btn btn-default" type="button" ng-click="shareClip()" data-toggle="tooltip" title="Share" >
             <em class="glyphicon glyphicon-share"></em>
           </button>
           <button class="btn btn-default" type="button" ng-click="removeClip()" data-toggle="tooltip" title="Delete" >
@@ -68,7 +68,7 @@
   <div class="my-clips col-md-10 panel panel-default">
       <h3 style="text-transform:capitalize">Active Group: {{userGroups[activeGroup].name}}
        <button class="btn btn-default pull-right" type="button" ng-click="leaveGroup(userGroups[activeGroup])" data-toggle="tooltip" title="Leave Group" >
-         <em class="glyphicon glyphicon-remove"></em>
+         <em class="glyphicon glyphicon-log-out"></em>
        </button>
       </h3>
 

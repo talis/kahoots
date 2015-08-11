@@ -5,9 +5,6 @@ angular.module('kahootsAppApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    },{
-      'title': 'test',
-      'link': '/allClips'
     }, {
       'title': 'Home Page',
       'link': '/homepage'

@@ -1,15 +1,25 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .service('groupservice', function ($http, $location) {
+  .service('groupservice', function ($http, $location, $rootScope) {
     var instance = function(){};
 
+    instance.userGroups = [];
     instance.group = null;
+    instance.clip = null;
+    instance.returnPath = '/homepage';
 
     instance.addUserPage = function(group){
-      console.log("Add User Page GO")
+      console.log("Add User Page GO");
       this.group = group;
       $location.path('/addUser');
+    };
+
+    instance.shareClipPage = function( clip, returnPath){
+      console.log("Go to share clip page");
+      this.clip = clip;
+      this.returnPath = returnPath;
+      $location.path('/shareclip');
     };
 
     instance.getMyGroups = function(user_id, access_token, callback){

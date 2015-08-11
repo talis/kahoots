@@ -89,15 +89,10 @@ angular.module('kahootsAppApp')
      * Share the active clip with given group.
      * @param group object.
      */
-    $scope.shareClip = function(group){
-      if(group === undefined){return;}
-      console.log("Group is there :)");
+    $scope.shareClip = function(){
       if($scope.userClips[$scope.activeClip]===undefined){return;}
       console.log("Active clip good!");
-      groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
-        group._id, $scope.userClips[$scope.activeClip]._id, function(){
-          console.log("SHARED");
-        });
+      groupservice.shareClipPage($scope.userClips[$scope.activeClip],'/homepage');
 
       //$('#alert-share').show();
     };

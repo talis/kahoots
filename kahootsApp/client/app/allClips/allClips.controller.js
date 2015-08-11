@@ -118,9 +118,8 @@ angular.module('kahootsAppApp')
         var shareFrom = $scope.userClips;
       }
       if(shareFrom[$scope.activeClip]===undefined){return;}
-      groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
-        group._id, shareFrom[$scope.activeClip]._id, function(){});
-      $('#alert-share').show();
+      groupservice.shareClipPage(group._id, shareFrom[$scope.activeClip]._id, function(){});
+
 
     };
     /*

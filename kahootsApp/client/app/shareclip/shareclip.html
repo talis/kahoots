@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+  <title>Kahoots Klip Viewer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<!--Welcome Message-->
+<div class="welcome col-md-10 col-md-offset-1">
+  <!--Page title-->
+  <div class="row">
+    <div class="title col-md-10">
+      <h1 style="text-transform:capitalize">Share Clip</h1>
+      <!--Welcome Message-->
+      <h6>Signed in as {{user.email}}</h6>
+    </div>
+  </div>
+<!--END Welcome Message-->
+
+
+
+
+  <!--Add New User-->
+  <div class="row">
+    <div class="panel panel-default add-user col-md-10" style="padding:10px">
+      <div class="row">
+        <!--Active clip-->
+        <img class="img-thumbnail col-md-6"  ng-src="{{clip.content}}{{oauth.access_token}}" style="margin:10px">
+        <!--Group List-->
+        <div class="list-group col-md-4" style="margin:10px">
+          <p>Choose a group:</p>
+          <a href="#" ng-click="selectGroup($index)" id={{$index}} class="list-group-item" ng-repeat="group in groups track by $index">{{group.name}}</a>
+        </div>
+      </div>
+
+
+      <!--buttons-->
+      <button type="cancel" class="btn btn-default" ng-click="goBack()">
+        <em class="glyphicon glyphicon-arrow-left" data-toggle="tooltip" title="Go Back" ></em>
+      </button>
+      <button type="submit" class="btn btn-default" ng-click="shareClip()">Submit</button>
+    </div>
+  </div>
+<!--Add New User-->
+</div>
+</body>
+<footer class="footer" style="border-top: none">
+  <div class="container">
+
+    <p>Angular Fullstack v2.0.13 |
+      <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+      <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+  </div>
+</footer>
