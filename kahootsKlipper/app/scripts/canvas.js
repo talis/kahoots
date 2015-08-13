@@ -30,12 +30,12 @@ function createCanvas(style) {
 
   var boxText = document.createElement("div");
   boxText.id = "klipperMsg";
-  boxText.style.cssText = "zIndex:1002 ;position:'absolute';width: 100px ;border: 1px solid black; margin-top: 8px; background: white; padding: 5px";
-  boxText.style.top = window.pageYOffset+50+"px";
-  boxText.style.left = window.pageXOffset+50+"px";
+  boxText.style.cssText = "zIndex:1002 ;position:absolute;width: 200px ;border: 3px solid white; margin-top: 8px; background: #4A2B80; font-size: 20px; color: white; padding: 5px";
+  boxText.style.top = (c.height/2)+window.pageYOffset-10+"px";
+  boxText.style.left = (c.width/2)+  window.pageXOffset-100+"px";
   boxText.style.position = 'absolute';
   boxText.style.zIndex = '1001';
-  boxText.innerHTML = "Click 'x' to exit.";
+  boxText.innerHTML = "Press 'esc' to exit.";
   document.body.appendChild(boxText);
 }
 

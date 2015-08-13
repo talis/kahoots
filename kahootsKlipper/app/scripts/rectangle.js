@@ -109,12 +109,12 @@ myCanvas.setListeners = function(){
   });
 
   document.addEventListener('keydown', function(e){
-    if(e.keyCode===88){
+    if(e.keyCode===27){
       myCanvas.removeCanvas();
     }
   });
 
-  this.TextBox.onmousedown = function(e){
+  this.TextBox.onmouseover = function(e){
     document.body.removeChild(self.TextBox);
   };
 

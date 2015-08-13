@@ -39,6 +39,7 @@
       <!--Active Clip Comments-->
       <div class="col-md-4">
         <h2>Your Notes</h2>
+        <h6>Personal notes are not shared.</h6>
         <div class="comment-container panel panel-default">
           <div class="notes" style="margin:10px" ng-repeat="comment in userComments track by $index">
             <p><b>{{comment.hasBody.details.first_name}}</b> : {{comment.hasBody.chars}} </p>

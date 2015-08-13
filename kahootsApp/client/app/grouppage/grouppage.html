@@ -35,6 +35,7 @@
       <!--Active clip/group comments-->
       <div class="col-md-4">
         <h2>Group Comments</h2>
+        <h6>These comments are shared with the group.</h6>
         <div class="comment-container panel panel-default">
           <div class="notes" style="margin:10px" ng-repeat="comment in groupComments.annotations track by $index" scroll-glue>
             <p><b>{{comment.hasBody.details.first_name}}</b> : {{comment.hasBody.chars}} </p>
