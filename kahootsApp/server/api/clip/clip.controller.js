@@ -342,6 +342,7 @@ exports.upload = function (req, res) {
 
 // Error handler.
   function handleError(res, err) {
+
     return res.send(500, err);
   }
 

@@ -80,7 +80,10 @@ myCanvas.removeCanvas = function(){
 
   if(this.canvas!==null){
     document.body.removeChild(this.canvas);
-    document.body.removeChild(this.TextBox);
+    if(this.TextBox!==null){
+      document.body.removeChild(this.TextBox);
+      this.TextBox=null;
+    }
     window.removeEventListener('scroll', function(){
       console.log("Removed scroll listener");
     });
@@ -115,7 +118,10 @@ myCanvas.setListeners = function(){
   });
 
   this.TextBox.onmouseover = function(e){
-    document.body.removeChild(self.TextBox);
+    if(self.TextBox!==null){
+      document.body.removeChild(self.TextBox);
+      self.TextBox=null;
+    }
   };
 
   this.canvas.onmousedown = function (e) {
@@ -129,8 +135,7 @@ myCanvas.setListeners = function(){
     /* Finished drawing bounding box, telling background to screenshot.
      Clear the rectangle before the screen shot */
   this.canvas.onmouseup = function (e) {
-
-      this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.clearRect(0, 0, this.width, this.height);
       self.dragging = false;
       if (!confirm("Do you want to send this clip to Kahoots App?")) {
         return;

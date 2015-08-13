@@ -24,8 +24,6 @@
     "tabs",
     "http://*/*",
     "https://*/*",
-    "activeTab",
-    "identity",
-    "identity.email"
+    "activeTab"
   ]
 }

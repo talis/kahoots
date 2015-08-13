@@ -1,15 +1,27 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .service('userservice', function ($http) {
+  .service('userservice', function ($http,$location,$rootScope) {
 
-    // FROM Customer Health Dashboard
 
     // TODO: remove constants
     var PERSONA_ENDPOINT = "https://users.talis.com:443";
     // AngularJS will instantiate a singleton by calling "new" on this function
     var instance = function(){};
 
+    instance.logout = function(){
+      /*$http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.oauth.access_token;
+      $http.get(PERSONA_ENDPOINT + "/auth/logout" + "?access_token=" + $rootScope.oauth.access_token).success(function(){
+        console.log("Logging out...")
+        $rootScope.user = null;
+        $rootScope.oauth = null;
+        var next = '/';
+        $location.path(next).replace();
+      });*/
+      window.open('https://accounts.google.com/logout');
+      $rootScope.user=null;
+      $location.path('/').replace();
+    };
     instance.getLoginData = function(tenantShortCode, callback){
       // requires session cookie on persona
       /*
@@ -17,7 +29,7 @@ angular.module('kahootsAppApp')
          of /auth/providers/{provider}/login.json above. Use with a cb= param for JSONP.
        */
       this._getUserData(PERSONA_ENDPOINT + '/2/auth/login.json?cb=JSON_CALLBACK', 'jsonp', tenantShortCode, callback);
-    }
+    };
 
     instance._getUserData = function(endpoint, op, tenantShortCode, callback) {
       console.log("/userservice - getUserData");

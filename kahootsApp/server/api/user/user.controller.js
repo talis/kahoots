@@ -124,6 +124,8 @@ exports.feed = function(req, res){
   });
 };
 
+//GET api/users/
+
 // Handle errors
 function handleError(res, err) {
   return res.send(500, err);
