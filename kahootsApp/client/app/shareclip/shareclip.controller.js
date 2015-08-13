@@ -7,11 +7,21 @@ angular.module('kahootsAppApp')
     $scope.selectedGroup = 0;
 
     var init = function(){
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function(groups){
-        $scope.groups = groups;
-      });
       $scope.clip = groupservice.clip;
-      console.log($scope.clip);
+      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function(groups){
+
+        for(var i=0; i<groups.length; i++){
+          console.log(groups[i]._id);
+          if($scope.clip.groups.indexOf(groups[i]._id)<0){
+            $scope.groups.push(groups[i]);
+          }
+        }
+        if($scope.groups.length===0){
+          $('#no-groups').removeClass('collapse');
+          $('#share-btn').addClass('disabled');
+        }
+      });
+
     };
 
     $scope.shareClip = function(){
