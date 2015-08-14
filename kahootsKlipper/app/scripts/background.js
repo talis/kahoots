@@ -7,12 +7,19 @@ var mybackground = {
   user:{
     isLoggedin:false,
     name:null,
-    guid:null
+    guid:null,
+    loginTime:null
   }
 };
 
 mybackground.init = function(){
-  this.getLoginData(function(){}, false);
+  if((Date.now-this.user.loginTime) < 1680000 ) {
+    this.getLoginData(function () {
+    }, false);
+  }else{
+    this.getLoginData(function () {
+    }, true);
+  }
   this.addListeners();
 };
 
@@ -124,6 +131,7 @@ mybackground.logout = function(){
           self.user.name = null;
           self.user.guid = null;
           self.oauth = null;
+          self.user.loginTime = null;
           //alert('Status: '+this.status+'\nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'\nBody: '+this.responseText);
         }
       }
@@ -157,6 +165,7 @@ mybackground.getLoginData = function(callback, continueToLogin){
             self.user.guid = data.guid;
             self.user.name = data.profile.first_name;
             self.user.isLoggedIn = true;
+            self.user.loginTime = Date.now;
             callback(self.user.name);
           } else {
             //alert('No data received for user, despite 200 \n');
