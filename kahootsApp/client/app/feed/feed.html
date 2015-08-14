@@ -30,7 +30,9 @@
         <img class="img-thumbnail col-md-1" ng-src="{{comment.hasBody.details.content}}{{oauth.access_token}}" style="margin:10px" ng-click="setActiveClip($index)">
         <div class="col-md-8">
           <br>
-        <b>{{comment.hasBody.details.first_name}} </b>{{comment.hasBody.chars}} <b>{{comment.hasBody.details.timeSince}} ago.</b>
+          <b>{{comment.hasBody.details.first_name}} </b>
+          {{comment.hasBody.chars}}
+          <b><span am-time-ago="comment.annotatedAt"></span></b>
         </div>
       </div>
     </div>
