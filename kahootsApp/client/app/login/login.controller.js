@@ -22,9 +22,13 @@ angular.module('kahootsAppApp')
         $rootScope.oauth = user.oauth;
         //check if user exists in kahoots
         userservice.getUser(user, $rootScope.oauth.access_token, function(user){
-          $rootScope.user = user;
+          var next = '/home';
+          if(user.email!==undefined && user.email!==null){
+            var next = '/homepage';
+            $rootScope.user = user;
+          }
+          //$rootScope.user = user;
           // redirect to main
-          var next = '/homepage';
           $location.path(next).replace();
         });
 

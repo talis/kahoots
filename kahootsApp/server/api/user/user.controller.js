@@ -54,6 +54,7 @@ exports.create = function(req, res) {
       if(!user){
         // if user does not exist create new user
         var newUser = req.body.profile;
+        if(newUser===undefined || newUser===null){return res.json(400)}
         newUser._id = req.params.id;
         User.create(newUser, function(err, user) {
           if(err) {return handleError(res, err); }

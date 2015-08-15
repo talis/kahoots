@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .controller('HomepageCtrl', function ($scope, $rootScope, clipservice, groupservice, userservice, socket) {
+  .controller('HomepageCtrl', function ($location, $scope, $rootScope, clipservice, groupservice, userservice, socket) {
     $scope.userGroups = [];
     $scope.userClips = [];
     $scope.userComments = [];
@@ -9,7 +9,9 @@ angular.module('kahootsAppApp')
     $scope.newNote = '';
 
     var init = function(){
+      if($rootScope.user=='undefined'){
 
+      }
       $('#alert-share').hide();
       $scope.setState();
       clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
