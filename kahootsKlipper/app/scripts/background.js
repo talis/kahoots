@@ -111,7 +111,7 @@ mybackground.screenshot = function(request) {
       }
     };
     xhr.send(formData);
-    alert("sending img to server");
+
   });
 }
 /*

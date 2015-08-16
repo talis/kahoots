@@ -85,10 +85,11 @@ myCanvas.removeCanvas = function(){
       this.TextBox=null;
     }
     window.removeEventListener('scroll', function(){
-      console.log("Removed scroll listener");
+      //console.log("Removed scroll listener");
     });
+    window.removeEventListener('resize', function(){});
     this.canvas=null;
-    console.log( " Removed canvas");
+    //console.log( " Removed canvas");
   }
 }
 
@@ -97,7 +98,7 @@ myCanvas.setListeners = function(){
   var self = this;
 
   window.addEventListener('resize', function(){
-    console.log("Resize");
+    //console.log("Resize");
     self.canvas.height = self.canvas.offsetHeight;
     self.canvas.width = self.canvas.offsetWidth;
 
@@ -129,7 +130,10 @@ myCanvas.setListeners = function(){
     self.rect.x = startPos.x;
     self.rect.y = startPos.y;
     self.dragging = true;
-
+    if(self.TextBox!==null){
+      document.body.removeChild(self.TextBox);
+      self.TextBox=null;
+    }
   };
 
     /* Finished drawing bounding box, telling background to screenshot.
@@ -143,13 +147,13 @@ myCanvas.setListeners = function(){
       // Remove the canvas from body.
       myCanvas.removeCanvas();
       // Message to background.
-      console.log("About to send \'capture\' msg");
+      //console.log("About to send \'capture\' msg");
       chrome.extension.sendMessage({
         directive: "capture",
         rect: self.rect,
         source: url
       }, function (response) {
-        console.log("" + response.msg);
+        //console.log("" + response.msg);
       });
 
   };
