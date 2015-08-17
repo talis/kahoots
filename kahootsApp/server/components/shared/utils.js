@@ -1,8 +1,8 @@
 var config = require('../../config/environment');
 var http = require(config.oauth.scheme);
-var querystring = require('querystring');
+//var querystring = require('querystring');
 
-var _getOAuthToken = function getOAuthToken(callback) {
+/*var _getOAuthToken = function getOAuthToken(callback) {
   var post_data = querystring.stringify({
     'grant_type' : 'client_credentials'
   });
@@ -17,7 +17,6 @@ var _getOAuthToken = function getOAuthToken(callback) {
       'Content-Length': post_data.length
     }
   };
- //console.log("CLIENT:"+options.auth);
 
   var req = http.request(options, function(response){
     var str = "";
@@ -40,7 +39,8 @@ var _getOAuthToken = function getOAuthToken(callback) {
   req.write(post_data);
   //console.log("Sending");
   req.end();
-};
+};*/
+
 
 var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy){
   //console.log("_createAnnotation");
@@ -70,5 +70,5 @@ var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy)
 
 
 
-exports._getOAuthToken = _getOAuthToken;
+//exports._getOAuthToken = _getOAuthToken;
 exports._createAnnotation = _createAnnotation;
