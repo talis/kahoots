@@ -2,38 +2,29 @@
 
 angular.module('kahootsAppApp')
   .service('userservice', function ($http,$location,$rootScope) {
-
-
-    // TODO: remove constants
+    // TODO: extract constants to a global domain
     var PERSONA_ENDPOINT = "https://users.talis.com:443";
-    // AngularJS will instantiate a singleton by calling "new" on this function
+
     var instance = function(){};
 
-    instance.logout = function(){
-      /*$http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.oauth.access_token;
-      $http.get(PERSONA_ENDPOINT + "/auth/logout" + "?access_token=" + $rootScope.oauth.access_token).success(function(){
-        console.log("Logging out...")
-        $rootScope.user = null;
-        $rootScope.oauth = null;
-        var next = '/';
-        $location.path(next).replace();
-      });*/
+    /*instance.logout = function(){
       window.open('https://accounts.google.com/logout');
       $rootScope.user=null;
       $location.path('/').replace();
-    };
+    };*/
+
+    /**
+     * Attempts to retrieve user information
+     * @param tenantShortCode
+     * @param callback
+     */
     instance.getLoginData = function(tenantShortCode, callback){
-      // requires session cookie on persona
-      /*
-         Once the user has a browser session with persona, this shorter route is the equivalent
-         of /auth/providers/{provider}/login.json above. Use with a cb= param for JSONP.
-       */
       this._getUserData(PERSONA_ENDPOINT + '/2/auth/login.json?cb=JSON_CALLBACK', 'jsonp', tenantShortCode, callback);
     };
 
+    // _ underscore represents a private method
     instance._getUserData = function(endpoint, op, tenantShortCode, callback) {
-      console.log("/userservice - getUserData");
-      console.log($http[op](endpoint).error);
+
       $http[op](endpoint).then(function(response) {
         if (response.status === 200) {
           if (response.data) {
@@ -44,12 +35,16 @@ angular.module('kahootsAppApp')
           }
         }
       }, function(response) {
-        console.log(response);
         // not an error, but no user either...
         callback(null, null);
       });
     };
-
+    /**
+     * sends POST request to get Kahoots user's info or create a new entry if user is not found.
+     * @param user Persona user
+     * @param access_token Provided by Persona
+     * @param callback
+     */
     instance.getUser = function(user, access_token, callback){
       $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
       $http.post('api/users/' + user.guid + "?access_token=" + access_token, user).success(function (user) {
@@ -58,11 +53,14 @@ angular.module('kahootsAppApp')
         callback(404, 'user not found');
       });
     };
-
-    instance.getFeeds = function(user_id, access_token, callback){
-      console.log("userService - getFeeds");
-      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.get('api/users/' + user_id + "/feeds?access_token=" + access_token).success(function (feed) {
+    /**
+     * send GET request to retrieve activity feed for a user.
+     * @param callback - called on success
+     */
+    instance.getFeeds = function(callback){
+      $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.oauth.access_token;
+      $http.get('api/users/' + $rootScope.user._id + "/feeds?access_token="
+        + $rootScope.oauth.access_token).success(function (feed) {
         callback(feed);
       });
     };

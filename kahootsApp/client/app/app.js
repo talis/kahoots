@@ -11,26 +11,24 @@ angular.module('kahootsAppApp', [
   'angularMoment'
 ])
   .config(function ($routeProvider, $locationProvider) {
-
+    // If no route is provided redirect to /
     $routeProvider
       .otherwise({
         redirectTo: '/'
       });
-
     $locationProvider.html5Mode(true);
   }).run(function($rootScope, $location){
 
     $rootScope.$on('$stateChangeSuccess', function(event, data) {
-      // todo: move to stateChangeStart
       if (data.$$route && data.$$route.controller) {
         $rootScope.controller = data.$$route.controller;
       }
     });
 
       // check if login is needed on page
-      $rootScope.$on("$routeChangeStart", function(event, next, current) {
+      $rootScope.$on("$routeChangeStart", function(event, next, currentRoute) {
         var currentRoute = $location.path();
-
+        // For each page check login is required.
         var checkLoginRequired = function(){
           if(next.loginRequired) {
             if(!$rootScope.user){

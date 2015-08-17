@@ -10,7 +10,9 @@ angular.module('kahootsAppApp')
     $rootScope.activeView;
 
 
-    // Login. Get user info from Persona and set $rootScope.user.
+    /**
+     * Login. Get user info from Persona and set $rootScope.user.
+     */
     userservice.getLoginData(shortCode, function(err, user){
       if(err){
         console.log('Failed to get user details');
@@ -27,7 +29,6 @@ angular.module('kahootsAppApp')
             var next = '/homepage';
             $rootScope.user = user;
           }
-          //$rootScope.user = user;
           // redirect to main
           $location.path(next).replace();
         });

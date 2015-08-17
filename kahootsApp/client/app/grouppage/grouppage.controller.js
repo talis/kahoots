@@ -20,8 +20,7 @@ angular.module('kahootsAppApp')
       if($scope.userGroups[index]===undefined){return}
       $scope.activeGroup = index;
       //get clips for group.
-      groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup]._id, function (clips) {
+      groupservice.getClips($scope.userGroups[$scope.activeGroup]._id, function (clips) {
           $scope.setGroupClips(clips);
         });
       $scope.setActiveClip(0);
@@ -106,22 +105,20 @@ angular.module('kahootsAppApp')
       var clip = $scope.activeClip;
 
       if($scope.groupClips.length===1){
-        console.log("Removing last clip");
+        //console.log("Removing last clip");
         //Last clip
         $scope.setActiveClip(0);
         $scope.setGroupClips([]);
       }else if($scope.groupClips.indexOf($scope.activeClip)===0){
-        console.log("Removing first clip");
+        //console.log("Removing first clip");
         $scope.setActiveClip(1);
       }else{
-        console.log("Removing not first or last clip");
+        //console.log("Removing not first or last clip");
         $scope.setActiveClip(0);
       }
-      groupservice.removeClip($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup]._id, list[clip]._id, function(){
-
-          groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
-            $scope.userGroups[$scope.activeGroup]._id, function (clips) {
+      groupservice.removeClip($scope.userGroups[$scope.activeGroup]._id,
+        list[clip]._id, function(){
+          groupservice.getClips($scope.userGroups[$scope.activeGroup]._id, function (clips) {
               $scope.setGroupClips(clips);
             });
         });
@@ -143,9 +140,8 @@ angular.module('kahootsAppApp')
       if($scope.newComment ===''){return;}
       if($scope.userGroups[$scope.activeGroup]===undefined){return;}
 
-      groupservice.addComment($rootScope.user, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup]._id, $scope.groupClips[$scope.activeClip]._id,
-        $scope.newComment, function () {
+      groupservice.addComment($scope.userGroups[$scope.activeGroup]._id,
+        $scope.groupClips[$scope.activeClip]._id, $scope.newComment, function () {
           getComments();
         });
       $scope.newComment='';
@@ -170,10 +166,8 @@ angular.module('kahootsAppApp')
       } else {
         $scope.setActiveGroup(0);
         $scope.setActiveClip(0);
-
       }
-      groupservice.leaveGroup($rootScope.user._id, $rootScope.oauth.access_token,
-        group_id, function () {
+      groupservice.leaveGroup(group_id, function () {
           $scope.setState();
         });
       $scope.setState();
@@ -182,16 +176,20 @@ angular.module('kahootsAppApp')
      * Redirect user to add User Page
      */
     $scope.addUserPage = function(){
-      console.log("HERE");
       // Todo: Add checks here.
       groupservice.addUserPage($scope.userGroups[$scope.activeGroup]);
     };
+    /**
+     * Redirect user to 'add new group' page.
+     */
     $scope.newGroupPage = function(){
       $location.path('/newGroup');
     };
+    /**
+     * Get all comments for active clip in active group.
+     */
     var getComments = function(){
-      groupservice.getComments($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userGroups[$scope.activeGroup]._id,
+      groupservice.getComments($scope.userGroups[$scope.activeGroup]._id,
         $scope.groupClips[$scope.activeClip]._id, function (comments) {
           $scope.groupComments = comments;
         });
@@ -201,45 +199,48 @@ angular.module('kahootsAppApp')
      * Todo: Change this to save users previous activity
      */
     var init = function(){
-        $('.comment-container').animate({
+      $('.comment-container').animate({
           scrollTop: 500
         });
-
-
       $('#alert-share').hide();
       $scope.setState();
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+      groupservice.getMyGroups(function (groups) {
         $scope.userGroups=groups;
         if($scope.userGroups !== undefined && $scope.userGroups.length!==0) {
-          groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
-            $scope.userGroups[$scope.activeGroup]._id, function (clips) {
+          groupservice.getClips($scope.userGroups[$scope.activeGroup]._id, function (clips) {
               $scope.setGroupClips(clips);
-            });
+          });
         }
       });
-
     };
     init();
+
+    /**
+     * On update of clip, get user clips and comments.
+     */
     socket.syncUpdates('clip', $scope.groupClips, false, function(){
       if($scope.userGroups !== undefined && $scope.userGroups.length!==0) {
-        groupservice.getClips($rootScope.user._id, $rootScope.oauth.access_token,
-          $scope.userGroups[$scope.activeGroup]._id, function (clips) {
+        groupservice.getClips($scope.userGroups[$scope.activeGroup]._id, function (clips) {
             $scope.setGroupClips(clips);
             getComments();
           });
       }
     });
+
+    /**
+     * On group update get user groups and comments.
+     */
     socket.syncUpdates('group', $scope.userGroups, false, function(){
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+      groupservice.getMyGroups(function (groups) {
         $scope.setUserGroups(groups);
         getComments();
         $scope.setState();
       });
     });
 
+    // When page is destroyed unsync updates.
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('clip');
-      socket.unsyncUpdates('user');
       socket.unsyncUpdates('group');
     });
 

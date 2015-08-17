@@ -1,44 +1,63 @@
 'use strict';
 
 angular.module('kahootsAppApp')
-  .service('clipservice', function ($http, socket) {
+  .service('clipservice', function ($http, $rootScope) {
+    //TODO: do not need to send access token as a query AND header - choose one.
     var instance = function(){};
 
-    instance.getMyClips = function(user_id, access_token, callback){
-      $http.get('/api/clips/' + user_id+"?access_token="+access_token, {headers:  {
-        'Authorization': 'Bearer ' + access_token }}).success(function(clips) {
+    /**
+     * send GET request to retrieve user's clips.
+     * @param callback - called on success
+     */
+    instance.getMyClips = function(callback){
+      $http.get('/api/clips/' + $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token,
+        {headers:  {
+          'Authorization': 'Bearer ' + $rootScope.oauth.access_token
+          }
+        }).success(function(clips) {
         callback(clips);
       });
     };
-
-    // Only for own clip.
-    instance.addNewNote = function(user_id, access_token, clip_id, comment, callback) {
-      console.log("Add new note");
-      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.post('api/clips/' + clip_id + "/users/" + user_id  + "/comments" + "?access_token=" + access_token, {comment:comment}).success(function(){
+    /**
+     * send POST request to add a new private comment to a clip.
+     * @param clip_id String Id of clip to add comment to.
+     * @param comment String
+     * @param callback - called on success
+     */
+    instance.addNewNote = function(clip_id, comment, callback) {
+      $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.oauth.access_token;
+      $http.post('api/clips/' + clip_id + "/users/" + $rootScope.user._id
+        + "/comments" + "?access_token=" + $rootScope.oauth.access_token,
+        {comment:comment}).success(function(){
         callback();
       });
-
     };
-
-    instance.getNotes = function(user_id, access_token, clip_id, callback) {
-      console.log("GET Notes");
-      //router.get('/:group_id/clips/:clip_id/users/:user_id/comments', controller.getComments);
-      $http.get('/api/clips/' + clip_id + '/users/' + user_id + "/comments?access_token=" + access_token, {
+    /**
+     * send GET request to retrieve private comments for a given clip.
+     * @param clip_id String id of clip.
+     * @param callback - called on success
+     */
+    instance.getNotes = function(clip_id, callback) {
+      $http.get('/api/clips/' + clip_id + '/users/' + $rootScope.user._id +
+        "/comments?access_token=" +$rootScope.oauth.access_token, {
         headers: {
-          'Authorization': 'Bearer ' + access_token
+          'Authorization': 'Bearer ' + $rootScope.oauth.access_token
         }
       }).success(function (comments) {
-        console.log("GOT Notes");
         callback(comments);
       });
     };
 
-    // Delete one of your own clips - and removes clips from groups too.
-    instance.deleteClip = function(user_id, access_token, clip_id, callback){
-      $http.defaults.headers.common.Authorization = 'Bearer ' + access_token;
-      $http.delete('api/clips/'+clip_id+"/users/"+user_id +"?access_token="+access_token).success(function(result){
-        console.log(result);
+    /**
+     * send DELETE request to soft delete (archive) clip.
+     * Also removes clip from groups it has been shared with too.
+     * @param clip_id String Id of clip.
+     * @param callback - called on success
+     */
+    instance.deleteClip = function(clip_id, callback){
+      $http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.oauth.access_token;
+      $http.delete('api/clips/'+clip_id+"/users/"+$rootScope.user._id
+        +"?access_token="+$rootScope.oauth.access_token).success(function(result){
         callback(result);
       });
     };

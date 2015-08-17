@@ -6,32 +6,40 @@ angular.module('kahootsAppApp')
     $scope.clip = null;
     $scope.selectedGroup = 0;
 
+    // Initialise page
     var init = function(){
+      // Set initial values for scope.
       $scope.clip = groupservice.clip;
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function(groups){
 
+      groupservice.getMyGroups(function(groups){
         for(var i=0; i<groups.length; i++){
-          console.log(groups[i]._id);
+          // Only display groups that the clip has not already been shared with.
           if($scope.clip.groups.indexOf(groups[i]._id)<0){
             $scope.groups.push(groups[i]);
           }
         }
+        // If no groups display no-groups alert.
         if($scope.groups.length===0){
           $('#no-groups').removeClass('collapse');
           $('#share-btn').addClass('disabled');
         }
       });
-
     };
 
+    /**
+     * Add a clip to selected group.
+     */
     $scope.shareClip = function(){
-      //    instance.shareClip = function(user_id, access_token, group_id, clip_id, callback){
-      groupservice.shareClip($rootScope.user._id, $rootScope.oauth.access_token,
-      $scope.groups[$scope.selectedGroup]._id, $scope.clip._id, function(){
+      // Once the message is send to the server, return to previous page.
+      groupservice.shareClip($scope.groups[$scope.selectedGroup]._id, $scope.clip._id, function(){
           $location.path(groupservice.returnPath);
         })
-    }
+    };
 
+    /**
+     *
+     * @param index
+     */
     $scope.selectGroup = function(index){
       for(var i=0; i<$scope.groups.length; i++){
         $('#'+i).removeClass('active');

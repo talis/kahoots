@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 angular.module('kahootsAppApp')
@@ -41,22 +42,22 @@ angular.module('kahootsAppApp')
     };
 
     // get all clips
-    /*$http.get('/api/clips').success(function(awesomeClips) {
+    /!*$http.get('/api/clips').success(function(awesomeClips) {
      $scope.awesomeClips = awesomeClips;
      $scope.activeClip = awesomeClips[0];
-     });*/
+     });*!/
 
     // Add clip.
-    /*$scope.addClip = function () {
+    /!*$scope.addClip = function () {
      if ($scope.newClip === '') {
      return;
      }
      $http.post('/api/clips', {name: $scope.newClip});
      $scope.newClip = '';
-     };*/
+     };*!/
 
     //Testing create and get user.
-    /*$http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.user._id;
+    /!*$http.defaults.headers.common.Authorization = 'Bearer ' + $rootScope.user._id;
     $http.post('api/users/' + $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token,
       $rootScope.user).success(function (user) {
         console.log(user);
@@ -69,18 +70,19 @@ angular.module('kahootsAppApp')
     }).success(function (user) {
       console.log(user);
 
-    });*/
+    });*!/
 
     //Testing add a user to group
-    /*$http.defaults.headers.common.Authorization = 'Bearer ' +$rootScope.oauth.access_token;
+    /!*$http.defaults.headers.common.Authorization = 'Bearer ' +$rootScope.oauth.access_token;
     $http.post('api/groups/55a8de48d33c65ea2937c1ae/clips/55a8de48d33c65ea2937c1ad/'+ $rootScope.user._id + "?access_token=" + $rootScope.oauth.access_token,
     $rootScope.user).success(function (group) {
       console.log(group);
     }).error(function(data, status, headers, config) {
       console.log("ERROR "+data);
-      });*/
+      });*!/
 
 
   });
 
 
+*/

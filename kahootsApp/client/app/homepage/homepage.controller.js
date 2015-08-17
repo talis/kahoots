@@ -8,20 +8,16 @@ angular.module('kahootsAppApp')
     $scope.activeClip = 0;
     $scope.newNote = '';
 
+    // Set up page and get user clip and user groups from server.
     var init = function(){
-      if($rootScope.user=='undefined'){
-
-      }
       $('#alert-share').hide();
       $scope.setState();
-      clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
+      clipservice.getMyClips(function (clips) {
         $scope.setUserClips(clips);
       });
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+      groupservice.getMyGroups(function (groups) {
         $scope.setUserGroups(groups);
       });
-
-
     };
     /**
      * Setter for userClips.
@@ -38,10 +34,8 @@ angular.module('kahootsAppApp')
         //else display 'yes-clips'
         $scope.userClips = clipArray;
         clipservice.sortArray($scope.userClips);
-        clipservice.getNotes($rootScope.user._id, $rootScope.oauth.access_token, $scope.userClips[$scope.activeClip]._id, function (comments) {
+        clipservice.getNotes($scope.userClips[$scope.activeClip]._id, function (comments) {
           $scope.userComments = comments.annotations;
-          //console.log(comments.annotations[0]);
-
         });
       }
       $scope.setState();
@@ -67,10 +61,8 @@ angular.module('kahootsAppApp')
       if(index>=$scope.userClips.length){return;}
       $scope.activeClip = index;
       // Get clip comments
-      clipservice.getNotes($rootScope.user._id, $rootScope.oauth.access_token, $scope.userClips[$scope.activeClip]._id, function (comments) {
+      clipservice.getNotes($scope.userClips[$scope.activeClip]._id, function (comments) {
         $scope.userComments = comments.annotations;
-        //console.log(comments.annotations[0]);
-
       });
     };
     /**
@@ -93,18 +85,13 @@ angular.module('kahootsAppApp')
      */
     $scope.shareClip = function(){
       if($scope.userClips[$scope.activeClip]===undefined){return;}
-      console.log("Active clip good!");
       groupservice.shareClipPage($scope.userClips[$scope.activeClip],'/homepage');
-
-      //$('#alert-share').show();
     };
     /**
      * Deletes active clip, and removes from all groups.
      */
     $scope.deleteClip = function(){
-
       if(!window.confirm("Are you sure you want to delete clip?\nIt may have been shared with groups.")){return}
-
       if($scope.userClips[$scope.activeClip]===undefined){return}
       var deletedClip = $scope.userClips[$scope.activeClip];
 
@@ -116,8 +103,7 @@ angular.module('kahootsAppApp')
       }else{
         $scope.setActiveClip(0);
       }
-      clipservice.deleteClip($rootScope.user._id, $rootScope.oauth.access_token,
-        deletedClip._id, function(){});
+      clipservice.deleteClip(deletedClip._id, function(){});
       $scope.setState();
     };
     /**
@@ -126,13 +112,10 @@ angular.module('kahootsAppApp')
     $scope.addNote= function(){
       if($scope.newNote ===''){return;}
       if($scope.userClips[$scope.activeClip]=== undefined){return;}
-
       // Add new note to clip in db
-      clipservice.addNewNote($rootScope.user._id, $rootScope.oauth.access_token,
-        $scope.userClips[$scope.activeClip]._id,$scope.newNote, function(){
-          clipservice.getNotes($rootScope.user._id, $rootScope.oauth.access_token, $scope.userClips[$scope.activeClip]._id, function (comments) {
+      clipservice.addNewNote($scope.userClips[$scope.activeClip]._id,$scope.newNote, function(){
+          clipservice.getNotes($scope.userClips[$scope.activeClip]._id, function (comments) {
             $scope.userComments = comments.annotations;
-            //console.log(comments.annotations[0]);
           });
         });
       $scope.newNote = '';
@@ -140,22 +123,27 @@ angular.module('kahootsAppApp')
 
 
     init();
+
+    //On clip update get user clips and reset state.
     socket.syncUpdates('clip', $scope.userClips, false, function(){
-      clipservice.getMyClips($rootScope.user._id, $rootScope.oauth.access_token, function (clips) {
+      clipservice.getMyClips(function (clips) {
         $scope.setUserClips(clips);
         $scope.setState();
       });
     });
+
+    // On group updates get user groups and reset state
+
     socket.syncUpdates('group', $scope.userGroups, false, function(){
-      groupservice.getMyGroups($rootScope.user._id, $rootScope.oauth.access_token, function (groups) {
+      groupservice.getMyGroups(function (groups) {
         $scope.setUserGroups(groups);
         $scope.setState();
       });
     });
 
+    // When page is destroyed remove sync updates.
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('clip');
-      socket.unsyncUpdates('user');
       socket.unsyncUpdates('group');
     });
   });
