@@ -1,9 +1,7 @@
 Kahoots Web App and Kahoots Web Klipper
 ========================================
 
-Kahoots Web App and the chrome extension Kahoots Klipper were developed as part of a 10 week internship at Talis.
-The purpose of this project was to build a simple tool that allowed students to capture content from the web and then
-organise and share then content for their personal study goals, or share that content with their study groups.
+Kahoots Web App and the chrome extension Kahoots Klipper were developed as part of a 10 week internship at Talis. The purpose of this project was to build a simple tool that allowed students to capture content from the web and then organise and share then content for their personal study goals, or share that content with their study groups.
 
 Install Prerequisites
 ---------------------
