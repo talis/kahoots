@@ -10,7 +10,7 @@ Instructions can be found here (Step 1 only):
 
     http://yeoman.io/codelab/setup.html
 
-Install Kahoots
+Install Kahoots Web App
 ----------------
 
 To install, grab a copy of the repository:
@@ -45,5 +45,14 @@ information on how to install this can be found here:
 To being the application, use the grunt command:
 
     grunt serve
+
+Adding Kahoots Klipper to Chrome Browser
+-----------------------------------------
+
+1. On your chrome browser, click menu.
+2. Select More tools > Extensions.
+3. Click on the button Load unpacked extension...
+4. Select kahoots/kahootsKlipper/app and click open.
+5. You should see a little jigsaw puzzle icon in the top right corner of your browser, click this to start the Klipper.
 
 
