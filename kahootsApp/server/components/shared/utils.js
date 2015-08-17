@@ -17,7 +17,7 @@ var _getOAuthToken = function getOAuthToken(callback) {
       'Content-Length': post_data.length
     }
   };
- console.log("CLIENT:"+options.auth);
+ //console.log("CLIENT:"+options.auth);
 
   var req = http.request(options, function(response){
     var str = "";
@@ -43,7 +43,7 @@ var _getOAuthToken = function getOAuthToken(callback) {
 };
 
 var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy){
-  console.log("_createAnnotation");
+  //console.log("_createAnnotation");
   var annotationData = {
     hasBody: {
       format: 'text/plain',
@@ -62,7 +62,7 @@ var _createAnnotation = function(req, res, details, uri, hasTarget, motivatedBy)
       console.log(err);
       return res.send(400, err);
     } else {
-      console.log("NEW ANNOTATION\n" + results);
+      //console.log("NEW ANNOTATION\n" + results);
       return res.send(200, results);
     }
   }); // end createAnnotation

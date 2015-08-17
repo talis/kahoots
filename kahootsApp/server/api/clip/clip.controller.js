@@ -13,10 +13,9 @@ var fs = require('fs');
 // GET api/clips/:id
 // Gets all clips for given user_id
 exports.userClips = function(req, res){
-  console.log('Gets all clips for user');
+  //console.log('Gets all clips for user');
   req.personaClient.validateToken(req, res, function (err) {
     if(err){return handleError(res, err)}
-    console.log('valid user');
 
     Clip.find({'author': req.params.id, 'archived':false}, function (err, clip) {
         if(err) { return handleError(res, err); }
@@ -26,24 +25,6 @@ exports.userClips = function(req, res){
   },req.params.id);
 };
 
-/*// GET api/clips/
-// Gets all clips in db.
-exports.index = function(req, res) {
-  Clip.find(function ( err, clips) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, clips);
-  });
-};*/
-
-/*// GET api/clips/:id
-// Get a single clip with clip_id
-exports.show = function(req, res) {
-  Clip.findById(req.params.id, function (err, clip) {
-    if(err) { return handleError(res, err); }
-    if(!clip) { return res.send(404); }
-    return res.json(clip);
-  });
-};*/
 
 // POST api/clips/
 // For a given clip object, creates a new clip in the DB.
@@ -55,35 +36,10 @@ exports.create = function(req, res) {
   });
 };
 
-// POST api/clips/:clip_id/users/:user_id
-// Updates an existing clip in the DB for a given json.
- /* exports.update = function (req, res) {
-    req.personaClient.validateToken(req, res, function () {
-      //console.dir(req);
-      //if (req.body._id) {delete req.body._id;}
-
-      Clip.findById(req.params.clip_id, function (err, clip) {
-        if (err) {return handleError(res, err);}
-        if (!clip) {return res.send(404);}
-        clip.comments = req.body.comments;
-        /!*
-         * This is necessary to make Mongo save, because we are using
-         * Schema.Types.Mixed for the 'clips' property and so Mongo won't be able
-         * to detect modifications
-         *!/
-        clip.markModified('comments');
-        clip.save(function (err) {
-          if (err) {return handleError(res, err);}
-          return res.json(200, clip);
-        });
-      });
-    }, req.params.user_id);
-  };*/
-
 // POST api/clips/:clip_id/users/:user_id/:comment
 // Add a new comment to the clip you are author of
 exports.addComment = function (req, res) {
-  console.log("add comment");
+  //console.log("add comment");
   req.personaClient.validateToken(req, res, function () {
     Clip.findById(req.params.clip_id, function(err, clip){
       if (err) {return handleError(res, err);}
@@ -103,46 +59,20 @@ exports.addComment = function (req, res) {
           first_name: user.first_name,
             surname: user.surname,
             email: user.email
-
         };
         _createAnnotation(req, res, details,
           [req.params.clip_id, req.params.user_id], 'comment');
         clip.save();
-         /* var annotationData = {
-          hasBody: {
-            format: 'text/plain',
-            type: 'Text',
-            chars: req.body.comment ? req.body.comment  '',
-            details: {
-              first_name: user.first_name,
-              surname: user.surname,
-              email: user.email
-            }
-          },
-          hasTarget: {uri:[req.params.clip_id]},
-          annotatedBy: req.params.user_id,
-          annotatedAt: Date.now(),
-          motivatedBy: 'comment'
-        };
-        req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
-          //console.log("BABEL RESPONSE");
-          //console.log(results);
-          if (err) {
-            console.log(err);
-            return handleError(res, err);
-          } else {
-            return res.json(200, results);
-          }
-        }); // end createAnnotation*/
       }); // end find user by id
     }); // end find clip by id
   }, req.params.user_id);
 };
+
 // GET api/clips/:clip_id/users/:user_id/comments
+// Search for annotations with target: user_id
 exports.getComments = function(req, res){
   req.personaClient.validateToken(req, res, function () {
     var target = {"hasTarget.uri": req.params.clip_id};
-
     req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
       if (err) {return handleError(res, err);} else {
         return res.json(200, comments);
@@ -150,18 +80,7 @@ exports.getComments = function(req, res){
     });
   }, req.params.user_id);
 };
-// DELETE api/clips/:id
-// Deletes a clip from the DB.
-/*exports.destroy = function (req, res) {
-    Clip.findById(req.params.id, function (err, clip) {
-      if (err) {return handleError(res, err);}
-      if (!clip) {return res.send(404);}
-      clip.remove(function (err) {
-        if (err) {return handleError(res, err);}
-        return res.send(204);
-      });
-    });
-  };*/
+
 
   // DELETE api/clips/clip_id/users/:user_id
   // If user is author, delete clip and remove from all groups.
@@ -191,10 +110,6 @@ exports.destroyClip = function(req, res){
             }
           });
         }
-        /*clip.remove(function (err) {
-         if (err) {return handleError(res, err);}
-         return res.send(204);
-         });*/
         //Set clip.archived to true
         clip.archived = true;
         clip.save(function (err) {
@@ -217,6 +132,7 @@ exports.destroyClip = function(req, res){
       });// End find user by id
     }, req.params.user_id);
   };
+
 // POST api/clips/file-upload/:id
 // Processes data from kahoots klipper, saves new clip to db.
 exports.upload = function (req, res) {
@@ -230,7 +146,6 @@ exports.upload = function (req, res) {
         if (!user) {
           return res.send(404);
         }
-
         if (req.body.rect === undefined) {
           return res.send(400)
         }
@@ -240,8 +155,6 @@ exports.upload = function (req, res) {
         if (req.body.author === undefined) {
           return res.send(400)
         }
-
-
         var rect = JSON.parse(req.body.rect);
         var data = (req.body.content).replace(/^data:image\/\w+;base64,/, "");
         var buf = new Buffer(data, 'base64');
@@ -301,36 +214,6 @@ exports.upload = function (req, res) {
                 };
                 _createAnnotation(req, res, details,
                   [req.params.user_id], 'describing');
-                /*// Create a new annotation to log upload
-                 req.chars = "New clip Added!"
-                 var annotationData = {
-                 hasBody: {
-                 format: 'text/plain',
-                 type: 'Text',
-                 chars: 'New clip added!',
-                 details: {
-                 content_id: res._id,
-                 content:  req.body.content,
-                 first_name: user.first_name,
-                 surname: user.surname,
-                 email: user.email
-                 }
-                 },
-                 hasTarget: {uri:[req.params.user_id]},
-                 annotatedBy: req.params.user_id,
-                 annotatedAt: Date.now(),
-                 motivatedBy: 'describing'
-                 };
-                 req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
-                 //console.log("BABEL RESPONSE");
-                 //console.log(results);
-                 if (err) {
-                 console.log(err);
-                 return handleError(res, err);
-                 }
-                 return res.send(201);
-                 });*/
-
               }); // Finish creating clip in db.
             }); // Finish posting to depot
           }); // Finish cropping img.
@@ -342,7 +225,6 @@ exports.upload = function (req, res) {
 
 // Error handler.
   function handleError(res, err) {
-
     return res.send(500, err);
   }
 
@@ -360,14 +242,4 @@ function guid() {
   }
   return _p8() + _p8(true) + _p8(true) + _p8();
 }
-// Testing get from depot
 
-/*request.get({url:'https://staging-files.talis.com/files/55bb86514d3825da07000000.json?access_token='+req.query.access_token,
- headers:{accept:'application/json'}}, function(err, httpResponse, body){
- if(err){
- return console.error('Get depot file error',err);
- }
- console.log('Download: Server responded with:'+body);
- });*/
-
-// Finished testing DEPOT

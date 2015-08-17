@@ -24,7 +24,7 @@ groupManager.removeClipFromGroup = function(req, res, cb){
       if (!group) {
         return cb(404)
       }
-      console.log("group found");
+      //console.log("group found");
       Clip.findById(req.params.clip_id, function (err, clip) {
         if (err) {
           return cb(500)
@@ -32,18 +32,18 @@ groupManager.removeClipFromGroup = function(req, res, cb){
         if (!clip) {
           return cb(404)
         }
-        console.log("clip found");
+        //console.log("clip found");
 
         //check clip in group
         if (group.clips.indexOf(clip._id) === -1) {
           return cb(404)
         }
-        console.log("clip in group");
+        //console.log("clip in group");
         //check group in clip
         if (clip.groups.indexOf(group._id) === -1) {
           return cb(404)
         }
-        console.log("group in clip");
+        //console.log("group in clip");
 
 
         group.clips.splice(group.clips.indexOf(clip._id), 1);

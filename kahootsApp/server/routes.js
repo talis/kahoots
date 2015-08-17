@@ -10,13 +10,8 @@ module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/users', require('./api/user'));
-  //app.use('/api/group_clips', require('./api/group_clip'));
-  //app.use('/api/group_users', require('./api/group_user'));
   app.use('/api/groups', require('./api/group'));
-  //app.use('/api/envs', require('./api/env'));
-
   app.use('/api/clips', require('./api/clip'));
-
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')

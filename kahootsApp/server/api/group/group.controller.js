@@ -7,21 +7,10 @@ var _createAnnotation = require('../../components/shared/utils')._createAnnotati
 var User = require('../user/user.model');
 var Clip = require('../clip/clip.model');
 
-
-
-/*// GET api/groups/:group_id/users/:user_id
-exports.getGroup = function(req,res){
-  req.personaClient.validateToken(req, res, function () {
-    User.findById(req.params.user_id, function (err, group) {
-      if(err) { return handleError(res, err); }
-      if(!group) { return res.send(404); }
-      return res.json(group);
-    });
-  }, req.params.user_id);
-};*/
 // POST api/groups/:group_id/clips/clip_id/users/:user_id/comment
+// Add a new comment to a clip in a group.
 exports.addComment = function(req,res){
-  console.log("add comment");
+  //console.log("add comment");
   req.personaClient.validateToken(req, res, function () {
     if(req.body.comment === undefined){return res.send(400)}
     Group.findById(req.params.group_id, function (err, group) {
@@ -48,38 +37,14 @@ exports.addComment = function(req,res){
         _createAnnotation(req, res, details,
           [req.params.group_id + "_" + req.params.clip_id, req.params.group_id], 'commenting');
         clip.save();
-        /*var annotationData = {
-          hasBody: {
-            format: 'text/plain',
-            type: 'Text',
-            chars: req.body.comment ? req.body.comment : '',
-            details: {
-              first_name: user.first_name,
-              surname: user.surname,
-              email: user.email
-            }
-          },
-          hasTarget: {uri: [req.params.group_id + "_" + req.params.clip_id, req.params.group_id]},
-          annotatedBy: req.params.user_id,
-          annotatedAt: Date.now(),
-          motivatedBy: 'comment'
-        };
-        req.babelClient.createAnnotation(req.query.access_token, annotationData, function (err, results) {
-          //console.log("BABEL RESPONSE");
-          //console.log(results);
-          if (err) {
-            console.log(err);
-            return handleError(res, err);
-          } else {
-            return res.json(200, results);*/
-         /* }
-        }); // end createAnnotation*/
       }); // end User.findById
     }); // end Group.findById
   }); // end clip.findByID
   });
 };
+
 // GET api/groups/:group_id/clips/:clip_id/users/:user_id/comments
+// Get annotations with target group_id + user_id.
 exports.getComments = function(req, res){
   req.personaClient.validateToken(req, res, function () {
     //console.log("valid token");
@@ -99,7 +64,6 @@ exports.getComments = function(req, res){
       var target = {
         "hasTarget.uri": req.params.group_id + "_" + req.params.clip_id
       };
-
       req.babelClient.getAnnotations(req.query.access_token, target, function(err, comments){
         if (err) {return handleError(res, err);} else {
           return res.json(200, comments);
@@ -108,6 +72,7 @@ exports.getComments = function(req, res){
     });
   }, req.params.user_id);
 };
+
 // POST api/groups/:group_id/users/:user_id/:email
 // Add user to group and vice-versa.
 exports.addUser = function(req, res){
@@ -152,7 +117,6 @@ exports.addUser = function(req, res){
 // POST api/groups/:group_id/clips/:clip_id/:id
 // Add clip to group and vice-versa.
 exports.addClip = function(req, res){
-
   req.personaClient.validateToken(req, res, function () {
     var Clip = require('../../api/clip/clip.model');
     User.findById(req.params.user_id, function(err, user) {
@@ -162,7 +126,7 @@ exports.addClip = function(req, res){
       if (!user) {
         return res.send(404);
       }
-      console.log("User valid");
+      //console.log("User valid");
       // Check clip exists
       Clip.findById(req.params.clip_id, function (err, clip) {
         if (err) {
@@ -186,11 +150,11 @@ exports.addClip = function(req, res){
             return res.send(404, "Group does not exist")
           }
           // Check user is in group and authorised to share with group.
-          console.log("Is user in group?");
+          //console.log("Is user in group?");
           if (group.users.indexOf(req.params.user_id) === -1) {
             return res.send(401, "User not in group")
           }
-          console.log("YES");
+          //console.log("YES");
           // Check Clip not in group.
           if (group.clips.indexOf(req.params.clip_id) !== -1) {
             return res.send(404, "Clip already in group")
@@ -218,7 +182,6 @@ exports.addClip = function(req, res){
               email: user.email,
               type: 'describing'
             };
-
             _createAnnotation(req, res, details,
               [group._id], 'describing');
           });
@@ -235,10 +198,8 @@ exports.getGroupClips = function(req, res){
     Group.findById(req.params.group_id, function (err, group) {
       if (err) {return handleError(res, err);}
       if (!group) {return res.send(404);}
-
       // check user is in group.
       if(group.users.indexOf(req.params.user_id) === -1){return res.send(401, "User not found in group")}
-
       Clip.find()
         .where('_id')
         .in(group.clips)
@@ -246,7 +207,6 @@ exports.getGroupClips = function(req, res){
         if(err) { return handleError(res, err); }
         if(!clip) { return res.send(404); }
         return res.json(200, clip);
-
       }); // End get clips in group.clips.
     }); // End get group by id
   }, req.params.user_id);
@@ -280,13 +240,6 @@ exports.myGroups = function(req, res) {
   }, req.params.id);
 };
 
-/*// Creates a new group in the DB, for a given json.
-var create = function(req, res) {
-  Group.create(req.body, function(err, group) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, group);
-  });
-};*/
 //POST api/groups/:user_id
 // User can create a new Group.
 exports.newGroup = function(req,res){
@@ -315,32 +268,7 @@ exports.newGroup = function(req,res){
     });
   }, req.params.user_id);
 };
-// PUT api/groups/:id
-// Updates an existing group in the DB.
-/*exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Group.findById(req.params.id, function (err, group) {
-    if (err) { return handleError(res, err); }
-    if(!group) { return res.send(404); }
-    var updated = _.merge(group, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, group);
-    });
-  });
-};
-// DELETE api/groups/:id
-// Deletes a group from the DB.
-exports.destroy = function(req, res) {
-  Group.findById(req.params.id, function (err, group) {
-    if(err) { return handleError(res, err); }
-    if(!group) { return res.send(404); }
-    group.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
-  });
-};*/
+
 // DELETE api/groups/:group_id/users
 // Removes a user from a group.
 exports.removeUser = function(req, res){
@@ -407,38 +335,6 @@ exports.removeClip = function(req,res){
     }); // end find user by id.
   }, req.params.user_id);
 };
-
-/*// Removes clip from group
-var removeClipFromGroup = function(group_id, clip_id, cb){
-  Group.findById(group_id, function(err, group){
-    if(err){return cb(500)}
-    if(!group){return cb(404)}
-    Clip.findById(clip_id, function(err, clip){
-      if(err){return cb(500)}
-      if(!clip){return cb(404)}
-      //check clip in group
-      if(group.clips.indexOf(clip._id)===-1){return cb(404)}
-      //check group in clip
-      if(clip.groups.indexOf(group._id)===-1){return cb(404)}
-      group.clips.splice(group.clips.indexOf(clip._id),1);
-      group.save(function (err) {
-        if (err) {return cb(500)}
-        // remove user from group's users.
-        clip.groups.splice(clip.groups.indexOf(group._id),1);
-        clip.save(function (err) {
-          if (err) {return cb(500)}
-          return cb(202);
-        }); // end save clip.
-      }); // end save group.
-    }); // end find clip by id.
-  }); // end find group by id.
-};
-
-
-
-exports.removeClipFromGroup= function(group_id, clip_id){
-  removeClipFromGroup(group_id, clip_id, function(){});
-};*/
 
 // GET api/groups/:group_id/feeds
 // Get the groups feed activity.
