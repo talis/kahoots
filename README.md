@@ -55,4 +55,10 @@ Adding Kahoots Klipper to Chrome Browser
 4. Select kahoots/kahootsKlipper/app and click open.
 5. You should see a little jigsaw puzzle icon in the top right corner of your browser, click this to start the Klipper.
 
+Running tests for the we application
+------------------------------------
+
+To begin the tests, use the grunt command
+  
+    grunt test:server
 
