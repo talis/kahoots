@@ -43,7 +43,8 @@ information on how to install this can be found here:
     https://github.com/talis/babel-server
 
 To being the application, use the grunt command:
-
+    
+    cd kahoots/kahootsApp
     grunt serve
 
 Adding Kahoots Klipper to Chrome Browser
@@ -58,7 +59,8 @@ Adding Kahoots Klipper to Chrome Browser
 Running tests for the we application
 ------------------------------------
 
-To begin the tests, use the grunt command
-  
+To begin the tests, use the grunt command:
+
+    cd kahoots/kahootsApp  
     grunt test:server
 
